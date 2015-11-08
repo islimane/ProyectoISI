@@ -1,0 +1,50 @@
+/////////////REQUISITOS///////////////
+
+Hay que hacer una plataforma de juegos multijugador para ganar dinero
+
+Tres partes
+	-Interfaz de usuario
+	-Logica
+	-Plataforma	
+
+Plataforma molona
+	-REactividad y tiempo real, si estan pasaondo cosas por ahi
+		Que se recargue nuestra pag
+	-NEcesitamos una chat privado con salas? Quizás solo un chat
+		HA dicho videoconferncia pero se le va (Dice que hay bibliotecaspara
+		esto, pero queda muy resulton)
+	-Dedicada un poco a colaborar con los otros grupos es decir, no plataforma independiente
+		Sino mediointegrada a jugar con el juego
+	-Hay que hacer un lobby con salas de juego. Tambien estaria bien hacer registros deusuario
+
+	-¿MEter torneos?
+	
+	-Meter partidas simultaneas(Posiblemente arreglable con las salas)
+
+	-MEter parte social, como listas de amigos, recomendaciones de amigos, Streaming?
+
+	-ranking de jugadores
+
+	-Settings de una partida, y guardarlos?
+
+	-PArtidas privadas y publicas
+
+	-Posible posibilidad de hacer cuenta premium POCO UTIL NO HACER
+			
+
+
+-Logica
+
+	-Duracion de los turnos? 
+		Turnos bloqueantes a los demás
+
+-Interfaz de usuario
+
+	_La interfaz de la plataforma
+
+	-La interfaz del juego
+
+	-Dos modelos para el concepto ficha
+		Uno para poderla pintar y otro de acuerdo al server
+	-La logica del juego esta corriendo en el servidor
+		mientras que la interfaz grafica esta corriendo en el browser
