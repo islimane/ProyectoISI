@@ -3,9 +3,16 @@
 </head>
 
 <body>
-  <h1>Welcome to Meteor!</h1>
-  {{> loginButtons}}
 </body>
+
+<template name="main">
+  <h1>Play Carcassonne!</h1>
+  <p>Menú con enlaces a tu perfil, home, logout, etc</p>
+  {{> loginButtons}}
+  {{> yield}}
+  <hr/>
+  <p>Copyrigth &copy; PlayCarcassonne, 2015.</p>
+</template>
 
 <template name="home">
 	<h1>Este es el home </h1>
