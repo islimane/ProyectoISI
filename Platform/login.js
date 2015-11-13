@@ -1,3 +1,5 @@
+Users = new Meteor.Collection('user_s');
+
 Router.route('/register');
 Router.route('/login');
 
@@ -61,6 +63,8 @@ if(Meteor.isClient){
     Template.register.onRendered(function(){
         var validator = $('.register').validate({
             submitHandler: function(event){
+
+                var user = $('[name=user]').val();
                 var email = $('[name=email]').val();
                 var password = $('[name=password]').val();
                 Accounts.createUser({
@@ -74,9 +78,18 @@ if(Meteor.isClient){
                             });
                         }
                     } else {
+                        var data = {
+                            user: user,
+                            email: email,
+                            createdAt: new Date(),
+                            maxscore: 0,
+                            friends: []
+                        }
+                        Users.insert(data);
                         Router.go("home");
                     }
                 });
+                
             }    
         });
     });
