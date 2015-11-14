@@ -1,5 +1,3 @@
-Friends = new Meteor.Collection('friends')
-
 if (Meteor.isClient) {
 	Template.UserPage.helpers({
 		'infoUser':function(){
