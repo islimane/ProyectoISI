@@ -50,7 +50,8 @@ if(Meteor.isClient){
                     } else {
                         var currentRoute = Router.current().route.getName();
                         if(currentRoute == "login"){
-                            Router.go("home");
+                            var id = Users.findOne({email:email})._id;
+                            Router.go("UserPage", {_id: id});
                         }
                     }
                 });
@@ -84,7 +85,8 @@ if(Meteor.isClient){
                             friends: []
                         }
                         Users.insert(data);
-                        Router.go("home");
+                        var id = Users.findOne({email:email})._id;
+                        Router.go("UserPage", {_id: id});
                     }
                 });
                 

@@ -23,5 +23,15 @@ Router.route('/user/:_id', {
     data: function(){
       var userID = this.params._id;
       return Users.findOne({_id:userID});
+    },
+    onBeforeAction: function(){
+      var currentUser = Meteor.userId();
+      if(currentUser){
+        // logged-in
+        this.next();  //hace que la ruta se comporte de forma normal
+      } else {
+        // not logged-in
+        this.render("login"); //rediriges a login
+      }
     }
 });
