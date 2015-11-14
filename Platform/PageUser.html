@@ -1,16 +1,26 @@
 <template name="UserPage">
-	<h1>Pagina Nombre de usuario</h1>
-	<div class = "listFriends">
-		<ul> Lista de amigos </ul>
-		<!--AQUI TIENE QUE IR LA LISTA DE AMIGOS -->
-	</div>
+	
+	<h1>Pagina Nombre de usuario {{infoUser.user}}</h1>
+	
 
 	<div class = "statisticsPlayer">
 		<!--AQUI TIENE QUE IR LAS ESTADISTICAS DEL JUGADOR -->
 		<ul>Estadisticas Jugador</ul>
+			<ul><li>Puntuacion maxima: {{infoUser.maxscore}}</li></ul>
+
 	</div>
 
-	<div class = "statisticsPlayer">
+	<div class = "friends">
+		<!--ENLACE A COMENZAR PARTIDA-->
+		<p> LISTA DE AMIGOS </p>
+		<ul>
+			{{#each friends}}
+  				<li>{{this}}</li>
+  			{{/each}}
+		</ul>
+	</div> 
+
+	<div class = "newGame">
 		<!--ENLACE A COMENZAR PARTIDA-->
 		<ul> <a href="/comenzarPartida/{{_id}}"> comenzar partida</a></ul>
 	</div>

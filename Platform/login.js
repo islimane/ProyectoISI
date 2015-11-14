@@ -5,8 +5,6 @@ Router.route('/login');
 
 if(Meteor.isClient){
 
-
-
 	$.validator.setDefaults({
         rules: {
             email: {
