@@ -14,10 +14,24 @@
   <p>Copyrigth &copy; PlayCarcassonne, 2015.</p>
 </template>
 
-<template name="home">
+<template name="navigation">
+    <ul>
+        <li><a href="{{pathFor route='home'}}">Home</a></li>
+        {{#if currentUser}}
+        	<li><a href="/comenzarPartida/{{currentUser._id}}">Crear partida</a></li>
+            <li><a href="/user/currentUser._id">Página Personal</a></li>
+            <li><a href="#" class="logout">Logout</a></li> <!--solo se muestra a usuario logeados-->
+        {{else}}
+            <li><a href="{{pathFor route='register'}}">Register</a></li>
+            <li><a href="{{pathFor route='login'}}">Login</a></li>
+        {{/if}}
+    </ul>
+</template>
+
+<!--<template name="home">
 	<h1>Este es el home </h1>
-	<!--La pagina de usuario tendra que ser redirigido cuando se registre
-	/usuario/id_usuario en base de datos sera el enlace a cada pagina de usuario para que sea unica -->
+	agina de usuario tendra que ser redirigido cuando se registre
+	/usuario/id_usuario en base de datos sera el enlace a cada pagina de usuario para que sea unica
 	{{> UserPage}}
   {{> ConfigPartida}}
-</template>
+</template>-->
