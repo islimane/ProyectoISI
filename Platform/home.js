@@ -1,6 +1,0 @@
-
-
-
-Router.configure({
-	layoutTemplate: 'main',
-});

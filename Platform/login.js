@@ -1,8 +1,3 @@
-Users = new Meteor.Collection('user_s');
-
-Router.route('/register');
-Router.route('/login');
-
 if(Meteor.isClient){
 
 	$.validator.setDefaults({
