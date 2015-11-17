@@ -61,6 +61,13 @@ if(Meteor.isClient){
                 var user = $('[name=user]').val();
                 var email = $('[name=email]').val();
                 var password = $('[name=password]').val();
+                var password2 = $('[name=password2]').val();
+                if (password !== password2){
+                    validator.showErrors({
+                        password2: "Passwords are not equal."    
+                    });
+                    return;
+                }
                 Accounts.createUser({
                     email: email,
                     password: password
@@ -97,6 +104,8 @@ if(Meteor.isClient){
         }
     });
 }
+
+
 
 
 
