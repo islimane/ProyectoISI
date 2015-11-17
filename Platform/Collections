@@ -1,0 +1,21 @@
+Collection Uers:
+	- Nombre
+	- Correo
+	-Contraseña?
+	- Array Amigos
+	- Fecha Creacion
+	- Imagen
+
+Collection Games:
+	- Creador
+	- Numero jugadores humanos
+	- Contraseña
+	- Numero jugadores IA
+	- Numero de turnos?
+	- Array Jugadores
+	- Comenzada o no
+
+Collection Scores:
+	- Puntacion maxima
+	- ID Usuario
+	- Nº partidas ganadas
