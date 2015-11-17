@@ -14,25 +14,16 @@
 		<!--ENLACE A COMENZAR PARTIDA-->
 		<p> LISTA DE AMIGOS </p>
 		<ul>
-			{{#each friends}}
-  				<li>{{this}}</li>
+			{{#each myfriends}}
+				<li> <a href="/user/{{id}}">{{name}}</a></li>
   			{{/each}}
 		</ul>
 	</div> 
 
-	<div class = "rankingUsers">
-	<p>Ranking puntuaciones usuarios </p>
-
-	<ul>	
-		{{#each ranking}}
-			<li> <a href="/user/{{_id}}">Pagina de {{user}}</a> puntuacion maxima:  {{maxscore}}</li>
-		{{/each}}
-	</ul>
-	</div>
 
 	<div class = "newGame">
 		<!--ENLACE A COMENZAR PARTIDA-->
-		<ul> <a href="/comenzarPartida/{{_id}}"> Crear partida</a></ul>
+		<ul> <a href="/crearPartida/{{_id}}"> Crear partida</a></ul>
 	</div>
 
 
