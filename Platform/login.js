@@ -79,8 +79,7 @@ if(Meteor.isClient){
                             maxscore: 0,
                             friends: []
                         }
-                        Users.insert(data);
-                        var id = Users.findOne({email:email})._id;
+                        var id = Users.insert(data);
                         Router.go("UserPage", {_id: id});
                     }
                 });
