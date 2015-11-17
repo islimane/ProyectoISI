@@ -33,7 +33,7 @@ Router.route('/user/:_id', {
     }
 });
 Router.route('/comenzarPartida/:_id', {
-    template:"startGame",    
+    template:"configGame",    
     name:"configGame", 
     data: function(){
       var userID = this.params._id;
