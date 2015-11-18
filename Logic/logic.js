@@ -96,10 +96,48 @@ function initializeBoard(){
 }
 
 /////////////////////////////
-//      TILE OBJECT        //
+//      CELL OBJECT        //
 /////////////////////////////
 
 // cell constructor, the cell is initialized without tile
 function cell(){
     this.tile = null;
+}
+
+/////////////////////////////
+//    PLAYERS OBJECT     //
+/////////////////////////////
+
+function Players (names)  {
+
+    this.players = this.init(names) ;
+    this.current = 0;
+
+}
+
+Players.prototype.init = function(names){
+    var arry = [] ;
+    for ( i = 0 ; i < 4 ; i++){
+        arry[i] = new Player(names[i]) ;
+    }
+    return arry ;
+}
+
+Players.prototype.next = function() {
+
+    current++ ;
+    return players(current % 4);
+
+}
+
+/////////////////////////////
+//    PLAYER OBJECT     //
+/////////////////////////////
+
+function Player (name)  {
+
+    this.name = name ;
+    this.score = 0 ;
+    this.dummies = [] ;
+
 }
