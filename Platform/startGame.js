@@ -36,6 +36,8 @@ if(Meteor.isClient){
 				$('#IA').show();
 				var val = ($('#players').val() - $('#humanPlayer').val())
 				$('[name="IAPlayer"]').val(val);
+				$('#IAPlayer').attr('max',val);
+				$('#IAPlayer').attr('min',val);
 			}else{
 				$('#IA').hide();
 			}
