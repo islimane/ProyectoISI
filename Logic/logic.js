@@ -6,7 +6,7 @@
 // players: array of all the players names
 function Game (playersNames){
     this.players = new Players (playersNames);
-    this. tiles = new Tiles();
+    this.tiles = new Tiles();
     this.board = new Board();
 }
 
@@ -58,14 +58,16 @@ function Tile (positions){
 
 // Turns 90 degrees clockwise
 Tile.prototype.turnTile = function(){
+    var tmp_n = this.n;
+    var tmp_nw = this.nw;
     this.n = this.w;
     this.nw = this.sw;
     this.w = this.s;
     this.sw = this.se;
     this.s = this.e;
     this.se = this.ne;
-    this.e = this.n;
-    this.ne = this.nw;
+    this.e = tmp_n;
+    this.ne = tmp_nw;
 }
 
 /////////////////////////////
