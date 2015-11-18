@@ -1,10 +1,28 @@
 <template name="home">
-
 	<h2>Página Principal</h2>
-	<div class="listGames">
-		<p>Otros Jugadores</p>
-		<p>Partidas a la Espera</p>
-		<p>Partidas en Marcha</p>
+	<h2>{{prueba}}</h2>
+	<div class="listOtherPlayers">
+		<p>Otros jugadores:</p>
+		<ul>
+		{{#each otherPlayers}}
+			<li>Jugador otro{{user}}</li>
+		{{/each}}
+		</ul>
 	</div>
-		
+	<div class="listWaitingGames">
+		<p>Partidas a la Espera:</p>
+		<ul>
+		{{#each waitingGames}}
+			<li>Partida a la espera</li>
+		{{/each}}
+		</ul>
+	</div>
+	<div class='listOngoingGames'>
+		<p>Partidas en Marcha:</p>
+		<ul>
+		{{#each onGoingGames}}
+			<li>Partida en marcha</li>
+		{{/each}}
+		</ul>
+	</div>
 </template>
