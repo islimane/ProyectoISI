@@ -67,3 +67,37 @@ Tile.prototype.turnTile = function(){
     this.e = this.n;
     this.ne = this.nw;
 }
+
+/////////////////////////////
+//      BOARD OBJECT       //
+/////////////////////////////
+
+var HORIZONTAL_MAXSIZE = 100;
+var VERTICAL_MAXSIZE = 100;
+
+function board(){
+    this.cells = initializeBoard();
+
+}
+
+function initializeBoard(){
+    var cells = [];
+    for(var i=0;i<HORIZONTAL_MAXSIZE;i++){
+        var column = [];
+        for(var j=0;j<VERTICAL_MAXSIZE;j++){
+            column.push(new cell());
+        }
+        cells.push(column);
+        column = [];
+    }
+    return cells;
+}
+
+/////////////////////////////
+//      TILE OBJECT        //
+/////////////////////////////
+
+// cell constructor, the cell is initialized without tile
+function cell(){
+    this.tile = null;
+}
