@@ -18,6 +18,27 @@ Game.prototype.startGame = function() {
 };
 
 /////////////////////////////
+//    TILES OBJECT     //
+/////////////////////////////
+
+function Tiles () {
+    this.queue = [];
+    this.currentTile = null;
+}
+
+Tiles.prototype.initTiles = function() {
+    // body...
+}
+
+Tiles.prototype.popTile = function() {
+    if(this.queue.length > 0){
+        return this.queue.pop();
+    }else{
+        return null;
+    }
+};
+
+/////////////////////////////
 //    TILE OBJECT     //
 /////////////////////////////
 
