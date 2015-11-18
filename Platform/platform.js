@@ -2,7 +2,6 @@
 Users = new Meteor.Collection('user_s');
 Games = new Meteor.Collection('games_s');
 Scores = new Meteor.Collection('scores_s');
-Friends = new Meteor.Collection('friends_s');
 
 
 //Routes

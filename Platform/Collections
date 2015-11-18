@@ -7,13 +7,15 @@ Collection Uers:
 	- Imagen
 
 Collection Games:
-	- Creador
-	- Numero jugadores humanos
+	- creator
+	- nameGame
+	- numPlayweHuman
+	- numPlayerIA
+	- players[]
+	- gameStart
+
 	- Contraseña
-	- Numero jugadores IA
 	- Numero de turnos?
-	- Array Jugadores
-	- Comenzada o no
 
 Collection Scores:
 	- Puntacion maxima
