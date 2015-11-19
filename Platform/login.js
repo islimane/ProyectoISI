@@ -36,17 +36,16 @@ if(Meteor.isClient){
                                 email: "That email doesn't belong to a registered user."   
                             });
                         }
-                    if(error.reason == "Incorrect password"){
-                        validator.showErrors({
-                            password: "You entered an incorrect password."    
-                        });
-                    }
+                        if(error.reason == "Incorrect password"){
+                            validator.showErrors({
+                                password: "You entered an incorrect password."    
+                            });
+                        }
 
                     } else {
                         var currentRoute = Router.current().route.getName();
                         if(currentRoute == "login"){
-                            var id = Users.findOne({email:email})._id;
-                            Router.go("UserPage", {_id: id});
+                            Router.go("UserPage", {_id: Meteor.userId()});
                         }
                     }
                 });
@@ -88,7 +87,7 @@ if(Meteor.isClient){
                         }
                         //var id = Users.insert(data);
                         Meteor.call('add',data);
-                        Router.go("UserPage", {_id: id});
+                        Router.go("UserPage", {_id: Meteor.userId()});
                     }
                 });
                 
@@ -112,7 +111,7 @@ if(Meteor.isServer){
 
         'add': function(data){
           
-            Meteor.users.update({_id:Meteor.userId()},{$set:data});
+            Meteor.users.update({_id:Meteor.userId()},{$set:{profile:data}});
 
         }
         
