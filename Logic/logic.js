@@ -3,18 +3,53 @@
 // ci: city
 // cl: cloister
 // r: road
+// b: banner
 // '': nothing
 
-var predefTiles = {
+var predefTiles = [
     {
         type: 0,
-        //               [n, nw, w, sw, s, se, e, ne, c]
+        //         [ n,  nw,   w,  sw,   s,  se,   e,  ne,   c  ]
         positions: ['f', 'f', 'f', 'f', 'f', 'f', 'f', 'f', 'cl'],
         total: 4
     },
-    //others:
-    {},
-}
+    {
+        type: 1,
+        //         [ n,  nw,   w,  sw,   s,  se,   e,  ne,   c  ]
+        positions: ['f', 'f', 'f', 'f', 'r', 'f', 'f', 'f', 'cl'],
+        total: 2
+    },
+    {
+        type: 2,
+        //         [ n,    nw,   w,    sw,   s,    se,   e,    ne,   c  ]
+        positions: ['ci', 'ci', 'ci', 'ci', 'ci', 'ci', 'ci', 'ci', 'ci'],
+        total: 1
+    },
+    {
+        type: 3,
+        //         [ n,    nw,   w,   sw,  s,   se,   e,   ne,   c  ]
+        positions: ['ci', 'ci', 'ci', 'f', 'f', 'f', 'ci', 'ci', 'ci'],
+        total: 3
+    },
+    {
+        type: 4,
+        //         [ n,   nw,   w,   sw,   s,  se,   e,   ne,   c  ]
+        positions: ['ci', 'b', 'ci', 'f', 'f', 'f', 'ci', 'ci', 'ci'],
+        total: 1
+    },
+    {
+        type: 5,
+        //         [ n,    nw,   w,   sw,   s,  se,   e,   ne,   c  ]
+        positions: ['ci', 'ci', 'ci', 'f', 'r', 'f', 'ci', 'ci', 'ci'],
+        total: 1
+    },
+    {
+        type: 6,
+        //         [ n,    nw,   w,   sw,   s,  se,   e,   ne,   c  ]
+        positions: ['ci', 'b', 'ci', 'f', 'r', 'f', 'ci', 'ci', 'ci'],
+        total: 2   
+    }
+];
 
 
 /////////////////////////////
