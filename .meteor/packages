@@ -22,3 +22,5 @@ iron:router
 accounts-password
 accounts-ui
 themeteorchef:jquery-validation
+sanjo:jasmine
+velocity:html-reporter

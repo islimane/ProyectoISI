@@ -285,7 +285,7 @@ Players.prototype.init = function(names){
 Players.prototype.next = function() {
 
     current++ ;
-    return players(current % 4);
+    return players[current % 4];
 
 }
 
