@@ -1,3 +1,22 @@
+// tiles types
+// f: field
+// ci: city
+// cl: cloister
+// r: road
+// '': nothing
+
+var predefTiles = {
+    {
+        type: 0,
+        //               [n, nw, w, sw, s, se, e, ne, c]
+        positions: ['f', 'f', 'f', 'f', 'f', 'f', 'f', 'f', 'cl'],
+        total: 4
+    },
+    //others:
+    {},
+}
+
+
 /////////////////////////////
 //   GAME OBJECT   //
 /////////////////////////////
@@ -43,7 +62,7 @@ Tiles.prototype.popTile = function() {
 /////////////////////////////
 
 // args:
-// positions: {n: "", nw: "", w: "", sw: "", s: "", se: "", e: "", ne: ""}
+// positions: {n: "", nw: "", w: "", sw: "", s: "", se: "", e: "", ne: "", c:""}
 function Tile (positions){
     this.n = positions.n || "";
     this.nw = positions.nw || "";
@@ -53,6 +72,7 @@ function Tile (positions){
     this.se = positions.se || "";
     this.e = positions.e || "";
     this.ne = positions.ne || "";
+    this.c = positions.c || "";
 }
 
 
