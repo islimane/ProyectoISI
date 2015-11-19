@@ -70,7 +70,7 @@ if(Meteor.isClient){
                 }
                 Accounts.createUser({
                     email: email,
-                    password: password
+                    password: password,
                 }, function(error){
                     if(error){
                         if(error.reason == "Email already exists."){
@@ -86,7 +86,8 @@ if(Meteor.isClient){
                             maxscore: 0,
                             friends: []
                         }
-                        var id = Users.insert(data);
+                        //var id = Users.insert(data);
+                        Meteor.call('add',data);
                         Router.go("UserPage", {_id: id});
                     }
                 });
@@ -105,6 +106,18 @@ if(Meteor.isClient){
     });
 }
 
+if(Meteor.isServer){
+    
+    Meteor.methods({
+
+        'add': function(data){
+          
+            Meteor.users.update({_id:Meteor.userId()},{$set:data});
+
+        }
+        
+    });
+}
 
 
 
