@@ -18,7 +18,7 @@ Router.route('/user/:_id', {
     name:"UserPage", 
     data: function(){
       var userID = this.params._id;
-      return Users.findOne({_id:userID});
+      return Meteor.users.findOne({_id:userID});
     },
     onBeforeAction: function(){
       var currentUser = Meteor.userId();

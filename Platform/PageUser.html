@@ -13,9 +13,19 @@
 	<div class = "friends">
 		<!--ENLACE A COMENZAR PARTIDA-->
 		<p> LISTA DE AMIGOS </p>
+		{{#if Notmypage}}
+			{{#if isMyFriend}}
+				<input type="button" class="deleteFriend" value="Eliminar Amigo" id="{{_id}}">
+    		
+			{{else}}
+				<input type="button" class="AddFriend" value="Añadir Amigo" id="{{_id}}">
+    		{{/if}}
+			
+    	{{/if}}
+
 		<ul>
 			{{#each myfriends}}
-				<li> <a href="/user/{{id}}">{{name}}</a></li>
+				<li><a href="/user/{{this.id}}">{{this.name}}</a></li>
   			{{/each}}
 		</ul>
 	</div> 
