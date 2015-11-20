@@ -7,6 +7,16 @@ var VERTICAL_MAXSIZE = 100;
 
 Board = function(){
     this.cells = initializeBoard();
+    // this field is an array of cells
+    // in wich we may have a posibility
+    // to put a tile if it matches
+    this.avalibleCells = [];
+}
+
+// this function returns an array
+// of cells in wich we can put
+// the given tile
+Board.prototype.getAvalibleCell(tile){
 
 }
 
