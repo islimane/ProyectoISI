@@ -1,0 +1,20 @@
+<template name = "configGame">
+	<h1> Configurar Partida</h1>
+
+	<div class = "paramGame">
+		<form>
+    		<ul>Nombre Partida <input type ="text" name = "nameGame"/></ul>
+
+    		<ul>Numero total de jugadores <input type ="number" name = "totalPlayer" min = "2" max = "4" id ='players'/></ul>
+
+	  		<ul hidden id='human'>Numero de jugadores humanos <input type ="number" name = "humanPlayer" min = "1" max = "0" id ="humanPlayer"/></ul>
+
+	  		<ul hidden id = 'IA'>Numero de jugadores IA <input type ="number" name = "IAPlayer" min = "1" max = "3" id = "IAPlayer" /></ul>
+
+	  		<ul>Privacidad : Privada  <input type ="checkbox" id = "privateGame"/></ul>
+	  		<ul hidden id = 'password'>Contraseña <input type ="text" name = "password" /></ul>
+
+	  		<ul><input type ="submit" class ="creatGame" value = "Crear Partida"  /></ul>
+		</form>
+	</div>
+</template>

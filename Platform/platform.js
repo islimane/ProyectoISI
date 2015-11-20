@@ -31,12 +31,16 @@ Router.route('/user/:_id', {
       }
     }
 });
+Router.route('/configGame', {
+  name: 'configGame',
+  template: 'configGame'
+});
 Router.route('/comenzarPartida/:_id', {
-    template:"configGame",    
-    name:"configGame", 
+    template:"startGame",    
+    name:"startGame", 
     data: function(){
-      var userID = this.params._id;
-      return Users.findOne({_id:userID});
+      var gameID = this.params._id;
+      return Games.findOne({_id:gameID});
     }
 });
 Router.route('/register');

@@ -17,7 +17,7 @@
     <ul>
         <li><a href="{{pathFor route='home'}}">Home</a></li>
         {{#if currentUser}}
-        	<li><a href="/comenzarPartida/{{currentUser._id}}">Crear partida</a></li>
+        	<li><a href="/configGame/">Crear partida</a></li>
             <li><a href="/user/{{currentUser._id}}">Página Personal</a></li>
             <li><a href="#" class="logout">Logout</a></li> <!--solo se muestra a usuario logeados-->
         {{else}}
