@@ -2,31 +2,26 @@
 //    TILE OBJECT     //
 ////////////////////////
 
+
 // args:
 // positions: {n, nw, w, sw, s, se, e, ne, c}
-Tile = function (positions){
-    this.n = positions.n || "";
-    this.nw = positions.nw || "";
-    this.w = positions.w || "";
-    this.sw = positions.sw || "";
-    this.s = positions.s || "";
-    this.se = positions.se || "";
-    this.e = positions.e || "";
-    this.ne = positions.ne || "";
-    this.c = positions.c || "";
+Tile = function (type, positions){
+    this.type = type;
+    this.positions = positions;
 }
 
 
 // Turns 90 degrees clockwise
 Tile.prototype.turnTile = function(){
-    var tmp_n = this.n;
-    var tmp_nw = this.nw;
-    this.n = this.w;
-    this.nw = this.sw;
-    this.w = this.s;
-    this.sw = this.se;
-    this.s = this.e;
-    this.se = this.ne;
-    this.e = tmp_n;
-    this.ne = tmp_nw;
+    var tmp_n = this.positions.n;
+    var tmp_nw = this.positions.nw;
+    this.positions.n = this.positions.w;
+    this.positions.nw = this.positions.sw;
+    this.positions.w = this.positions.s;
+    this.positions.sw = this.positions.se;
+    this.positions.s = this.positions.e;
+    this.positions.se = this.positions.ne;
+    this.positions.e = tmp_n;
+    this.positions.ne = tmp_nw;
 }
+
