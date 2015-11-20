@@ -15,7 +15,13 @@ if (Meteor.isClient) {
 	TileList.Tile[iterator].TablePos = undefined;
 	TileList.Tile[iterator].Follower = undefined;
   };
-  
+  Template.game.generateTile = function(){
+
+  	var idRandom = Math.random()*71 + 1;
+  	return idRandom;
+
+  }, 
+
   Template.game.lookForTileSprite = function (id) {
 		var iterator;
 		var found = false;
@@ -38,7 +44,8 @@ if (Meteor.isClient) {
     'click button#PickTile': function () {
 		//tileID = RequestTile
 		//RequestActiveBox
-		var sprite = Template.game.lookForTileSprite(50);
+		var idRandom = Template.game.generateTile();
+		var sprite = Template.game.lookForTileSprite(parseInt(idRandom));
 		tileID = sprite;
 		console.log(sprite);
 		//PrintActiveBox
@@ -62,9 +69,25 @@ if (Meteor.isClient) {
     'click button#Finish': function () {
 		return null;
     },
-    'click #Followers': function () {
-		var follower = $(this).val();
-		console.log(follower);
+    'click #Followers .Thief': function () {
+		TileList.Tile[tileID].Follower = "Thief";
+		console.log(TileList.Tile[tileID].Follower);
+		//Fin de turno
+    },
+    'click #Followers .Knigth': function () {
+		TileList.Tile[tileID].Follower = "Knigth";
+		console.log(TileList.Tile[tileID].Follower);
+		//Fin de turno
+    },
+    'click #Followers .Monk': function () {
+		TileList.Tile[tileID].Follower = "Monk";
+		console.log(TileList.Tile[tileID].Follower);
+		//Fin de turno
+    },
+    'click #Followers .Farmer': function () {
+		TileList.Tile[tileID].Follower = "Farmer";
+		console.log(TileList.Tile[tileID].Follower);
+		//Fin de turno
     }
   });
 }
