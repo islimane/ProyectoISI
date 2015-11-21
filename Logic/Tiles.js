@@ -172,15 +172,13 @@ function filterByTotal (obj) {
 }
 
 Tiles.prototype.initTiles = function() {
+    console.log(predefTiles);
     while(this.queue.length < 72){
         var remainingTiles = predefTiles.filter(filterByTotal);
         var Type = getRandomArbitrary(remainingTiles.length,0);
         --remainingTiles[Type].total;
-        var Tile = {
-            type: remainingTiles[Type].type,
-            positions: remainingTiles[Type].positions
-        };
-        console.log(Tile.type);
+        var Tile = new Tile(remainingTiles[Type].type,
+                            remainingTiles[Type].positions);
         this.queue.push(Tile);
     }
 };
@@ -190,6 +188,3 @@ Tiles.prototype.popTile = function() {
         this.currentTile = this.queue.pop();
     }
 };
-
-var tiles = new Tiles();
-tiles.initTiles();
