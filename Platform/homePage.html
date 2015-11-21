@@ -1,0 +1,64 @@
+<template name="homePage">
+	<h2>Página Principal</h2>
+	<h3>{{prueba}}</h3>
+	<div class="listOtherPlayers">
+		<h4>Jugadores:</h4>
+		<ul>
+		{{#each otherPlayers}}
+			<li><a href="/user/{{this._id}}">{{this.profile.user}}</a></li>
+		{{/each}}
+		</ul>
+		<p>Ver todos los jugadores <a href="/usuarios">aquí</a></p>
+	</div>
+	<div class="listWaitingGames">
+		<h4>Partidas creadas:</h4>
+		<ul>
+		{{#each waitingGames}}
+			<li>{{>game}}</li>
+		{{/each}}
+		</ul>
+		<p>Ver todas las partidas creadas <a href="/partidascreadas">aquí</a></p>
+	</div>
+	<div class='listOngoingGames'>
+		<h4>Partidas Jugándose:</h4>
+		<ul>
+		{{#each onGoingGames}}
+			<li>{{>game}}</li>
+		{{/each}}
+		</ul>
+		<p>Ver todas las partidas jugándose <a href="/partidasjugandose">aquí</a></p>
+	</div>
+</template>
+
+<template name="allUsers">
+	<div class="listOtherPlayers">
+		<h3>Jugadores:</h3>
+		<ul>
+		{{#each users}}
+			<li><a href="/user/{{this._id}}">{{this.profile.user}}</a></li>
+		{{/each}}
+		</ul>
+	</div>
+</template>
+
+<template name="game">
+	<p>{{nameGame}}</p> 
+</template>
+
+<template name="allCreatedGames">
+	<h3>Partidas Creadas:</h3>
+	<ul>
+		{{#each createdGames}}
+			<li>{{>game}}</li>
+		{{/each}}
+	</ul>
+</template>
+
+<template name="allOngoingGames">
+	<h3>Partidas Jugándose:</h3>
+	<ul>
+		{{#each ongoingGames}}
+			<li>{{>game}}</li>
+		{{/each}}
+	</ul>
+</template>

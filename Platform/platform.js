@@ -1,5 +1,4 @@
 //Collections
-Users = new Meteor.Collection('user_s');
 Games = new Meteor.Collection('games_s');
 Scores = new Meteor.Collection('scores_s');
 
@@ -12,8 +11,8 @@ Router.configure({
 	name: 'main'
 });
 Router.route('/', {
-  name: 'home',
-  template: 'home'
+  name: 'homePage',
+  template: 'homePage'
 });
 Router.route('/user/:_id', {
     template:"UserPage",    
@@ -47,8 +46,18 @@ Router.route('/comenzarPartida/:_id', {
 });
 Router.route('/register');
 Router.route('/login');
-
-
+Router.route('/usuarios', {
+  template: "allUsers",
+  name: "allUsers"
+});
+Router.route('/partidascreadas', {
+  template: "allCreatedGames",
+  name: "allCreatedGames"
+});
+Router.route('/partidasjugandose', {
+  template: "allOngoingGames",
+  name: "allOngoingGames"
+});
 
 
 if (Meteor.isClient) {
