@@ -1,8 +1,3 @@
-
-/////////////////////////
-//    TILES OBJECT     //
-/////////////////////////
-
 predefTiles = [
     {
         type: 0,
@@ -151,6 +146,38 @@ predefTiles = [
 
 ];
 
+////////////////////////
+//    TILE OBJECT     //
+////////////////////////
+
+// args:
+// orientation: 0, 1, 2, 3 (clockwise)
+Tile = function (type, orientation){
+    this.type = type;
+    var tmpTile = predefTiles[type].positions;
+    this.positions = {
+        get n  () { return predefTiles[type].positions[(0+orientation*2)%8]; },
+        get nw () { return predefTiles[type].positions[(1+orientation*2)%8]; },
+        get w  () { return predefTiles[type].positions[(2+orientation*2)%8]; },
+        get sw () { return predefTiles[type].positions[(3+orientation*2)%8]; },
+        get s  () { return predefTiles[type].positions[(4+orientation*2)%8]; },
+        get se () { return predefTiles[type].positions[(5+orientation*2)%8]; },
+        get e  () { return predefTiles[type].positions[(6+orientation*2)%8]; },
+        get ne () { return predefTiles[type].positions[(7+orientation*2)%8]; },
+        get c  () { return predefTiles[type].positions[8]; }
+    }
+    this.orientation = orientation;
+}
+
+// Turns 90 degrees clockwise
+Tile.prototype.turnTile = function(){
+    this.orientation = (this.orientation + 1) % 4;
+}
+
+/////////////////////////
+//    TILES OBJECT     //
+/////////////////////////
+
 Tiles = function() {
     this.queue = [];
     this.currentTile = null;
@@ -173,14 +200,14 @@ function filterByTotal (obj) {
 }
 
 Tiles.prototype.initTiles = function() {
-    console.log(predefTiles);
+    var startingTiles = JSON.parse(JSON.stringify(predefTiles));
     while(this.queue.length < 72){
-        var remainingTiles = predefTiles.filter(filterByTotal);
+        var remainingTiles = startingTiles.filter(filterByTotal);
         var Type = getRandomArbitrary(remainingTiles.length,0);
         --remainingTiles[Type].total;
-        var Tile = new Tile(remainingTiles[Type].type,
-                            remainingTiles[Type].positions);
-        this.queue.push(Tile);
+        var tile = new Tile(remainingTiles[Type].type, 0);
+        console.log(tile.type);
+        this.queue.push(tile);
     }
 };
 
@@ -189,33 +216,6 @@ Tiles.prototype.popTile = function() {
         this.currentTile = this.queue.pop();
     }
 };
-
-////////////////////////
-//    TILE OBJECT     //
-////////////////////////
-
-
-// args:
-// positions: {n, nw, w, sw, s, se, e, ne, c}
-Tile = function (type, positions){
-    this.type = type;
-    this.positions = positions;
-}
-
-
-// Turns 90 degrees clockwise
-Tile.prototype.turnTile = function(){
-    var tmp_n = this.positions.n;
-    var tmp_nw = this.positions.nw;
-    this.positions.n = this.positions.w;
-    this.positions.nw = this.positions.sw;
-    this.positions.w = this.positions.s;
-    this.positions.sw = this.positions.se;
-    this.positions.s = this.positions.e;
-    this.positions.se = this.positions.ne;
-    this.positions.e = tmp_n;
-    this.positions.ne = tmp_nw;
-}
 
 /////////////////////////////
 //      CELL OBJECT        //
@@ -248,6 +248,14 @@ Board.prototype.getAvalibleCell = function(tile){
     //body
 }
 
+// This function inserts a tile on the
+// given coordinates with a given orientation
+// coordinates: [xx,yy] --> e.g [4,52]
+Board.prototype.insertTile = function(tileType, orientation, coor){
+    var t = new Tile(tileType, orientation);
+    this.cells[coor[0]][coor[1]].tile = t;
+}
+
 function initializeBoard(){
     var cells = [];
     for(var i=0;i<HORIZONTAL_MAXSIZE;i++){
@@ -258,6 +266,8 @@ function initializeBoard(){
         cells.push(column);
         column = [];
     }
+    // Insert the initial tile on the board
+    var t = new Tile(19, 0);
+    cells[49][49].tile = t;
     return cells;
 }
-
