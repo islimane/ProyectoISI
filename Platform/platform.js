@@ -62,24 +62,26 @@ Router.route('/partidasjugandose', {
 
 if (Meteor.isClient) {
 
-  Template.messages.messages = function () {
+  Template.messages.helpers({
+    
+    'messages':function () {
 
-    var messagesColl =  Messages.find({}, { sort: { time: -1 }});
-    var messages = [];
+      var messagesColl =  Messages.find({}, { sort: { time: -1 }});
+      var messages = [];
 
-    messagesColl.forEach(function(m){
-      var userName = Accounts.users.findOne(m.user_id).profile.user;
+      messagesColl.forEach(function(m){
+        var userName = Accounts.users.findOne(m.user_id).profile.user;
 
 //////////////ARREGLAR PARA QUE MUESTRE LA HORA BIEN/////////////////
        
-      var f = m.time;
-      var date =(f.getDate() + "/" + (f.getMonth() +1) + "/" + f.getFullYear() +
+        var f = m.time;
+        var date =(f.getDate() + "/" + (f.getMonth() +1) + "/" + f.getFullYear() +
               "-"+f.getHours() + ":" + (f.getMinutes() +1) + ":" + f.getSeconds());
-      messages.push({name: userName , message: m.message,date:date});
-    });
-
-    return messages;
-  }
+        messages.push({name: userName , message: m.message,date:date});
+      });
+      return messages;
+    }
+  });
 
   Template.input.events = {
     'keydown input#message' : function (event) {
