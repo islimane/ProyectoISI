@@ -172,13 +172,14 @@ function filterByTotal (obj) {
 }
 
 Tiles.prototype.initTiles = function() {
-    console.log(predefTiles);
+    var startingTiles = JSON.parse(JSON.stringify(predefTiles));
     while(this.queue.length < 72){
-        var remainingTiles = predefTiles.filter(filterByTotal);
+        var remainingTiles = startingTiles.filter(filterByTotal);
         var Type = getRandomArbitrary(remainingTiles.length,0);
         --remainingTiles[Type].total;
-        var Tile = new Tile(remainingTiles[Type].type, 0);
-        this.queue.push(Tile);
+        var tile = new Tile(remainingTiles[Type].type, 0);
+        console.log(tile.type);
+        this.queue.push(tile);
     }
 };
 
@@ -187,3 +188,9 @@ Tiles.prototype.popTile = function() {
         this.currentTile = this.queue.pop();
     }
 };
+
+var tiles = new Tiles();
+tiles.initTiles();
+console.log("-----");
+var tiles2 = new Tiles();
+tiles2.initTiles();
