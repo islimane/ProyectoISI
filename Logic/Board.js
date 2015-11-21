@@ -27,7 +27,7 @@ Board = function(){
 // this function returns an array
 // of cells in wich we can put
 // the given tile
-Board.prototype.getAvailableCell = function(tile){
+Board.prototype.getMatchingbleCells = function(tile){
     //body
 }
 
@@ -55,7 +55,69 @@ function initializeBoard(){
     return cells;
 }
 
+// this this function returns an array of cells
+// in wich we may have a posibility
+// to put a tile if it matches
+var getAvailableCells = function(board){
+    var availableCells = [];
+    var haveTile = false;
+    var emptyCell = true;
+    var cell = null;
+    var availableCell = null;
+    for(var i=0;i<HORIZONTAL_MAXSIZE;i++){
+        for(var j=0;j<VERTICAL_MAXSIZE;j++){
+            cell = board.cells[i][j];
+            if(checkCell(cell, haveTile, emptyCell)=='previous'){
+                availableCells.push(board.cells[i][j-1]);
+                haveTile = true;
+                emptyCell = false;
+            }else if(checkCell(cell, haveTile, emptyCell)=='current'){
+                availableCells.push(board.cells[i][j]);
+                haveTile = false;
+                emptyCell = true;
+            }
+        }
+    }
+    for(var j=0;j<VERTICAL_MAXSIZE;j++){
+        for(var i=0;i<HORIZONTAL_MAXSIZE;i++){
+            cell = board.cells[i][j];
+            if(checkCell(cell, haveTile, emptyCell)=='previous'){
+                availableCells.push(board.cells[i-1][j]);
+                haveTile = true;
+                emptyCell = false;
+            }else if(checkCell(cell, haveTile, emptyCell)=='current'){
+                availableCells.push(board.cells[i][j]);
+                haveTile = false;
+                emptyCell = true;
+            }
+        }
+    }
+    return availableCells;
+}
+
+// this function returns the cell if
+// we may have a posibility
+// to put on it a tile in
+// otherwise returns null
+var checkCell = function(cell, haveTile, emptyCell){
+    if(cell.tile){
+        if(emptyCell){
+            // insert the previous cell
+            return 'previous';
+        }
+    }else if(!cell.tile){
+        if(haveTile){
+            // insert the current cell
+            return 'current';
+        }
+    }
+
+    return null;
+}
+
 /*var b = new Board();
-console.log(b.cells[49][49]);
-b.insertTile();
-console.log(b.cells[49][50]);*/
+b.insertTile(19,0,[49,49]);
+b.insertTile(0,0,[49,50]);
+b.insertTile(20,0,[50,50]);
+
+console.log(getAvailableCells(b));*/
