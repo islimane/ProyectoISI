@@ -177,8 +177,7 @@ Tiles.prototype.initTiles = function() {
         var remainingTiles = predefTiles.filter(filterByTotal);
         var Type = getRandomArbitrary(remainingTiles.length,0);
         --remainingTiles[Type].total;
-        var Tile = new Tile(remainingTiles[Type].type,
-                            remainingTiles[Type].positions);
+        var Tile = new Tile(remainingTiles[Type].type, 0);
         this.queue.push(Tile);
     }
 };
