@@ -8,11 +8,10 @@ describe('Board', function() {
 		}
 	});
 
-	it('should insert a tile on the board with type=19 and orientation=0', function() {
+	it('should insert a tile on the board with type=15 and orientation=1', function() {
 		var board = new Board();
-		var t = new Tile(19, 0);
-		board.cells[49][49].tile = t;
-		expect(board.cells[49][49].tile.type).toEqual(19);
-		expect(board.cells[49][49].tile.orientation).toEqual(0);
+		board.insertTile(15, 1, [49,49]);
+		expect(board.cells[49][49].tile.type).toEqual(15);
+		expect(board.cells[49][49].tile.orientation).toEqual(1);
 	});
 });
