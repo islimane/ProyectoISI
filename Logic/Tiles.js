@@ -188,9 +188,3 @@ Tiles.prototype.popTile = function() {
         this.currentTile = this.queue.pop();
     }
 };
-
-var tiles = new Tiles();
-tiles.initTiles();
-console.log("-----");
-var tiles2 = new Tiles();
-tiles2.initTiles();
