@@ -1,7 +1,3 @@
-/////////////////////////
-//    TILES OBJECT     //
-/////////////////////////
-
 predefTiles = [
     {
         type: 0,
@@ -149,6 +145,38 @@ predefTiles = [
     },
 
 ];
+
+////////////////////////
+//    TILE OBJECT     //
+////////////////////////
+
+// args:
+// orientation: 0, 1, 2, 3 (clockwise)
+Tile = function (type, orientation){
+    this.type = type;
+    var tmpTile = predefTiles[type].positions;
+    this.positions = {
+        get n  () { return predefTiles[type].positions[(0+orientation*2)%8]; },
+        get nw () { return predefTiles[type].positions[(1+orientation*2)%8]; },
+        get w  () { return predefTiles[type].positions[(2+orientation*2)%8]; },
+        get sw () { return predefTiles[type].positions[(3+orientation*2)%8]; },
+        get s  () { return predefTiles[type].positions[(4+orientation*2)%8]; },
+        get se () { return predefTiles[type].positions[(5+orientation*2)%8]; },
+        get e  () { return predefTiles[type].positions[(6+orientation*2)%8]; },
+        get ne () { return predefTiles[type].positions[(7+orientation*2)%8]; },
+        get c  () { return predefTiles[type].positions[8]; }
+    }
+    this.orientation = orientation;
+}
+
+// Turns 90 degrees clockwise
+Tile.prototype.turnTile = function(){
+    this.orientation = (this.orientation + 1) % 4;
+}
+
+/////////////////////////
+//    TILES OBJECT     //
+/////////////////////////
 
 Tiles = function() {
     this.queue = [];
