@@ -16,8 +16,8 @@ Board = function(){
 // this function returns an array
 // of cells in wich we can put
 // the given tile
-Board.prototype.getAvalibleCell(tile){
-
+Board.prototype.getAvalibleCell = function(tile){
+    //body
 }
 
 function initializeBoard(){
