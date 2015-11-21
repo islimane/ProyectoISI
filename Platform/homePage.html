@@ -14,7 +14,7 @@
 		<h4>Partidas creadas:</h4>
 		<ul>
 		{{#each waitingGames}}
-			<li>{{>game}}</li>
+				<li><a href="/comenzarPartida/{{_id}}">{{nameGame}}</a></li>
 		{{/each}}
 		</ul>
 		<p>Ver todas las partidas creadas <a href="/partidascreadas">aquí</a></p>
@@ -49,7 +49,7 @@
 	<h3>Partidas Creadas:</h3>
 	<ul>
 		{{#each createdGames}}
-			<li>{{>game}}</li>
+			<li><a href="/comenzarPartida/{{_id}}">{{nameGame}}</a></li>
 		{{/each}}
 	</ul>
 </template>

@@ -1,8 +1,8 @@
 //Collections
 Games = new Meteor.Collection('games_s');
 Scores = new Meteor.Collection('scores_s');
-
 Messages = new Meteor.Collection('messages');
+MessagesRoom = new Meteor.Collection('messagesRoom');
 
 
 //Routes
@@ -71,6 +71,7 @@ if (Meteor.isClient) {
       var userName = Accounts.users.findOne(m.user_id).profile.user;
 
 //////////////ARREGLAR PARA QUE MUESTRE LA HORA BIEN/////////////////
+       
       var f = m.time;
       var date =(f.getDate() + "/" + (f.getMonth() +1) + "/" + f.getFullYear() +
               "-"+f.getHours() + ":" + (f.getMinutes() +1) + ":" + f.getSeconds());
