@@ -9,6 +9,10 @@
   <h1>Play Carcassonne!</h1>
   {{> navigation}}
   {{> yield}}
+
+  {{#if currentUser}}
+    {{> chat}}
+  {{/if}}
   <hr/>
   <p>Copyrigth &copy; PlayCarcassonne, 2015.</p>
 </template>
@@ -26,3 +30,28 @@
         {{/if}}
     </ul>
 </template>
+
+
+<template name="chat">
+  <div class="row-fluid">
+    <div class="span3 well">
+      {{> messages}}
+      {{> input}}
+    </div>
+  </div> 
+</template>
+
+<template name="input">
+    <input type="text" id="message" placeholder="Mensaje...Intro para enviar." style="width: 90%; margin-bottom: 10px;margin-top:10px;">
+</template>
+
+<template name="messages">
+  <h4>Chat</h4>
+  <div id="messages" style="background-color: #ffffff; border: 1px solid darkgray; height: 200px; overflow: auto">
+    {{#each messages}}
+      <p><strong>{{name}}</strong> <span style="font-size: 0.7em; color: darkgray">({{date}})</span>: <i>{{message}}</i></p>
+    {{/each}}
+  </div>
+</template>
+
+

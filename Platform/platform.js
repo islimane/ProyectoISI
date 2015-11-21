@@ -3,6 +3,8 @@ Users = new Meteor.Collection('user_s');
 Games = new Meteor.Collection('games_s');
 Scores = new Meteor.Collection('scores_s');
 
+Messages = new Meteor.Collection('messages');
+
 
 //Routes
 Router.configure({
@@ -50,6 +52,43 @@ Router.route('/login');
 
 
 if (Meteor.isClient) {
+
+  Template.messages.messages = function () {
+
+    var messagesColl =  Messages.find({}, { sort: { time: -1 }});
+    var messages = [];
+
+    messagesColl.forEach(function(m){
+      var userName = Accounts.users.findOne(m.user_id).profile.user;
+
+//////////////ARREGLAR PARA QUE MUESTRE LA HORA BIEN/////////////////
+       
+      var f = new Date();
+      var date =(f.getDate() + "/" + (f.getMonth() +1) + "/" + f.getFullYear() +
+              "-"+f.getHours() + ":" + (f.getMinutes() +1) + ":" + f.getSeconds());
+      messages.push({name: userName , message: m.message,date:date});
+    });
+
+    return messages;
+  }
+
+  Template.input.events = {
+    'keydown input#message' : function (event) {
+      if (event.which == 13) {
+            
+        var user_id = Meteor.userId();
+        var message = $('#message');
+          if (message.value != '') {
+            Messages.insert({
+              user_id: user_id,
+              message: message.val(),
+              time: Date.now()
+            });
+            message.val('')
+          }
+      }
+    } 
+  }
 
 }
 
