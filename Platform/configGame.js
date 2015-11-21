@@ -46,16 +46,22 @@ if(Meteor.isClient){
 		},
 		'submit form' : function(event){
 			event.preventDefault();
-			var creator = Meteor.userId()._id;
+			var creator = Meteor.userId();
 			var nameGame = event.target.nameGame.value;
 			var numPlayerHuman = event.target.humanPlayer.value;
 			var numPlayerIA = event.target.IAPlayer.value;
+			var arrPlayers = []
+			var data = {
+					id:Meteor.userId(),
+					name : Meteor.users.findOne({_id:Meteor.userId()}).profile.user
+				}
+			arrPlayers.push(data)
 			var id = Games.insert({
 				creator : creator,
 				nameGame : nameGame,
 				numPlayerHuman : numPlayerHuman,
-				numPlayerIA : numPlayerHuman,
-				players : [],
+				numPlayerIA : numPlayerIA,
+				players : arrPlayers,
 				gameStart : false
 			})
 			console.log("hola");

@@ -1,8 +1,8 @@
 //Collections
 Games = new Meteor.Collection('games_s');
 Scores = new Meteor.Collection('scores_s');
-
 Messages = new Meteor.Collection('messages');
+MessagesRoom = new Meteor.Collection('messagesRoom');
 
 
 //Routes
@@ -72,7 +72,7 @@ if (Meteor.isClient) {
 
 //////////////ARREGLAR PARA QUE MUESTRE LA HORA BIEN/////////////////
        
-      var f = new Date();
+      var f = m.time;
       var date =(f.getDate() + "/" + (f.getMonth() +1) + "/" + f.getFullYear() +
               "-"+f.getHours() + ":" + (f.getMinutes() +1) + ":" + f.getSeconds());
       messages.push({name: userName , message: m.message,date:date});
@@ -91,7 +91,7 @@ if (Meteor.isClient) {
             Messages.insert({
               user_id: user_id,
               message: message.val(),
-              time: Date.now()
+              time: new Date()
             });
             message.val('')
           }
