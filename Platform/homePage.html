@@ -5,7 +5,7 @@
 		<h4>Jugadores:</h4>
 		<ul>
 		{{#each otherPlayers}}
-			<li><a href="/user/{{this._id}}">{{this.profile.user}}</a></li>
+			{{>player}}
 		{{/each}}
 		</ul>
 		<p>Ver todos los jugadores <a href="/usuarios">aquí</a></p>
@@ -14,7 +14,7 @@
 		<h4>Partidas creadas:</h4>
 		<ul>
 		{{#each waitingGames}}
-				<li><a href="/comenzarPartida/{{_id}}">{{nameGame}}</a></li>
+				<li>{{>gameTemplate}}</li>
 		{{/each}}
 		</ul>
 		<p>Ver todas las partidas creadas <a href="/partidascreadas">aquí</a></p>
@@ -23,7 +23,7 @@
 		<h4>Partidas Jugándose:</h4>
 		<ul>
 		{{#each onGoingGames}}
-			<li>{{>game}}</li>
+			<li>{{>gameTemplate}}</li>
 		{{/each}}
 		</ul>
 		<p>Ver todas las partidas jugándose <a href="/partidasjugandose">aquí</a></p>
@@ -41,7 +41,22 @@
 	</div>
 </template>
 
-<template name="game">
+<template name="player">
+<li>
+	<p><a href="/user/{{this._id}}">{{this.profile.user}}</a></p>
+	<p>
+	{{#if notMe}}
+		{{#if isFriend}}
+			<input type="button" class="deleteFriend" value="Eliminar Amigo" id="{{_id}}">
+		{{else}}
+			<input type="button" class="addFriend" value="Añadir Amigo" id="{{_id}}">
+		{{/if}}
+	{{/if}}
+	</p>
+</li>
+</template>
+
+<template name="gameTemplate">
 	<p>{{nameGame}}</p> 
 </template>
 

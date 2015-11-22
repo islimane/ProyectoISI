@@ -33,63 +33,13 @@ if (Meteor.isClient) {
 		}
 	})
 	Template.UserPage.events({
-    	'click .AddFriend':function(event){
+    	'click .addFriend':function(event){
     		event.preventDefault();
-    		var idfriend = this._id;
-    		var profile = Meteor.users.findOne({_id:Meteor.userId()}).profile
-    		var arrfriends = profile.friends
-    		arrfriends.push(idfriend)
-			var data = {
-			    user: profile.user,
-			    email: profile.email,
-			    createdAt: profile.createdAt,
-			    maxscore: profile.maxscore,
-			    friends: arrfriends
-			}
-            Meteor.call('addFriend',data);
+    		Meteor.call('addFriend', this._id);
     	},
     	'click .deleteFriend':function(event){
     		event.preventDefault();
-    		var idfriend = this._id;
-    		var profile = Meteor.users.findOne({_id:Meteor.userId()}).profile
-    		var idfriends = profile.friends
-    		var newArr = []
-    		for(i = 0; i < idfriends.length;i++){
-				if(idfriends[i] != idfriend){
-					newArr.push(idfriends[i])
-				}
-			}
-
-			var data = {
-			    user: profile.user,
-			    email: profile.email,
-			    createdAt: profile.createdAt,
-			    maxscore: profile.maxscore,
-			    friends: newArr
-			}
-            Meteor.call('addFriend',data);
+    		Meteor.call('deleteFriend', this._id);
     	}
-
-
     })
 }
-
-if (Meteor.isServer){
-	  Meteor.methods({
-
-        'addFriend': function(data){
-        	console.log("methods")
-            Meteor.users.update({_id:Meteor.userId()},{$set:{profile:data}});
-
-        },
-        'deleteFriend': function(data){
-        	console.log("methods")
-            Meteor.users.update({_id:Meteor.userId()},{$set:{profile:data}});
-
-        }
-    })
-}
-
-
-
-
