@@ -49,6 +49,7 @@ if(Meteor.isClient){
 			var nameGame = event.target.nameGame.value;
 			var numPlayerHuman = event.target.humanPlayer.value;
 			var numPlayerIA = event.target.IAPlayer.value;
+			var password = event.target.password.value;
 			var arrPlayers = []
 			var data = {
 					id:Meteor.userId(),
@@ -61,7 +62,8 @@ if(Meteor.isClient){
 				numPlayerHuman : numPlayerHuman,
 				numPlayerIA : numPlayerIA,
 				players : arrPlayers,
-				gameStart : false
+				gameStart : false,
+				password: password
 			})
 			Router.go("startGame", {_id: id});
 		}
