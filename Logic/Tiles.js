@@ -128,7 +128,7 @@ predefTiles = [
     {
         type: 21,
         //         [ n,    nw,   w,   sw,   s,  se,   e,   ne,   c  ]
-        positions: ['f',  'f',  'r', 'f', 'r', 'f', 'f', 'f',  'f'],
+        positions: ['f',  'f',  'r', 'f', 'r', 'f', 'f', 'f',  'r'],
         total: 9 
     },
     {
