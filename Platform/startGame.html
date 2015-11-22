@@ -8,6 +8,8 @@
     <div class = "buttons">
       {{#if  ImtheCreator}}
         <input type="button" class="changeGame" value="Modificar juego">
+         
+          <ul><input type ="button" class ="deleteplayer" value = "Borrar usuario"/></ul>
         {{#if playersComplete}}
           <input type="button" class="starGame" value="Comenzar juego">
         {{/if}}
@@ -46,10 +48,14 @@
     <p> Jugadores</p>
 		<ul>
 			{{#each players}}
-				<li>{{this.name}}</li>
-  			{{/each}}
+        <li class="player {{selectedClass}}" id ="{{this.id}}">{{this.name}}</li>
+         {{#if showSelectedPlayer}}
+            <li>{{showSelectedPlayer.name}}</li>
+          {{/if}}
+  		{{/each}}
 		</ul>
 	</div> 
+ 
 	{{>chatroom}}
 </template>
 

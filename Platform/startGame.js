@@ -20,7 +20,18 @@ if (Meteor.isClient) {
 		},
 		'playersComplete':function(){
 			return Games.findOne({_id:this._id}).players.length == Games.findOne({_id:this._id}).numPlayerHuman
-		}
+		},
+		'selectedClass': function(){
+	      	var playerId = this.id;
+	      	var selectedPlayer = Session.get('selectedPlayer');
+	     	 if(playerId == selectedPlayer){
+	        	return "selected"
+	      	}
+		},
+	    'showSelectedPlayer': function(){
+	      var selectedPlayer = Session.get('selectedPlayer');
+	      return Games.findOne(selectedPlayer)
+	    }
 
 	})
 
@@ -29,7 +40,6 @@ if (Meteor.isClient) {
     		event.preventDefault();
     		var players = Games.findOne({_id:this._id}).players
     		var newArr = []
-    		var id = Meteor.userId()
 
     		for(i = 0; i < players.length;i++){
 				if(players[i].id != Meteor.userId()){
@@ -156,10 +166,33 @@ if (Meteor.isClient) {
 			}else{
 				$('#IA').hide();
 			}
-
 		},
+		
+		'click .player': function(event){
+			event.preventDefault();
+        	var id = event.target.id;
+        	Session.set('selectedPlayer', id);
+      	},
+      	'click .deleteplayer': function(){
+      		console.log("estoy en remove");
+      		var selectedPlayer = Session.get('selectedPlayer');
+    		var players = Games.findOne({_id:this._id}).players
+    		var newArr = []
+    		console.log(this._id);
+    		console.log(selectedPlayer);
 
-
+    		for(i = 0; i < players.length;i++){
+				if(players[i].id != selectedPlayer){
+					var data = {
+						id:players[i].id,
+						name : Meteor.users.findOne({_id:players[i].id}).profile.user
+					}
+					newArr.push(data)
+				}
+			}
+			Games.update({_id:this._id},{$set:{players:newArr}})
+      		
+    	}
 
     })
 
