@@ -8,7 +8,6 @@ if(Meteor.isClient){
 	})
 	Template.configGame.events({
 		'click .paramGame #privateGame': function(){
-			console.log("evento");
 			if($('#privateGame').is(':checked')){
 				$('#password').show();
 			}else{
@@ -64,7 +63,6 @@ if(Meteor.isClient){
 				players : arrPlayers,
 				gameStart : false
 			})
-			console.log("hola");
 			Router.go("startGame", {_id: id});
 		}
 	});
