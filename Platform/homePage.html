@@ -33,17 +33,22 @@
 <template name="allUsers">
 	<div class="listOtherPlayers">
 		<h3>Jugadores:</h3>
+		<form>
+			<p>Nombre: <input type="text" name="userName"/>
+			<input type="submit" value="Buscar"/></p>
+		</form>
 		<ul>
 		{{#each users}}
-			<li><a href="/user/{{this._id}}">{{this.profile.user}}</a></li>
+			{{>player}}
 		{{/each}}
 		</ul>
 	</div>
 </template>
 
 <template name="player">
-<li>
-	<p><a href="/user/{{this._id}}">{{this.profile.user}}</a></p>
+<div class="player">
+<li user="{{profile.user}}">
+	<p><a href="/user/{{_id}}">{{profile.user}}</a></p>
 	<p>
 	{{#if notMe}}
 		{{#if isFriend}}
@@ -54,6 +59,7 @@
 	{{/if}}
 	</p>
 </li>
+</div>
 </template>
 
 <template name="gameTemplate">

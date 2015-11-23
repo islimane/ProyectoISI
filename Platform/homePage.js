@@ -29,6 +29,23 @@ if(Meteor.isClient){
 		}
 	});
 
+	Template.allUsers.events({
+		'submit form': function(event){
+			event.preventDefault();
+			var name = event.target.userName.value;
+			if(name != ""){
+				$(".player li").hide();
+				var player = $("[user=" + name + "]");
+				if (player.html()){
+					player.show();
+				}
+			}else{
+				$(".player li").show();
+			}
+			
+		}
+	});
+
 	Template.allCreatedGames.helpers({
 		'createdGames': function(){
 			return Games.find({gameStart: false}).fetch();
