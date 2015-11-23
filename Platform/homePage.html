@@ -63,14 +63,31 @@
 </template>
 
 <template name="gameTemplate">
-	<p>{{nameGame}}</p> 
+	<div class="game">
+	<li name="{{nameGame}}" creator="{{createdBy}}" players="{{numberPlayers}}">
+	<h4>{{nameGame}}</h4>
+	<p>Creada por: {{createdBy}}</p>
+	<p>{{numberPlayers}} jugadores.</p>
+	{{#if gameStart}}
+		<input type="button" class="watchGame" value="Ver Partida"/>
+	{{else}}
+		<input type="button" class="joinGame" value="Unirse a la partida"/>
+	{{/if}}
+	</li></div>
 </template>
 
 <template name="allCreatedGames">
 	<h3>Partidas Creadas:</h3>
+	<form>
+		<p>Filtrar por:</p>
+		<p>Nombre partida: <input type="text" name="gameName"/></p>
+		<p>Creador: <input type="text" name="creator"/></p>
+		<p>Número de jugadores: <input type="text" name="players"/></p>
+		<p><input type="submit" value="Buscar"/></p>
+	</form>
 	<ul>
 		{{#each createdGames}}
-			<li><a href="/comenzarPartida/{{_id}}">{{nameGame}}</a></li>
+			{{>gameTemplate}}
 		{{/each}}
 	</ul>
 </template>

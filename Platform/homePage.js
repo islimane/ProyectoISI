@@ -52,6 +52,22 @@ if(Meteor.isClient){
 		}
 	});
 
+	Template.allCreatedGames.events({
+		'submit form':function(event){
+			event.preventDefault();
+			console.log("submit done")
+			var name = event.target.gameName.value;
+			var creator = event.target.creator.value;
+			var nPlayers = event.target.players.value;
+
+			if(!name && !creator && !nPlayers){
+				$(".game li").show();
+			}else{
+				console.log("filtrar")
+			}
+		}
+	});
+
 	Template.allOngoingGames.helpers({
 		'ongoingGames': function(){
 			return Games.find({gameStart: true}).fetch();
@@ -70,6 +86,32 @@ if(Meteor.isClient){
 		},
 		'notMe':function(){
 			return this._id != Meteor.userId();
+		}
+	});
+
+	Template.gameTemplate.helpers({
+		'createdBy': function(){
+			var creator = Games.findOne({_id: this._id});
+			if(creator){
+				var user = Meteor.users.findOne({_id: creator.creator});
+				if(user){
+					return user.profile.user;
+				}
+			}
+		},
+		'numberPlayers':function(){
+			return parseInt(this.numPlayerHuman) + parseInt(this.numPlayerIA);
+		}
+	});
+
+	Template.gameTemplate.events({
+		'click .watchGame': function(event){
+			event.preventDefault()
+			console.log("redirigiendo a la partida a observar");
+		},
+		'click .joinGame': function(event){
+			event.preventDefault()
+			Router.go("/comenzarPartida/" + this._id);
 		}
 	});
 }
