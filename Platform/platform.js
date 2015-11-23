@@ -59,6 +59,11 @@ Router.route('/partidasjugandose', {
   name: "allOngoingGames"
 });
 
+Router.route('pruebaUI', {
+	template: "pruebaUI",
+	name: "pruebaUI"
+});
+
 
 if (Meteor.isClient) {
 
