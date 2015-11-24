@@ -1,0 +1,48 @@
+<head>
+  <meta charset="UTF-8"/>
+  <title>Carcassonne</title>
+
+</head>
+
+
+
+<body>
+
+
+  <h1>CARCASSONNE</h1>
+
+<div id='container'>
+  <canvas id='board' width='1000' height='800'></canvas>
+</div>
+<script src='engine.js'></script>
+<!--<script src='PruebaUI.js'></script>-->
+
+  {{>gamebuttons}}
+
+</body>
+
+
+<template name="gamebuttons">
+
+  <br><button type= "submit" id="PickTile" >Dame una ficha</button>
+  <br><button type= "submit" id="PlaceTile" >Colocar ficha</button>
+  <br><button type= "submit" id="RotateTile" >Rotar ficha</button>
+  <br><button type= "submit" id="Finish" >Terminar</button>
+  <div id="Followers">
+    <br>
+    <button class="Thief" type="submit">Thief</button>
+    <button class="Knigth" type="submit">Knigth</button>
+    <button class="Monk" type="submit">Monk</button>
+    <button class="Farmer" type="submit">Farmer</button>
+    <button class="None" type="submit">None</button>
+  </div>
+  
+
+
+</template>
+
+<template name = "ejemplo">
+  <h2>Ej cargar ficha</h2>
+  <img style="height:40px;height:228px;" src="piezas/01.jpg"/>
+</template>
+
