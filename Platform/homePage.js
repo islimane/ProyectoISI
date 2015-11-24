@@ -38,6 +38,7 @@ if(Meteor.isClient){
 				var player = $("[user=" + name + "]");
 				if (player.html()){
 					player.show();
+					$(".usersForm .userNameInput").val("");
 				}
 			}else{
 				$(".player li").show();
@@ -52,25 +53,48 @@ if(Meteor.isClient){
 		}
 	});
 
+	var filterGames = function(event){
+		event.preventDefault();
+		var name = event.target.gameName.value;
+		var creator = event.target.creator.value;
+		var nPlayers = event.target.players.value;
+
+		if(!name && !creator && !nPlayers){
+			$(".game li").show();
+		}else{
+			var filter = "";
+			if(name){
+				filter += "[name=" + name + "]";
+				$(".gamesForm .nameInput").val("");
+			}
+			if(creator){
+				filter += "[creator=" + creator + "]";
+				$(".gamesForm .creatorInput").val("");
+			}
+			if(nPlayers){
+				filter += "[players=" + nPlayers + "]";
+				$(".gamesForm .playersInput").val("");
+			}
+			$(".game li").hide();
+			$(filter).show();
+		}
+	};
+
 	Template.allCreatedGames.events({
 		'submit form':function(event){
-			event.preventDefault();
-			console.log("submit done")
-			var name = event.target.gameName.value;
-			var creator = event.target.creator.value;
-			var nPlayers = event.target.players.value;
-
-			if(!name && !creator && !nPlayers){
-				$(".game li").show();
-			}else{
-				console.log("filtrar")
-			}
+			filterGames(event);
 		}
 	});
 
 	Template.allOngoingGames.helpers({
 		'ongoingGames': function(){
 			return Games.find({gameStart: true}).fetch();
+		}
+	});
+
+	Template.allOngoingGames.events({
+		'submit form': function(event){
+			filterGames(event);
 		}
 	});
 

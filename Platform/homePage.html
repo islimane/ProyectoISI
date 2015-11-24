@@ -33,8 +33,8 @@
 <template name="allUsers">
 	<div class="listOtherPlayers">
 		<h3>Jugadores:</h3>
-		<form>
-			<p>Nombre: <input type="text" name="userName"/>
+		<form class="usersForm">
+			<p>Nombre: <input type="text" name="userName" class="userNameInput"/>
 			<input type="submit" value="Buscar"/></p>
 		</form>
 		<ul>
@@ -76,15 +76,19 @@
 	</li></div>
 </template>
 
-<template name="allCreatedGames">
-	<h3>Partidas Creadas:</h3>
-	<form>
+<template name="formGamesTemplate">
+	<form class="gamesForm">
 		<p>Filtrar por:</p>
-		<p>Nombre partida: <input type="text" name="gameName"/></p>
-		<p>Creador: <input type="text" name="creator"/></p>
-		<p>Número de jugadores: <input type="text" name="players"/></p>
+		<p>Nombre partida: <input type="text" name="gameName" class="nameInput"/></p>
+		<p>Creador: <input type="text" name="creator" class="creatorInput"/></p>
+		<p>Número de jugadores: <input type="text" name="players" class="playersInput"/></p>
 		<p><input type="submit" value="Buscar"/></p>
 	</form>
+</template>
+
+<template name="allCreatedGames">
+	<h3>Partidas Creadas:</h3>
+	{{>formGamesTemplate}}
 	<ul>
 		{{#each createdGames}}
 			{{>gameTemplate}}
@@ -94,9 +98,10 @@
 
 <template name="allOngoingGames">
 	<h3>Partidas Jugándose:</h3>
+	{{>formGamesTemplate}}
 	<ul>
 		{{#each ongoingGames}}
-			<li>{{>game}}</li>
+			{{>gameTemplate}}
 		{{/each}}
 	</ul>
 </template>
