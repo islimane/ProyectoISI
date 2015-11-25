@@ -1,0 +1,8 @@
+startGame([{id, nombre, puntuacion }]) return String(string ""todo bien, en otro caso string con el error) -> lo llamaremos plataforma -> Meteor.call
+
+endGame([{id, puntuacion}]) -> lo llama lógica -> función en carpeta server
+
+suspendGame({Partida}) -> lo llama lógica -> función
+
+restartGame({Partida}) -> lo llamamos nosotros -> Meteor.call -> misma manera de informe de error que startGame
+
