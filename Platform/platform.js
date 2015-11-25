@@ -1,6 +1,6 @@
 //Collections
 Games = new Meteor.Collection('games');
-Scores = new Meteor.Collection('scores');
+//Scores = new Meteor.Collection('scores');
 Messages = new Meteor.Collection('messages');
 MessagesRoom = new Meteor.Collection('messagesRoom');
 PrivateMsgs = new Meteor.Collection('privateMsgs');

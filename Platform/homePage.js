@@ -124,7 +124,17 @@ if(Meteor.isClient){
 			}
 		},
 		'numberPlayers':function(){
-			return parseInt(this.numPlayerHuman) + parseInt(this.numPlayerIA);
+			if(this.numPlayerHuman == ""){
+				var nHumans = 0;
+			}else{
+				var nHumans = parseInt(this.numPlayerHuman);
+			}
+			if(this.numPlayerIA == ""){
+				var nIA = 0;
+			}else{
+				var nIA = parseInt(this.numPlayerIA);
+			}
+			return nHumans + nIA;
 		}
 	});
 

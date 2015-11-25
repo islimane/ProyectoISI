@@ -82,10 +82,10 @@ if(Meteor.isClient){
                             user: user,
                             email: email,
                             createdAt: new Date(),
-                            maxscore: 0,
+                            maxSore: 0,
+                            nWins: 0,
                             friends: []
                         }
-                        //var id = Users.insert(data);
                         Meteor.call('add',data);
                         Router.go("UserPage", {_id: Meteor.userId()});
                     }
@@ -104,20 +104,3 @@ if(Meteor.isClient){
         }
     });
 }
-
-if(Meteor.isServer){
-    
-    Meteor.methods({
-
-        'add': function(data){
-            Meteor.users.update({_id:Meteor.userId()},{$set:{profile:data}});
-
-        }
-        
-    });
-}
-
-
-
-
-

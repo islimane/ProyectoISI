@@ -17,11 +17,6 @@ Collection Games:
 	- Contraseña
 	- Numero de turnos?
 
-Collection Scores:
-	- Puntacion maxima
-	- ID Usuario
-	- Nº partidas ganadas
-
 Collections P_messages: // Mensajes privados entre usuarios logueados
 	- user_id
 	- Usuarios []
