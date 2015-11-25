@@ -1,0 +1,41 @@
+initInterface(idGame, [{id: ___, name: ___}])
+
+
+Logic -> UI
+newTurn(idGame, idPlayer, idTile, rotations)
+
+	rotations = {
+		rot0: info,
+		rot1: info,
+		rot2: info,
+		rot3: info,
+	}
+
+	info = {
+		coord: [x,y];
+		// 		 [ n,  nw,   w,  sw,   s,  se,   e,  ne,   c  ]
+		dummies: [] // de 0 a 9 true y false donde vaya el dummy
+	}
+
+
+
+UI -> Logic
+endTurn(backInfo)
+
+	backInfo = {
+		coord: [x,y];
+		// 		 [ n,  nw,   w,  sw,   s,  se,   e,  ne,   c  ]
+		dummies: [] // de 0 a 9 true y false donde vaya el dummy
+		rotation: 0-3
+	}
+
+
+Logic -> UI
+events(playersUpdate)
+	playersUpdate = [playerUpdate]
+
+	playerUpdate = {
+		coord: [[x, y], ...]
+		incScore: // lo que sube la puntacion
+	}
+
