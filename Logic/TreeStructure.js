@@ -21,6 +21,7 @@ MainNode.prototype.placeNode = function(coord, childrenCoords) {
 	if (this.firstNode == undefined){
 		this.firstNode = new Node(coord, childrenCoords, true);
 	} else {
+        childrenCoords = this._delDuplicateCoords(childrenCoords);
 		var node = this.findNode(coord);
 		if (node)
             node.placed = true;
@@ -40,19 +41,43 @@ MainNode.prototype.findNode = function(coord){
     return output;
 }
 
-
+// Returns the number of tiles not placed
 MainNode.prototype.getNumNotPlaced = function(){
     if (this.firstNode)
         return this.firstNode.numChildrenNotPlaced();
     else
-        return 0
+        return 0;
 }
+
+// Returns the number of tiles that are in
+// the board and in this structure 
+MainNode.prototype.getNumPlaced = function(){
+    if (this.firstNode)
+        return this.firstNode.numChildrenPlaced();
+    else
+        return 0;
+}
+
+
+
+//private methods: _
+MainNode.prototype._delDuplicateCoords = function(coords){
+    var outCoords = [];
+    for (var i = 0; i < coords.length; i++) {
+        if (this.findNode(coords[i]) == undefined){
+            outCoords.push(coords[i]);
+        }
+    };
+    return outCoords;
+}
+
 
 
 // For debug issues
 MainNode.prototype.printTree = function(){
     this.firstNode.printTree(1);
 }
+
 
 
 
@@ -102,7 +127,7 @@ Node.prototype.setChildren = function(childrenCoords){
 }
 
 
-//Returns the number of all the children placed and the own node
+//Returns the number of all the children not placed
 Node.prototype.numChildrenNotPlaced = function (){
     var num = 0;
     if (!this.placed)
@@ -112,6 +137,19 @@ Node.prototype.numChildrenNotPlaced = function (){
     }
     return num;
 }
+
+
+//Returns the number of all the children placed and the own node
+Node.prototype.numChildrenPlaced = function (){
+    var num = 0;
+    if (this.placed)
+        num++;
+    for (var i=0; i<this.nodes.length; i++){
+        num += this.nodes[i].numChildrenPlaced();
+    }
+    return num;
+}
+
 
 // For debug issues
 Node.prototype.printTree = function(indent){
@@ -139,10 +177,11 @@ var fieldTree = new MainNode('f');
 console.log("Adding c1");
 fieldTree.placeNode(coord1, [coord2, coord3]);
 console.log("Adding c2");
-fieldTree.placeNode(coord2, [coord4]);
+fieldTree.placeNode(coord2, [coord4, coord2]);
 console.log("Adding c4");
 fieldTree.placeNode(coord4);
 console.log("END");
 
-console.log(fieldTree.getNumNotPlaced());
+console.log("not placed: " + fieldTree.getNumNotPlaced());
+console.log("placed: " + fieldTree.getNumPlaced());
 fieldTree.printTree()*/
