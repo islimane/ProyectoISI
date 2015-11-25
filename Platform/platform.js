@@ -1,9 +1,9 @@
 //Collections
-Games = new Meteor.Collection('games_s');
-Scores = new Meteor.Collection('scores_s');
+Games = new Meteor.Collection('games');
+Scores = new Meteor.Collection('scores');
 Messages = new Meteor.Collection('messages');
 MessagesRoom = new Meteor.Collection('messagesRoom');
-
+PrivateMsgs = new Meteor.Collection('privateMsgs');
 
 //Routes
 Router.configure({
@@ -57,6 +57,10 @@ Router.route('/partidascreadas', {
 Router.route('/partidasjugandose', {
   template: "allOngoingGames",
   name: "allOngoingGames"
+});
+Router.route('/mensajesPrivados/:_id', {
+	template: 'privateMsgs',
+	name: "privateMsgs"
 });
 
 Router.route('pruebaUI', {
