@@ -192,6 +192,26 @@ if (Meteor.isClient) {
 			}
 			Games.update({_id:this._id},{$set:{players:newArr}})
       		
+    	},
+    	'click .leaveGame' : function(event){
+    		var players = Games.findOne({_id:this._id}).players;
+    		var creator = Games.findOne({_id:this._id}).creator;
+    		var newArr = [];
+    		if (creator == Meteor.userId()){
+    			creator = players[1].id;
+    		}
+    		for(i = 0; i < players.length;i++){
+    			console.log("dentro del bucle");
+				if(players[i].id != Meteor.userId()){
+					var data = {
+						id:players[i].id,
+						name : Meteor.users.findOne({_id:players[i].id}).profile.user
+					}
+					newArr.push(data)
+				}
+			}
+    		
+			Games.update({_id:this._id},{$set:{players:newArr, creator : creator}})
     	}
 
     })
