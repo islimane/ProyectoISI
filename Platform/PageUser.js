@@ -1,10 +1,10 @@
 if (Meteor.isClient) {
 	Template.UserPage.helpers({
 		'infoUser':function(){
-			return Meteor.users.findOne({_id:this._id}).profile
+			return Meteor.users.findOne({_id:Meteor.userId()}).profile
 		},
 		'myfriends':function(){
-			var idfriends = Meteor.users.findOne({_id:this._id}).profile.friends
+			var idfriends = Meteor.users.findOne({_id:Meteor.userId()}).profile.friends
 			console.log(idfriends)
 			var arrfriends = []
 			for(i = 0; i < idfriends.length;i++){
@@ -35,11 +35,11 @@ if (Meteor.isClient) {
 	Template.UserPage.events({
     	'click .addFriend':function(event){
     		event.preventDefault();
-    		Meteor.call('addFriend', this._id);
+    		Meteor.call('addFriend', Meteor.userId());
     	},
     	'click .deleteFriend':function(event){
     		event.preventDefault();
-    		Meteor.call('deleteFriend', this._id);
+    		Meteor.call('deleteFriend', Meteor.userId());
     	}
     })
 }
