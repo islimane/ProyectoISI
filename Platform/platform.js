@@ -75,11 +75,13 @@ Router.route('pruebaUI', {
 
 if (Meteor.isClient) {
 
+    Session.setDefault("roomname", "public");
+
   Template.messages.helpers({
     
     'messages':function () {
 
-      var messagesColl =  Messages.find({}, { sort: { time: -1 }});
+      var messagesColl =  Messages.find({room: Session.get("roomname")}, { sort: { time: -1 }});
       var messages = [];
 
       messagesColl.forEach(function(m){
@@ -96,7 +98,7 @@ if (Meteor.isClient) {
     }
   });
 
-  Template.input.events = {
+  Template.input.events ({
     'keydown input#message' : function (event) {
       if (event.which == 13) {
             
@@ -106,13 +108,38 @@ if (Meteor.isClient) {
             Messages.insert({
               user_id: user_id,
               message: message.val(),
-              time: new Date()
+              time: new Date(),
+              room: Session.get("roomname")
             });
             message.val('')
           }
       }
     } 
-  }
+  });
+
+    Template.rooms.helpers({
+
+        'friends':function(){
+            if (this._id == undefined) return null;
+            var idfriends = Meteor.users.findOne({_id:this._id}).profile.friends
+            var arrfriends = []
+            for(i = 0; i < idfriends.length;i++){
+                var data = {
+                    id:idfriends[i],
+                    name : Meteor.users.findOne({_id:idfriends[i]}).profile.user
+                }
+                arrfriends.push(data)
+            }
+            return arrfriends;
+        }
+    });
+
+    Template.rooms.events({
+        'click li': function(e) {
+            console.log("eeee",e.target.textContent);
+            Session.set("roomname", e.target.textContent);
+        }
+    });
 
 }
 
