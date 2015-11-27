@@ -77,26 +77,51 @@ if (Meteor.isClient) {
 
     Session.setDefault("roomname", "public");
 
-  Template.messages.helpers({
+    Template.messages.helpers({
     
-    'messages':function () {
+        'messages':function () {
 
-      var messagesColl =  Messages.find({room: Session.get("roomname")}, { sort: { time: -1 }});
-      var messages = [];
+            var messagesColl;
 
-      messagesColl.forEach(function(m){
-        var userName = Accounts.users.findOne(m.user_id).profile.user;
+            if (Session.get("roomname")=="public"){ //hablan todos los que quieran
+
+                messagesColl =  Messages.find({to: Session.get("roomname")}, { sort: { time: -1 }});
+
+            }else{  //chat privado entre amigos
+
+                messagesColl =  Messages.find({user_id : this._id, to: Session.get("roomname")}, { sort: { time: -1 }}).fetch();
+                var messagesColl2 =  Messages.find({user_id : Session.get("roomname"), to: this._id}, { sort: { time: -1 }}).fetch();
+                messagesColl2.forEach(function(n){
+
+                    messagesColl.push(n);
+
+                });
+
+                messagesColl.sort(function(a,b){
+                    if(a.time < b.time)return 1;
+                    if(a.time > b.time)return -1;
+                    return 0;
+                });
+            }
+
+
+
+            console.log("messagesColl", messagesColl);
+            var messages = [];
+
+            messagesColl.forEach(function(m){
+                var userName = Accounts.users.findOne(m.user_id).profile.user;
 
 //////////////ARREGLAR PARA QUE MUESTRE LA HORA BIEN/////////////////
        
-        var f = m.time;
-        var date =(f.getDate() + "/" + (f.getMonth() +1) + "/" + f.getFullYear() +
-              "-"+f.getHours() + ":" + (f.getMinutes() +1) + ":" + f.getSeconds());
-        messages.push({name: userName , message: m.message,date:date});
-      });
-      return messages;
-    }
-  });
+                var f = m.time;
+                var date =(f.getDate() + "/" + (f.getMonth() +1) + "/" + f.getFullYear() +
+                    "-"+f.getHours() + ":" + (f.getMinutes() +1) + ":" + f.getSeconds());
+                messages.push({name: userName , message: m.message,date:date});
+            });
+            return messages;
+        }
+    });
 
   Template.input.events ({
     'keydown input#message' : function (event) {
@@ -109,7 +134,7 @@ if (Meteor.isClient) {
               user_id: user_id,
               message: message.val(),
               time: new Date(),
-              room: Session.get("roomname")
+              to: Session.get("roomname"),
             });
             message.val('')
           }
@@ -120,6 +145,7 @@ if (Meteor.isClient) {
     Template.rooms.helpers({
 
         'friends':function(){
+            console.log("frienswww",this._id)
             if (this._id == undefined) return null;
             var idfriends = Meteor.users.findOne({_id:this._id}).profile.friends
             var arrfriends = []
@@ -135,10 +161,18 @@ if (Meteor.isClient) {
     });
 
     Template.rooms.events({
-        'click li': function(e) {
-            console.log("eeee",e.target.textContent);
-            Session.set("roomname", e.target.textContent);
+        'click li': function(e,id) {
+            //ls id de public sera "public", las demás las de cada usuario
+            Session.set("roomname", e.target.id);
         }
+    });
+
+    Template.chat.helpers({
+        'namechat': function(){
+            console.log("sesion",Session.get("roomname"));
+            return Session.get("roomname");
+        }
+
     });
 
 }
