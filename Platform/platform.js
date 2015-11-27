@@ -161,7 +161,7 @@ if (Meteor.isClient) {
     });
 
     Template.rooms.events({
-        'click li': function(e,id) {
+        'click li': function(e) {
             //ls id de public sera "public", las demás las de cada usuario
             Session.set("roomname", e.target.id);
         }
