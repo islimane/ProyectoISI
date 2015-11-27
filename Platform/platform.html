@@ -37,7 +37,7 @@
 <template name="chat">
     <div class="row-fluid">
         <div class="span3 well">
-            <h4>Chat</h4>
+            <h4>Chats: {{namechat}}</h4>
             {{> rooms}}
             {{> messages}}
             {{> input}}
@@ -59,11 +59,10 @@
 </template>
 
 <template name="rooms">
-    <h4>Chats:</h4>
     <ul>
-    <li style="cursor: pointer">public</li>
+    <li id ="public" style="cursor: pointer">public</li>
     {{#each friends}}
-        <li style="cursor: pointer">{{this.name}}</li>
+        <li id ="{{this.id}}" style="cursor: pointer">{{this.name}}</li>
     {{/each}}
     </ul>
 </template>
