@@ -33,7 +33,7 @@ MainNode.prototype.placeNode = function(coord, childrenCoords) {
 // Returns frue or false if coord is in the tree
 // coord: {x:1, y:2}
 MainNode.prototype.existsNode = function(coord){
-    if (findNode(coord))
+    if (this.findNode(coord))
         return true;
     else
         return false;
@@ -68,8 +68,8 @@ MainNode.prototype.mergeWith = function(remoteTree, coord){
     var delIndex = parent.children.indexOf(nodeDel);
     parent.children.splice(delIndex, 1);
     parent.children.push(remoteTree.firstNode);
-    // TODO: deleteDupNodes();
-
+    remoteTree.firstNode.parent = parent;
+    this._deleteDupNodes();
 }
 
 
@@ -119,6 +119,14 @@ MainNode.prototype.findNode = function(coord){
     return output;
 }
 
+
+MainNode.prototype._deleteDupNodes = function(){
+    var coords = [];
+    if (this.firstNode)
+        coords.push(this.firstNode.coord);
+        this.firstNode.delDupCoords(coords);
+}
+
 // For debug issues
 MainNode.prototype.printTree = function(){
     if (this.firstNode)
@@ -150,20 +158,20 @@ Node = function(coord, parent, childrenCoords, placed){
 
 
 // coord: {x:1, y:2}
-// returns: Node object or undefined
+// returns: Node object or undefined if the coord is
+// found in the node or in the childs
 Node.prototype.findInChildren = function(coord) {
 	var nodeOut = undefined;
-    if (coord){
-    	for (var i = 0; i < this.children.length; i++){
-    		if (this.children[i].coord.x == coord.x && this.children[i].coord.y == coord.y){
-    			nodeOut = this.children[i];
-    			break;
-    		} else {
-    			nodeOut = this.children[i].findInChildren(coord);
-    			if (nodeOut != undefined)
-    				break;
-    		}
-    	}
+    if (!coord)
+        return undefined;
+    if (sameCoord(this.coord, coord)){
+        nodeOut = this;
+    }else{
+        for (var i = 0; i < this.children.length; i++){
+            nodeOut = this.children[i].findInChildren(coord);
+            if (nodeOut)
+                break;
+        }
     }
 	return nodeOut;
 };
@@ -201,6 +209,26 @@ Node.prototype.numChildrenPlaced = function (){
 }
 
 
+// Delete the childs that are duplicate with the
+// coords that are in the array
+// arrCoords: [{x:2, y:2}, {x:1, y:3}, ...]
+Node.prototype.delDupCoords = function(arrCoords){
+    this.children = this.children.filter(function(node){
+        var keepthis = true;
+        for (var i = 0; i<arrCoords.length; i++){
+            if (sameCoord(node.coord, arrCoords[i])){
+                keepthis = false;
+                break;
+            }
+        }
+        if (keepthis){
+            arrCoords.push(node.coord);
+            node.delDupCoords(arrCoords);
+        }
+        return keepthis;
+    });
+}
+
 // For debug issues
 Node.prototype.printTree = function(indent){
     console.log(Array(2 * indent).join(" ") + "- coord(" + 
@@ -208,6 +236,16 @@ Node.prototype.printTree = function(indent){
     for (var i=0; i<this.children.length; i++){
         this.children[i].printTree(indent + 1);
     }
+}
+
+
+//////////////////////////
+//    Compare coords    //
+//////////////////////////
+
+// Compare 2 coords
+var sameCoord = function(coord1, coord2){
+    return coord1.x == coord2.x && coord1.y == coord2.y;
 }
 
 
@@ -223,9 +261,9 @@ coord5 = {x: 5, y: 5};
 coord6 = {x: 6, y: 6};
 coord7 = {x: 7, y: 7};
 coord8 = {x: 8, y: 8};
-coord9 = {x: 9, y: 9};
+coord9 = {x: 9, y: 9};*/
 
-console.log("--- Creating mainNode 1 ---");
+/*console.log("--- Creating mainNode 1 ---");
 var fieldTree1 = new MainNode('f');
 console.log("Adding c1");
 fieldTree1.placeNode(coord1, [coord2, coord3]);
@@ -254,5 +292,37 @@ fieldTree2.printTree();
 
 console.log("--- Merging the trees ---");
 fieldTree1.mergeWith(fieldTree2, coord4);
+console.log("Merged!");
+fieldTree1.printTree();*/
+
+
+/*console.log("--- Creating mainNode 1 ---");
+var fieldTree1 = new MainNode('f');
+console.log("Adding nodes 1... ");
+fieldTree1.placeNode(coord1, [coord2, coord3, coord4, coord5]);
+fieldTree1.placeNode(coord2, [coord3, coord7]);
+fieldTree1.placeNode(coord3, [coord4, coord5]);
+fieldTree1.placeNode(coord4, [coord8, coord9, coord1]);
+
+console.log("not placed: " + fieldTree1.getNumNotPlaced());
+console.log("placed: " + fieldTree1.getNumPlaced());
+fieldTree1.printTree();
+
+console.log("--- Creating mainNode 2 ---");
+var fieldTree2 = new MainNode('f');
+console.log("Adding nodes 2... ");
+fieldTree2.placeNode(coord5, [coord2, coord3, coord6]);
+fieldTree2.placeNode(coord2, [coord3, coord6]);
+if (fieldTree2.existsNode(coord7))
+    fieldTree2.placeNode(coord7, [coord4, coord5]);
+fieldTree2.placeNode(coord6, [coord8, coord9, coord1]);
+
+console.log("not placed: " + fieldTree2.getNumNotPlaced());
+console.log("placed: " + fieldTree2.getNumPlaced());
+fieldTree2.printTree();
+
+
+console.log("--- Merging the trees ---");
+fieldTree1.mergeWith(fieldTree2, coord9);
 console.log("Merged!");
 fieldTree1.printTree();*/
