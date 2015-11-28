@@ -1,6 +1,76 @@
+<template name= "parcheado">
+
+	{{>meterJugadores}}
+	{{>metefichaActiva}}
+	{{>metefichaValida}}
+	{{>puntosAjugadores}}
+
+</template>
+<template name "meterJugadores">
+	<form>
+		Añadir un jugador nuevo
+		pos
+        <input type="text" name="pos">
+        puntos
+        <input type="text" name="puntos">
+        nombre
+        <input type="text" name="nombre">
+</template>
+
+<template name "meterfichaActiva">
+	<form>
+		numero
+        <input type="text" name="num">
+        coordx
+        <input type="text" name="coordx">
+        coordy
+        <input type="text" name="coordy">
+        rotacion(1-4)
+        <input type="text" name="rot">
+        token
+        <input type="text" name="token">
+        <input type="submit" value="Add FichaActiva">
+    </form>
+</template>
+
+<template name "meterfichaValida">
+	<form>
+		numero
+        <input type="text" name="num">
+        coordx
+        <input type="text" name="coordx">
+        coordy
+        <input type="text" name="coordy">
+        rotacion(1-4)
+        <input type="text" name="rot">
+        token
+        <input type="text" name="token">
+        <input type="submit" value="Add FichaValida">
+    </form>
+</template>
+
+<template name "puntosAjugadores">
+	<form>
+		Jugador1
+        <input type="text" name="jugador1">
+       	Jugador2
+        <input type="text" name="jugador2">
+        Jugador3
+        <input type="text" name="jugador3">
+        Jugador4
+        <input type="text" name="jugador4">
+        <input type="submit" value="Actualizar Jugadores">
+    </form>
+</template>
+
+
+
 
 <template name="game">
 
+
+	{{>parcheado}}
+	<!--
 	{{>gamebuttons}}
 	<br><button type= "submit" id="PickTile" >Dame una ficha</button>
 
@@ -21,6 +91,6 @@
 			<button class="None" type="submit">None</button>
 		</div>
 	{{/if}}
-
+	-->
 </template>
 
