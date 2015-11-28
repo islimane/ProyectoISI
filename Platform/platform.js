@@ -79,36 +79,34 @@ if (Meteor.isClient) {
 
     Template.messages.helpers({
     
-        'messages':function () {
+        'messages':function () { 
+            var messages = [];
+            if (Meteor.userId() == undefined) return messages;
 
             var messagesColl;
 
-            if (Session.get("roomname")=="public"){ //hablan todos los que quieran
+            var games =  Games.find({_id: Session.get("roomname")});
+
+            if (Session.get("roomname")=="public" || games != undefined){ //hablan todos los que quieran
 
                 messagesColl =  Messages.find({to: Session.get("roomname")}, { sort: { time: -1 }});
 
             }else{  //chat privado entre amigos
 
-                messagesColl =  Messages.find({user_id : this._id, to: Session.get("roomname")}, { sort: { time: -1 }}).fetch();
-                var messagesColl2 =  Messages.find({user_id : Session.get("roomname"), to: this._id}, { sort: { time: -1 }}).fetch();
+                messagesColl =  Messages.find({user_id : Meteor.userId(), to: Session.get("roomname")}, { sort: { time: -1 }}).fetch();
+                var messagesColl2 =  Messages.find({user_id : Session.get("roomname"), to: Meteor.userId()}, { sort: { time: -1 }}).fetch();
                 messagesColl2.forEach(function(n){
 
                     messagesColl.push(n);
 
                 });
-
                 messagesColl.sort(function(a,b){
                     if(a.time < b.time)return 1;
                     if(a.time > b.time)return -1;
                     return 0;
                 });
             }
-
-
-
-            console.log("messagesColl", messagesColl);
-            var messages = [];
-
+           
             messagesColl.forEach(function(m){
                 var userName = Accounts.users.findOne(m.user_id).profile.user;
 
@@ -145,10 +143,10 @@ if (Meteor.isClient) {
     Template.rooms.helpers({
 
         'friends':function(){
-            console.log("frienswww",this._id)
-            if (this._id == undefined) return null;
-            var idfriends = Meteor.users.findOne({_id:this._id}).profile.friends
             var arrfriends = []
+            if (Meteor.userId() == undefined) return arrfriends;
+            var idfriends = Meteor.users.findOne({_id:Meteor.userId()}).profile.friends
+            
             for(i = 0; i < idfriends.length;i++){
                 var data = {
                     id:idfriends[i],
@@ -157,11 +155,77 @@ if (Meteor.isClient) {
                 arrfriends.push(data)
             }
             return arrfriends;
+        },
+        'nofriends':function(){
+
+            var arrnofriends = [];
+            if (Meteor.userId() == undefined) return arrnofriends;
+            var idfriends = Meteor.users.findOne({_id:Meteor.userId()}).profile.friends;
+            var allusers = Meteor.users.find();
+            
+            var push;
+            
+            allusers.forEach(function(user){
+                
+                push = true;
+                if (user == undefined){
+                    push = false;
+                }
+                if (user._id == Meteor.userId()){
+                    push=false;
+ 
+                }
+                for(i = 0; i < idfriends.length;i++){
+                    if (push == false){
+                        break;
+                    }
+                    if (idfriends[i]==user._id){
+                        push=false;
+                    }
+                }
+                if (push){
+                    var data = {
+                        id:user._id,
+                        name : user.profile.user
+                    }
+                    arrnofriends.push(data);
+                }   
+            });
+            return arrnofriends;
+        },
+        'games':function(){
+
+            var arrgames = [];
+            if (Meteor.userId() == undefined) return arrgames;
+            var games = Games.find();
+            var playersgame;
+            var push;
+            
+            games.forEach(function(game){
+                playersgame = game.players;
+                push=false;
+
+                for(i = 0; i < playersgame.length;i++){
+                    if (playersgame[i].id==Meteor.userId()){
+                        push=true;
+                        break;
+                    }
+                }
+                if (push){
+                    var data = {
+                        id:game._id,
+                        name : game.nameGame
+                    }
+                    arrgames.push(data);
+                }   
+
+            });
+            return arrgames;
         }
     });
 
     Template.rooms.events({
-        'click li': function(e) {
+        'click option': function(e) {
             //ls id de public sera "public", las demás las de cada usuario
             Session.set("roomname", e.target.id);
         }
@@ -169,12 +233,20 @@ if (Meteor.isClient) {
 
     Template.chat.helpers({
         'namechat': function(){
-            console.log("sesion",Session.get("roomname"));
-            return Session.get("roomname");
+            var room = Session.get("roomname");
+            var name = Meteor.users.findOne({_id: room});
+            if (name != undefined){
+
+                return name.profile.user;
+            }
+            var game = Games.findOne({_id: room});
+            if (game != undefined){
+
+                return game.nameGame;
+            }
+            return room;   
         }
-
     });
-
 }
 
 if (Meteor.isServer) {
