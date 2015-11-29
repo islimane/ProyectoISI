@@ -1,8 +1,8 @@
 if (Meteor.isClient) {
 
-	var fichasActvas[];
-	var fichasValidas[];
-	var jugadores[];
+	var fichasActvas = [];
+	var fichasValidas = [];
+	var jugadores = [];
 
 	function jugador(posicion, puntos, nombre){
 		this.pos=posicion;
