@@ -18,7 +18,13 @@ Collection Games:
 	- Numero de turnos?
 
 Collections P_messages: // Mensajes privados entre usuarios logueados
-	- user_id
+	- receiver
 	- Usuarios []
 	- message
 	- time
+
+Collections PrivateMsgs:
+	- to
+	- subject
+	- msgs
+	- from

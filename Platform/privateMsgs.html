@@ -1,3 +1,16 @@
 <template name="privateMsgs">
 	<h2>Mensajes privados</h2>
+	<p><input type="button" class="newMsg" value="Nuevo mensaje"/></p>
+
+	<div id="writeNewMsg" hidden>
+	<p>Espacio para un nuevo mensaje</p>
+	</div>
+
+	<div class="messages">
+	<ul>
+	{{#each getMsgs}}
+		<li><p>De: {{from}} Asunto: {{subject}} Fecha: {{date}}</p></li>
+	{{/each}}
+	</ul>
+	</div>
 </template>
