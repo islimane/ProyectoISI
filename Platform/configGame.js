@@ -11,6 +11,7 @@ if(Meteor.isClient){
 			if($('#privateGame').is(':checked')){
 				$('#password').show();
 			}else{
+				$('[name="password"]').val("");
 				$('#password').hide();
 			}
 		},
@@ -27,7 +28,12 @@ if(Meteor.isClient){
 					$('#IAPlayer').attr('max',val);
 					$('#IAPlayer').attr('min',val);
 				}else{
+					var val = ($('#players').val() - $('#humanPlayer').val())
+					$('[name="IAPlayer"]').val(0);
+					$('#IAPlayer').attr('max',val);
+					$('#IAPlayer').attr('min',val);
 					$('#IA').hide();
+
 				}
 			}		
 		},
@@ -39,6 +45,10 @@ if(Meteor.isClient){
 				$('#IAPlayer').attr('max',val);
 				$('#IAPlayer').attr('min',val);
 			}else{
+				var val = ($('#players').val() - $('#humanPlayer').val())
+				$('[name="IAPlayer"]').val(0);
+				$('#IAPlayer').attr('max',val);
+				$('#IAPlayer').attr('min',val);
 				$('#IA').hide();
 			}
 
@@ -55,6 +65,7 @@ if(Meteor.isClient){
 					id:Meteor.userId(),
 					name : Meteor.users.findOne({_id:Meteor.userId()}).profile.user
 				}
+			console.log( numPlayerIA);
 			arrPlayers.push(data)
 			var id = Games.insert({
 				creator : creator,
