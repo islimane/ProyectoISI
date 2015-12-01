@@ -1,5 +1,105 @@
 if (Meteor.isClient) {
 
+	var fichasActivas=[];
+	var fichasValidas=[];
+	var jugadores=[];
+
+	function jugador(posicion, puntos, nombre){
+		this.pos=posicion;
+		this.puntos=puntos;
+		this.nombre=nombre;
+	}
+
+	function ficha(num, coordx, coordy, rot, token) {
+	    this.num = num;
+	    this.coordx = coordx;
+	    this.coordy = coordy;
+	    this.rot = rot;
+	    this.token=token;
+	}
+	//////////////////////PARCHEADO/////////////////
+	Template.meterJugadores.events({
+		'submit form': function(event){
+		    event.preventDefault();
+		    var pos = event.target.pos.value;
+		    var puntos = event.target.puntos.value;
+		    var nombre = event.target.nombre.value;
+
+		    jugadores[pos] = new jugador(pos,puntos,nombre);
+		}
+	});
+	Template.meterfichaActiva.events({
+		'submit form': function(event){
+		    event.preventDefault();
+		    console.log("entra a meterfichaActiva");
+		    var num = event.target.num.value;
+		    console.log("sacamos num");
+		    console.log(num);
+		    var coordx = event.target.coordx.value;
+		    console.log("sacamos coordx");
+		    console.log(coordx);
+		    var coordy = event.target.coordy.value;
+		    console.log("sacamos coordy");
+		    console.log(coordy);
+		    var rot = event.target.rot.value;
+		    console.log("sacamos rot");
+		    console.log(rot);
+		    var token= event.target.token.value;
+		    console.log("sacamos token");
+		    console.log(token);
+		    var fichanew = new ficha(num,coordx,coordy,rot,token);
+		    fichasActivas.push(fichanew);
+
+		    var arrayLength = fichasActivas.length;
+		    console.log("longitud array");
+		    console.log(arrayLength);
+			for (var i = 0; i < arrayLength; i++) {
+			     console.log(fichasActivas[i].num)
+			}
+		
+		}
+
+	});
+
+	Template.meterfichaValida.events({
+		'submit form': function(event){
+		    event.preventDefault();
+		    var num = event.target.num.value;
+		    var coordx = event.target.coordx.value;
+		    var coordy = event.target.coordy.value;
+		    var rot = event.target.rot.value;
+		    var token= event.target.token.value;
+		    var fichanew= new ficha(num,coordx,coordy,rot,token);
+		    fichasValidas.push(fichanew);
+		}
+
+	});
+
+	Template.puntosAjugadores.events({
+		'submit form': function(event){
+			event.preventDefault();
+			var j1= event.target.jugador1.value;
+			var j2= event.target.jugador2.value;
+			var j3= event.target.jugador3.value;
+			var j4= event.target.jugador4.value;
+			if (j1){
+				jugadores[0].puntos = jugadores[0].puntos +j1;
+			}
+			if (j2){
+				jugadores[1].puntos = jugadores[1].puntos +j2;
+			}
+			if (j3){
+				jugadores[2].puntos = jugadores[2].puntos +j3;
+			}
+			if (j4){
+				jugadores[3].puntos = jugadores[3].puntos +j4;
+			}
+
+		}
+	})
+
+	///////////////////////FIN DEL PARCHEADO///////////////////
+
   var TileList = new Object();
   TileList.Tile = new Array();
   var numTile = 72;

@@ -1,26 +1,28 @@
 <template name="parcheado">
 
-	{{>meterJugadores}}
-	{{>metefichaActiva}}
-	{{>metefichaValida}}
-	{{>puntosAjugadores}}
+    {{>meterJugadores}}
+    {{>meterfichaActiva}}
+    {{>meterfichaValida}}
+    {{>puntosAjugadores}}
 
 </template>
 <template name="meterJugadores">
-	<form>
-		Añadir un jugador nuevo
-		pos
+    <form>
+        <br>
+        pos
         <input type="text" name="pos">
         puntos
         <input type="text" name="puntos">
         nombre
         <input type="text" name="nombre">
+        <input type="submit" value="Add Jugador">
     </form>
 </template>
 
 <template name="meterfichaActiva">
-	<form>
-		numero
+    <form>
+        <br>
+        numero
         <input type="text" name="num">
         coordx
         <input type="text" name="coordx">
@@ -35,8 +37,8 @@
 </template>
 
 <template name="meterfichaValida">
-	<form>
-		numero
+    <form>
+        numero
         <input type="text" name="num">
         coordx
         <input type="text" name="coordx">
@@ -51,10 +53,10 @@
 </template>
 
 <template name="puntosAjugadores">
-	<form>
-		Jugador1
+    <form>
+        Jugador1
         <input type="text" name="jugador1">
-       	Jugador2
+        Jugador2
         <input type="text" name="jugador2">
         Jugador3
         <input type="text" name="jugador3">
@@ -71,7 +73,7 @@
 
 
 	{{>parcheado}}
-	<!--
+	
 	{{>gamebuttons}}
 	<br><button type= "submit" id="PickTile" >Dame una ficha</button>
 
@@ -92,6 +94,6 @@
 			<button class="None" type="submit">None</button>
 		</div>
 	{{/if}}
-	-->
+
 </template>
 
