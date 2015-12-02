@@ -133,11 +133,13 @@ if (Meteor.isClient) {
 				$('#password').show();
 				$('#publicGame').attr('checked',false)
 			}else{
+				$('[name="password"]').val("");
 				$('#password').hide();
 			}
 		},
 		'click .paramGame #publicGame': function(){
 			$('#privateGame').attr('checked',false)
+			$('[name="password"]').val("");
 			$('#password').hide();
 		},
 		'change #players' : function(){
@@ -152,6 +154,11 @@ if (Meteor.isClient) {
 					$('#IAPlayer').attr('max',val);
 					$('#IAPlayer').attr('min',val);
 				}else{
+					
+					var val = ($('#players').val() - $('#humanPlayer').val())
+					$('[name="IAPlayer"]').val(0);
+					$('#IAPlayer').attr('max',val);
+					$('#IAPlayer').attr('min',val);
 					$('#IA').hide();
 				}
 			}		
@@ -164,6 +171,11 @@ if (Meteor.isClient) {
 				$('#IAPlayer').attr('max',val);
 				$('#IAPlayer').attr('min',val);
 			}else{
+				
+				var val = ($('#players').val() - $('#humanPlayer').val())
+				$('[name="IAPlayer"]').val(0);
+				$('#IAPlayer').attr('max',val);
+				$('#IAPlayer').attr('min',val);
 				$('#IA').hide();
 			}
 		},
