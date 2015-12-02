@@ -3,144 +3,192 @@ predefTiles = [
         type: 0,
         //         [ n,  nw,   w,  sw,   s,  se,   e,  ne,   c  ]
         positions: ['f', 'f', 'f', 'f', 'f', 'f', 'f', 'f', 'cl'],
+        dummies: [true, false, false, false, false, false, false, false, true],
+        banner: false,
         total: 4
     },
     {
         type: 1,
         //         [ n,  nw,   w,  sw,   s,  se,   e,  ne,   c  ]
         positions: ['f', 'f', 'f', 'f', 'r', 'f', 'f', 'f', 'cl'],
+        dummies: [true, false, false, false, true, false, false, false, true],
+        banner: false,
         total: 2
     },
     {
         type: 2,
         //         [ n,    nw,   w,    sw,   s,    se,   e,    ne,   c  ]
-        positions: ['ci', 'b', 'ci', 'ci', 'ci', 'ci', 'ci', 'ci', 'ci'],
+        positions: ['ci', 'ci', 'ci', 'ci', 'ci', 'ci', 'ci', 'ci', 'ci'],
+        dummies: [false, false, false, false, false, false, false, false, true],
+        banner: true,
         total: 1
     },
     {
         type: 3,
         //         [ n,    nw,   w,   sw,  s,   se,   e,   ne,   c  ]
         positions: ['ci', 'ci', 'ci', 'f', 'f', 'f', 'ci', 'ci', 'ci'],
+        dummies: [false, false, false, false, true, false, false, false, true],
+        banner: false,
         total: 3
     },
     {
         type: 4,
         //         [ n,   nw,   w,   sw,   s,  se,   e,   ne,   c  ]
-        positions: ['ci', 'b', 'ci', 'f', 'f', 'f', 'ci', 'ci', 'ci'],
+        positions: ['ci', 'ci', 'ci', 'f', 'f', 'f', 'ci', 'ci', 'ci'],
+        dummies: [false, false, false, false, true, false, false, false, true],
+        banner: true,
         total: 1
     },
     {
         type: 5,
         //         [ n,    nw,   w,   sw,   s,  se,   e,   ne,   c  ]
         positions: ['ci', 'ci', 'ci', 'f', 'r', 'f', 'ci', 'ci', 'ci'],
+        dummies: [false, false, false, true, true, true, false, false, true],
+        banner: false,
         total: 1
     },
     {
         type: 6,
         //         [ n,    nw,   w,   sw,   s,  se,   e,   ne,   c  ]
-        positions: ['ci', 'b', 'ci', 'f', 'r', 'f', 'ci', 'ci', 'ci'],
+        positions: ['ci', 'ci', 'ci', 'f', 'r', 'f', 'ci', 'ci', 'ci'],
+        dummies: [false, false, false, true, true, true, false, false, true],
+        banner: true,
         total: 2   
     },
     {
         type: 7,
         //         [ n,    nw,   w,   sw,   s,  se,   e,   ne,   c  ]
         positions: ['ci', 'ci', 'ci', 'f', 'f', 'f', 'f', 'f', 'f'],
+        dummies: [false, true, false, false, false, true, false, false, false],
+        banner: false,
         total: 3   
     },
     {
         type: 8,
         //         [ n,    nw,   w,   sw,   s,  se,   e,   ne,   c  ]
-        positions: ['ci', 'b', 'ci', 'f', 'f', 'f', 'f', 'f', 'f'],
+        positions: ['ci', 'ci', 'ci', 'f', 'f', 'f', 'f', 'f', 'f'],
+        dummies: [false, true, false, false, false, true, false, false, false],
+        banner: true,
         total: 2   
     },
     {
         type: 9,
         //         [ n,    nw,   w,   sw,   s,  se,   e,   ne,   c  ]
         positions: ['ci', 'ci', 'ci', 'f', 'r', 'f', 'r', 'f', 'f'],
+        dummies: [false, true, false, false, true, true, false, false, true],
+        banner: false,
         total: 3   
     },
     {
         type: 10,
         //         [ n,    nw,   w,   sw,   s,  se,   e,   ne,   c  ]
-        positions: ['ci', 'b', 'ci', 'f', 'r', 'f', 'r', 'f', 'f'],
+        positions: ['ci', 'ci', 'ci', 'f', 'r', 'f', 'r', 'f', 'f'],
+        dummies: [false, true, false, false, true, true, false, false, true],
+        banner: true,
         total: 2   
     },
     {
         type: 11,
         //         [ n,    nw,   w,   sw,   s,  se,   e,   ne,   c  ]
         positions: ['f',  'f',  'ci', 'f', 'f', 'f', 'ci', 'f', 'ci'],
+        dummies: [true, false, false, false, true, false, false, false, true],
+        banner: false,
         total: 1  
     },
     {
         type: 12,
         //         [ n,    nw,   w,   sw,   s,  se,   e,   ne,   c  ]
-        positions: ['f',  'f',  'ci', 'f', 'f', 'f', 'b', 'f', 'ci'],
+        positions: ['f',  'f',  'ci', 'f', 'f', 'f', 'ci', 'f', 'ci'],
+        dummies: [true, false, false, false, true, false, false, false, true],
+        banner: true,
         total: 2  
     },
     {
         type: 13,
         //         [ n,    nw,   w,   sw,   s,  se,   e,   ne,   c  ]
         positions: ['ci',  'f',  'ci', 'f', 'f', 'f', 'f', 'f', 'f'],
+        dummies: [true, false, true, false, false, false, false, false, true],
+        banner: false,
         total: 2  
     },
     {
         type: 14,
         //         [ n,    nw,   w,   sw,   s,  se,   e,   ne,   c  ]
         positions: ['ci',  'f',  'f', 'f', 'ci', 'f', 'f', 'f', 'f'],
+        dummies: [true, false, false, false, true, false, false, false, true],
+        banner: false,
         total: 3  
     },
     {
         type: 15,
         //         [ n,    nw,   w,   sw,   s,  se,   e,   ne,   c  ]
         positions: ['ci',  'f',  'f', 'f', 'f', 'f', 'f', 'f', 'f'],
+        dummies: [true, false, false, false, false, false, false, false, true],
+        banner: false,
         total: 5  
     },
     {
         type: 16,
         //         [ n,    nw,   w,   sw,   s,  se,   e,   ne,   c  ]
         positions: ['ci',  'f',  'r', 'f', 'r', 'f', 'f', 'f', 'f'],
+        dummies: [true, false, false, true, true, false, false, false, true],
+        banner: false,
         total: 3 
     },
     {
         type: 17,
         //         [ n,    nw,   w,   sw,   s,  se,   e,   ne,   c  ]
         positions: ['ci',  'f',  'f', 'f', 'r', 'f', 'r', 'f', 'f'],
+        dummies: [true, false, false, false, true, true, false, false, true],
+        banner: false,
         total: 3 
     },
     {
         type: 18,
         //         [ n,    nw,   w,   sw,   s,  se,   e,   ne,   c  ]
         positions: ['ci',  'f',  'r', 'f', 'r', 'f', 'r', 'f', 'x'],
+        dummies: [true, false, true, true, true, true, true, true, false],
+        banner: false,
         total: 3 
     },
     {
         type: 19,
         //         [ n,    nw,   w,   sw,   s,  se,   e,   ne,   c  ]
         positions: ['ci',  'f',  'r', 'f', 'f', 'f', 'r', 'f', 'r'],
+        dummies: [true, false, false, false, true, false, false, true, true],
+        banner: false,
         total: 4 
     },
     {
         type: 20,
         //         [ n,    nw,   w,   sw,   s,  se,   e,   ne,   c  ]
         positions: ['r',  'f',   'f', 'f', 'r', 'f', 'f', 'f',  'r'],
+        dummies: [false, false, true, false, false, false, true, false, true],
+        banner: false,
         total: 8 
     },
     {
         type: 21,
         //         [ n,    nw,   w,   sw,   s,  se,   e,   ne,   c  ]
         positions: ['f',  'f',  'r', 'f', 'r', 'f', 'f', 'f',  'r'],
+        dummies: [false, false, false, true, true, false, false, true, false],
+        banner: false,
         total: 9 
     },
     {
         type: 22,
         //         [ n,    nw,   w,   sw,   s,  se,   e,   ne,   c  ]
         positions: ['f',  'f',   'r', 'f', 'r', 'f', 'r', 'f',  'x'],
+        dummies: [true, false, true, true, true, true, true, false, false],
+        banner: false,
         total: 4 
     },
     {
         type: 23,
         //         [ n,    nw,   w,   sw,   s,  se,   e,   ne,   c  ]
         positions: ['r',  'f',   'r', 'f', 'r', 'f', 'r', 'f',  'x'],
+        dummies: [true, true, true, true, true, true, true, true, false],
+        banner: false,
         total: 1 
     },
 
