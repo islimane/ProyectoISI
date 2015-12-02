@@ -37,13 +37,13 @@
 
 <template name="chat">
     <div class="row-fluid">
-        <div class="span3 well">
+        <div class="span3 well" style="heigth:400px;width:300px">
             <h4>Chat: {{namechat}} {{> rooms}}</h4>
-            
+
             {{> messages}}
             {{> input}}
         </div>
-    </div> 
+    </div>
 </template>
 
 <template name="input">
@@ -51,7 +51,7 @@
 </template>
 
 <template name="messages">
-  
+
   <div id="messages">
     {{#each messages}}
       <p><strong>{{name}}</strong> <span>({{date}})</span>: <i>{{message}}</i></p>
@@ -62,28 +62,26 @@
 <template name="rooms" >
 
     <select name="room" style="width:120px;  padding-right: 5px;">
-        <optgroup label="SALAS"></optgroup>  
-        
+        <optgroup label="SALAS"></optgroup>
+
         <option value ="public" style="cursor: pointer">public</option>
         {{#each games}}
             <option value ="{{this.id}}" style="cursor: pointer">{{this.name}}</option>
         {{/each}}
-        
+
 
         <optgroup label="AMIGOS"></optgroup>
 
         {{#each friends}}
             <option value ="{{this.id}}" style="cursor: pointer">{{this.name}}</option>
         {{/each}}
-        
+
 
         <optgroup label="NO AMIGOS"></optgroup>
         {{#each nofriends}}
             <option value ="{{this.id}}" style="cursor: pointer">{{this.name}}</option>
         {{/each}}
-        
-        
+
+
     </select>
 </template>
-
-

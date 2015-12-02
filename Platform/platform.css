@@ -9,6 +9,7 @@ input#message{
 	border: 1px solid darkgray;
 	height: 200px;
 	overflow: scroll;
+	width: 95%;
 	
 }
 span{
