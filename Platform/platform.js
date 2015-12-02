@@ -3,6 +3,7 @@ Games = new Meteor.Collection('games');
 Messages = new Meteor.Collection('messages');
 MessagesRoom = new Meteor.Collection('messagesRoom');
 PrivateMsgs = new Meteor.Collection('privateMsgs');
+Tournaments = new Meteor.Collection('tournaments');
 
 //Routes
 Router.configure({
@@ -34,6 +35,18 @@ Router.route('/user/:_id', {
 Router.route('/configGame', {
   name: 'configGame',
   template: 'configGame'
+});
+Router.route('/configTournament', {
+  name: 'configTournament',
+  template: 'configTournament'
+});
+Router.route('/pagTournament/:_id', {
+    template:"startTournament",    
+    name:"startTournament", 
+    data: function(){
+      var tournamentID = this.params._id;
+      return Tournaments.findOne({_id:tournamentID});
+    }
 });
 Router.route('/comenzarPartida/:_id', {
     template:"startGame",    
