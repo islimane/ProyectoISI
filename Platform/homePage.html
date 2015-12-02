@@ -50,11 +50,13 @@
 <li user="{{profile.user}}">
 	<p><a href="/user/{{_id}}">{{profile.user}}</a></p>
 	<p>
-	{{#if notMe}}
-		{{#if isFriend}}
-			<input type="button" class="deleteFriend" value="Eliminar Amigo" id="{{_id}}">
-		{{else}}
-			<input type="button" class="addFriend" value="Añadir Amigo" id="{{_id}}">
+	{{#if currentUser}}
+		{{#if notMe}}
+			{{#if isFriend}}
+				<input type="button" class="deleteFriend" value="Eliminar Amigo" id="{{_id}}">
+			{{else}}
+				<input type="button" class="addFriend" value="Añadir Amigo" id="{{_id}}">
+			{{/if}}
 		{{/if}}
 	{{/if}}
 	</p>

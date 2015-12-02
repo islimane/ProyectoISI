@@ -40,6 +40,10 @@ Meteor.methods({
         }
         Meteor.users.update({_id:Meteor.userId()},{$set:{profile:data}});
     },
+    'deleteUser':function(myid){
+        Meteor.users.remove({_id:myid});
+        Router.go("/");
+    },
     'deleteFriend': function(friendId){
         var user = Meteor.users.findOne({_id:Meteor.userId()}).profile;
         var friends = user.friends;
@@ -49,7 +53,6 @@ Meteor.methods({
         for(var i = 0; i< friends.length; i++){
             if(friendId != friends[i]){
                 newArr.push(friends[i]);
-            }else{
             }
         }
 

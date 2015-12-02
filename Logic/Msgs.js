@@ -1,4 +1,4 @@
-
+/*
 // This a collection to interact with UI, both ( UI and IA, server and client)
 // have acces to the collection and an event will take place if a modification
 // is realiced.
@@ -42,6 +42,6 @@ playerUpdate {
 	coord ; 	// Coord of removed dummies
 	incScore = 0;
 }
-
+*/	
 
 

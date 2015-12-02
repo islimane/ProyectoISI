@@ -49,6 +49,12 @@ if (Meteor.isClient) {
     	'click .deleteFriend':function(event){
     		event.preventDefault();
     		Meteor.call('deleteFriend', this._id);
+    	},
+    	'click .deleteCount':function(event){
+    		event.preventDefault();
+    		Meteor.call('deleteUser', Meteor.userId());
     	}
+
+
     })
 }
