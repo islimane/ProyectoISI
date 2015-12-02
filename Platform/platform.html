@@ -63,22 +63,22 @@
     <select name="room" style="width:120px;  padding-right: 5px;">
         <optgroup label="SALAS"></optgroup>  
         
-        <option id ="public" style="cursor: pointer">public</option>
+        <option value ="public" style="cursor: pointer">public</option>
         {{#each games}}
-            <option id ="{{this.id}}" style="cursor: pointer">{{this.name}}</option>
+            <option value ="{{this.id}}" style="cursor: pointer">{{this.name}}</option>
         {{/each}}
         
 
         <optgroup label="AMIGOS"></optgroup>
 
         {{#each friends}}
-            <option id ="{{this.id}}" style="cursor: pointer">{{this.name}}</option>
+            <option value ="{{this.id}}" style="cursor: pointer">{{this.name}}</option>
         {{/each}}
         
 
         <optgroup label="NO AMIGOS"></optgroup>
         {{#each nofriends}}
-            <option id ="{{this.id}}" style="cursor: pointer">{{this.name}}</option>
+            <option value ="{{this.id}}" style="cursor: pointer">{{this.name}}</option>
         {{/each}}
         
         

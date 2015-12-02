@@ -224,9 +224,9 @@ if (Meteor.isClient) {
     });
 
     Template.rooms.events({
-        'click option': function(e) {
-            //ls id de public sera "public", las demás las de cada usuario
-            Session.set("roomname", e.target.id);
+        'change': function(e) {
+            //el value de public sera "public", las demás las de cada usuario
+            Session.set("roomname", e.target.value);
         }
     });
 
