@@ -11,7 +11,7 @@ describe('Tiles', function() {
         it('should get next tile from the queue', function() {
             var tiles = new Tiles();
             tiles.initTiles();
-            var nextTile = tiles.queue[0];
+            var nextTile = tiles.queue[tiles.queue.length-1];
             tiles.popTile();
             expect(tiles.currentTile).toEqual(nextTile);
         });
