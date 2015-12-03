@@ -1,3 +1,69 @@
+
+==================================================================================
+API for UI.
+==================================================================================
+
+
+	getPlayer : function (Game)
+		/* 
+		 *	Returns the current Player
+		 */
+	
+
+	getTile : function (Game)
+		/* 
+		 *	Returns the current Tile's id
+		 */
+
+
+	getCoords : function(Game)
+		/* 
+		 *	Returns the coords (arry with 4 entries)
+		 *	 	rot0: [],					array of "info"s
+		 *		rot1: [],
+		 *		rot2: [],
+		 *		rot3: [],
+		 *
+		 *	With "info" set as :
+		 *		· coord 					
+		 *		· dummyPos					[ n, nw, w, sw, s, se, e, ne, c ]	
+		 *									all false except the plausible dummy
+		 *								    positions in the tile
+		 */
+
+
+	getUpdatedInfo : function (Game) 
+		/* 
+		 *	Returns the updated info for UI: 
+		 * 		·coord: [[x, y], ...]  		coords of the removed dummies
+		 *		·score:  					the new players core
+		 */
+
+
+	setPos : function (Game, x, y, rot) 
+		/* 
+		 *  Set the position where the tile is placed on the board and its rotation
+		 */
+
+
+	setDummy : function (Game, arry) 
+		/*
+		 * Sets the position where dummy is placed in the tile.
+		 *		arry = [ n,  nw,   w,  sw,   s,  se,   e,  ne,   c  ] , 
+		 *				all false except the dummy position in the tile if set
+		 *				all false if dummy is not set
+		 */
+
+
+On any error this methods return null.
+				
+				
+
+====================================================================================
+SOME NOTES TAKEN
+====================================================================================
+
+
 initInterface(idGame, [{id: ___, name: ___}])
 
 
