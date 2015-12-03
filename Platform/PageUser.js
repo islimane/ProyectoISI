@@ -38,6 +38,11 @@ if (Meteor.isClient) {
 				}
 			}
 			return encontrado
+		},
+		'profileimg':function(){
+			
+			return Meteor.users.findOne({_id:this._id}).profile.profileimg
+
 		}
 	})
 	

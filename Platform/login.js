@@ -58,6 +58,7 @@ if(Meteor.isClient){
             submitHandler: function(event){
 
                 var user = $('[name=user]').val();
+                var img = $('[name=img]').val();
                 var email = $('[name=email]').val();
                 var password = $('[name=password]').val();
                 var password2 = $('[name=password2]').val();
@@ -80,6 +81,7 @@ if(Meteor.isClient){
                     } else {
                         var data = {
                             user: user,
+                            profileimg: img,
                             email: email,
                             createdAt: new Date(),
                             maxSore: 0,

@@ -58,6 +58,7 @@
               <li><a href="/configGame/">Crear partida</a></li>
               <li><a href="/configTournament/">Crear torneo</a></li>
               <li><a href="#" class="logout">Logout</a></li> <!--solo se muestra a usuario logeados-->
+              <li><img src="{{profileimg}}" width="40" height="40"  border="3"></li>
           {{else}}
               <li><a href="{{pathFor route='register'}}">Register</a></li>
               <li><a href="{{pathFor route='login'}}">Login</a></li>
@@ -74,7 +75,6 @@
     <div class="row-fluid">
         <div class="span3 well" style="heigth:400px;width:300px">
             <h4>Chat: {{namechat}} {{> rooms}}</h4>
-
             {{> messages}}
             {{> input}}
         </div>

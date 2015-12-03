@@ -89,6 +89,16 @@ if (Meteor.isClient) {
 
     Session.setDefault("roomname", "public");
 
+    Template.navigation.helpers({
+
+        'profileimg':function(){
+            
+            return Meteor.users.findOne({_id:Meteor.userId()}).profile.profileimg
+
+        }
+
+    });
+
     Template.messages.helpers({
     
         'messages':function () { 
