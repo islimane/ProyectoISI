@@ -97,7 +97,7 @@ if (Meteor.isClient) {
 
             var messagesColl;
 
-            var games =  Games.find({_id: Session.get("roomname")});
+            var games =  Games.findOne({_id: Session.get("roomname")});
 
             if (Session.get("roomname")=="public" || games != undefined){ //hablan todos los que quieran
 
