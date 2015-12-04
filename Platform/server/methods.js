@@ -67,5 +67,12 @@ Meteor.methods({
     },
     'add': function(data){
         Meteor.users.update({_id:Meteor.userId()},{$set:{profile:data}});
+    },
+    'changeprofileimg':function(img){
+
+        Meteor.users.update({_id:Meteor.userId()},{$set:{profile:{profileimg:img}}});
+
+
+
     }
 });

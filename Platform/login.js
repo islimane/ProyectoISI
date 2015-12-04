@@ -58,7 +58,6 @@ if(Meteor.isClient){
             submitHandler: function(event){
 
                 var user = $('[name=user]').val();
-                var img = $('[name=img]').val();
                 var email = $('[name=email]').val();
                 var password = $('[name=password]').val();
                 var password2 = $('[name=password2]').val();
@@ -79,6 +78,8 @@ if(Meteor.isClient){
                             });
                         }
                     } else {
+
+                        var img = "http://www.gravatar.com/avatar/" + CryptoJS.MD5(email).toString();
                         var data = {
                             user: user,
                             profileimg: img,

@@ -100,7 +100,10 @@ if(Meteor.isClient){
 
 	Template.player.helpers({
 		'isFriend': function(){
-			var friendsId = Meteor.users.findOne({_id: Meteor.userId()}).profile.friends;
+			var friendsId = Meteor.users.findOne({_id: Meteor.userId()});
+			if (friendsId !=undefined){
+				friendsId = friendsId.profile.friends;
+			}
 			for (var i = 0; i < friendsId.length; i++){
 				if(friendsId[i] == this._id){
 					return true;

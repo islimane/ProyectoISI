@@ -6,13 +6,25 @@ if (Meteor.isClient) {
 	Template.UserPage.helpers({
 		'infoUser':function(){
 			if (this._id == undefined) return null;
-			return Meteor.users.findOne({_id:this._id}).profile
+			var user =  Meteor.users.findOne({_id:this._id})
+			if (user !=undefined){
+				user = user.profile;
+			}
+			return user
 		},
 		'myfriends':function(){
-			if (this._id == undefined) return null;
-			var idfriends = Meteor.users.findOne({_id:this._id}).profile.friends
-			console.log(idfriends)
 			var arrfriends = []
+			if (this._id == undefined) return null;
+			var idfriends = Meteor.users.findOne({_id:this._id});
+			if (idfriends !=undefined){
+				if (idfriends.profile!=null){
+                	idfriends = idfriends.profile.friends;
+            	}
+            }else{
+                return arrfriends;
+            }
+			console.log(idfriends)
+			
 			for(i = 0; i < idfriends.length;i++){
 				var data = {
 					id:idfriends[i],
@@ -26,6 +38,10 @@ if (Meteor.isClient) {
 		'Notmypage':function(){
 			if (this._id == undefined) return null;
 			return this._id != Meteor.userId()
+		},
+		'ismypage':function(){
+			if (this._id == undefined) return null;
+			return this._id == Meteor.userId()
 		},
 		'isMyFriend':function(){
 			if (this._id == undefined) return null;
@@ -43,7 +59,9 @@ if (Meteor.isClient) {
 
 			var img = Meteor.users.findOne({_id:this._id});
 			if (img!=undefined){
-				img = img.profile.profileimg;
+				if (img.profile!=null){
+					img = img.profile.profileimg;
+				}
 			}
 			return img
 
@@ -62,6 +80,12 @@ if (Meteor.isClient) {
     	'click .deleteCount':function(event){
     		event.preventDefault();
     		Meteor.call('deleteUser', Meteor.userId());
+    	},
+    	'submit form' : function(event){
+    		//event.preventDefault();
+    		var img = $('[name=img]').val();
+    		Meteor.call('changeprofileimg', img);
+
     	}
 
 
