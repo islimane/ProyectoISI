@@ -267,6 +267,20 @@ if (Meteor.isClient) {
                 return game.nameGame;
             }
             return room;   
+        },
+
+        'imagechat':function(){
+            
+            var room = Session.get("roomname");
+            var img = Meteor.users.findOne({_id: room});
+  
+            if (img==undefined){
+                img ="http://f0.pepst.com/c/D5B077/659194/ssc3/home/009/americanpitbullterrier/chat_logo.jpg_480_480_0_64000_0_1_0.jpg";
+            }else{
+                img=img.profile.profileimg;
+            }
+            return  img;
+
         }
     });
 }

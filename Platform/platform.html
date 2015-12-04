@@ -74,9 +74,10 @@
 <template name="chat">
     <div class="row-fluid">
         <div class="span3 well" style="heigth:400px;width:300px">
-            <h4>Chat: {{namechat}} {{> rooms}}</h4>
-            {{> messages}}
-            {{> input}}
+          <div class="img"><img src="{{imagechat}}" width="50" height="50" ></div>
+          <h4>Chat: {{> rooms}} </h4> 
+          {{> messages}}
+          {{> input}}
         </div>
     </div>
 </template>

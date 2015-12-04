@@ -20,4 +20,14 @@ span{
 	background-color: yellow;
 }
 
+div.img{
+	float:right; 
+	align:right; 
+	position: relative; 
+	padding-right:15px; 
+	margin:2px;
+
+}
+
+
 
