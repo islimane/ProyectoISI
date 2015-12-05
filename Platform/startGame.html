@@ -1,5 +1,6 @@
 <template name = "startGame">
-	<h1> Pantalla para comenzar Partida</h1>
+	<div id="content">
+  <h1> Pantalla para comenzar Partida</h1>
 	<div class = "players">
 		<p> Nombre de la partida: {{infoGame.nameGame}}</p>
 		<p>Numero de jugadores: {{infoGame.numPlayerHuman}}</p>
@@ -55,6 +56,7 @@
   		{{/each}}
 
 		</ul>
+  </div> 
 	</div> 
  
 </template>

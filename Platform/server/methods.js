@@ -34,6 +34,7 @@ Meteor.methods({
         var data = {
             user: user.user,
             email: user.email,
+            profileimg: user.img,
             createdAt: user.createdAt,
             maxscore: user.maxscore,
             friends: friends
@@ -48,7 +49,6 @@ Meteor.methods({
         var user = Meteor.users.findOne({_id:Meteor.userId()}).profile;
         var friends = user.friends;
 
-        Meteor.users.update({_id:Meteor.userId()},{$set:{profile:data}});
         var newArr = [];
         for(var i = 0; i< friends.length; i++){
             if(friendId != friends[i]){
@@ -59,6 +59,7 @@ Meteor.methods({
         var data = {
             user: user.user,
             email: user.email,
+            profileimg: user.img,
             createdAt: user.createdAt,
             maxscore: user.maxscore,
             friends: newArr
@@ -70,7 +71,17 @@ Meteor.methods({
     },
     'changeprofileimg':function(img){
 
-        Meteor.users.update({_id:Meteor.userId()},{$set:{profile:{profileimg:img}}});
+        var user = Meteor.users.findOne({_id:Meteor.userId()}).profile;
+
+        var data = {
+            user: user.user,
+            email: user.email,
+            profileimg: img,
+            createdAt: user.createdAt,
+            maxscore: user.maxscore,
+            friends: user.friends
+        }
+        Meteor.users.update({_id:Meteor.userId()},{$set:{profile:data}});
 
 
 

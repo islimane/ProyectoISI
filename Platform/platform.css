@@ -28,6 +28,39 @@ div.img{
 	margin:2px;
 
 }
+#right_side {
+  margin-top: 10px;
+  margin-left: 10px;
+  float: right;
+  width: 320px;
+  height: 400px;
+  background: #4E7DD1;
+}
 
+#footer {
+  height: 50px;
+  background-color: #4E7DD1;
+  clear: both;
+  text-align: center;
+  padding-top:12px;
+  color: #B6CEF9;
+  font-family: verdana, arial, sans-serif;
+  font-size: 11px;
+  line-height: 18px;
+}
+#content {
+  margin-top: 20px;
+  margin-bottom: 0px;
+  margin-left:400px;
+  margin-right: 180px;
+}
+
+#left_side {
+  margin-top: 10px;
+  float: left;
+  width: 350px;
+  height: 400px;
+  background: #4E7DD1;
+}
 
 

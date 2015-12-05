@@ -28,12 +28,13 @@
 <template name="main">
   {{> navigation}}
   {{> yield}}
-
-  {{#if currentUser}}
-    {{> chat}}
-  {{/if}}
   <hr/>
+
+
+  <div id="footer">
+
   <p>Copyrigth &copy; PlayCarcassonne, 2015.</p>
+  </div>
 </template>
 
 <template name="navigation">
@@ -67,6 +68,25 @@
         </div><!--/.nav-collapse -->
       </div>
     </nav>
+     <div id="left_side">
+
+      <h3>Chat</h3>
+      <p>
+        {{#if currentUser}}
+          {{> chat}}
+        {{/if}}
+      </p>
+
+    </div>
+
+    <div id="right_side">
+
+      <h3>juego de aliens</h3>
+      {{#if currentUser}}
+          {{> alien_invasion}}
+        {{/if}}
+
+    </div>
 
 </template>
 

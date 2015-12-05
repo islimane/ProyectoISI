@@ -275,20 +275,6 @@ if (Meteor.isClient) {
     });
 
     Template.chat.helpers({
-        'namechat': function(){
-            var room = Session.get("roomname");
-            var name = Meteor.users.findOne({_id: room});
-            if (name != undefined){
-
-                return name.profile.user;
-            }
-            var game = Games.findOne({_id: room});
-            if (game != undefined){
-
-                return game.nameGame;
-            }
-            return room;   
-        },
 
         'imagechat':function(){
             
