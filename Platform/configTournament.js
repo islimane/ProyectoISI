@@ -15,19 +15,19 @@ if(Meteor.isClient){
 			var nameTournament = event.target.nameTournament.value;
 			var numPlayer = event.target.numPlayer.value;
 			var password = event.target.password.value;
-			var arrPlayers = []
+			var arrayPlayers = []
 			var data = {
 					id:Meteor.userId(),
 					name : Meteor.users.findOne({_id:Meteor.userId()}).profile.user
 				}
 
-			arrPlayers.push(data)
+			arrayPlayers.push(data)
 			var id = Tournaments.insert({
 				creator : creator,
 				nameTournament : nameTournament,
 				numPlayer : 16,
-				players : arrPlayers,
-				startTournament : false,
+				players : arrayPlayers,
+				tournamentStart : false,
 				password: password
 			})
 			Router.go("startTournament", {_id: id});
