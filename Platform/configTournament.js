@@ -13,7 +13,6 @@ if(Meteor.isClient){
 			event.preventDefault();
 			var creator = Meteor.userId();
 			var nameTournament = event.target.nameTournament.value;
-			var numPlayer = event.target.numPlayer.value;
 			var password = event.target.password.value;
 			var arrayPlayers = []
 			var data = {
