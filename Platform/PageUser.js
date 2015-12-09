@@ -14,16 +14,13 @@ if (Meteor.isClient) {
 		},
 		'myfriends':function(){
 			var arrfriends = []
-			if (this._id == undefined) return null;
+			if (this._id == undefined) return null;////
 			var idfriends = Meteor.users.findOne({_id:this._id});
-			if (idfriends !=undefined){
-				if (idfriends.profile!=null){
-                	idfriends = idfriends.profile.friends;
-            	}
-            }else{
+			if (idfriends == undefined || idfriends.profile == null){
+        
                 return arrfriends;
             }
-			console.log(idfriends)
+            idfriends = idfriends.profile.friends;
 			
 			for(i = 0; i < idfriends.length;i++){
 				var data = {
@@ -31,8 +28,7 @@ if (Meteor.isClient) {
 					name : Meteor.users.findOne({_id:idfriends[i]}).profile.user
 				}
 				arrfriends.push(data)
-			}
-			console.log(arrfriends)
+			} 
 			return arrfriends;
 		},
 		'Notmypage':function(){

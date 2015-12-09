@@ -95,12 +95,11 @@ if (Meteor.isClient) {
 
             var user = Meteor.users.findOne({_id:Meteor.userId()})
 
-            if (user!=undefined){
-                if (user.profile!=null){
-                    user =user.profile.profileimg;
-                }
-            
+            if (user ==undefined || user.profile==null){
+        
+                return user;
             }
+            user = user.profile.profileimg;
             return user;
         }
 
@@ -175,14 +174,12 @@ if (Meteor.isClient) {
             var arrfriends = []
             if (Meteor.userId() == undefined) return arrfriends;
             var idfriends = Meteor.users.findOne({_id:Meteor.userId()});
-            if (idfriends !=undefined){
-                if (idfriends.profile!=null){
-                    idfriends = idfriends.profile.friends;
-                }
-            }else{
+        
+            if (idfriends == undefined || idfriends.profile == null){
+        
                 return arrfriends;
             }
-            
+            idfriends = idfriends.profile.friends;
             for(i = 0; i < idfriends.length;i++){
                 var data = {
                     id:idfriends[i],
@@ -195,15 +192,14 @@ if (Meteor.isClient) {
         'nofriends':function(){
 
             var arrnofriends = [];
-            if (Meteor.userId() == undefined || this._id ==undefined) return arrnofriends;
+            if (Meteor.userId() == undefined) return arrnofriends;
             var idfriends = Meteor.users.findOne({_id:Meteor.userId()});
-            if (idfriends !=undefined){
-                if (idfriends.profile!=null){
-                    idfriends = idfriends.profile.friends;
-                }
-            }else{
+        
+            if (idfriends == undefined || idfriends.profile == null){
+        
                 return arrnofriends;
             }
+            idfriends = idfriends.profile.friends;
             var allusers = Meteor.users.find();
 
             var push;
