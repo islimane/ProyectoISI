@@ -20,7 +20,7 @@ Players.prototype.init = function(){
 }
 
 Players.prototype.names = function() {
-	var arry[] ;
+	var arry=[] ;
 	for ( i = 0 ; i < 4 ; i++ ){
 		arry[i] = this.CurrentPlayer.name ;
 		this.next() ;

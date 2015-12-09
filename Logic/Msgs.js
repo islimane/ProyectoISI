@@ -66,7 +66,7 @@ Meteor.methods({
 			return null ;
 		}	
 		return msg.allNames ;
-	}	
+	},
 
 	// Returns the current Player
 	getPlayer : function (Game) {
