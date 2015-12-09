@@ -19,6 +19,15 @@ Players.prototype.init = function(){
   	return arry ;
 }
 
+Players.prototype.names = function() {
+	var arry[] ;
+	for ( i = 0 ; i < 4 ; i++ ){
+		arry[i] = this.CurrentPlayer.name ;
+		this.next() ;
+	}	
+	return arry ;
+}
+
 Players.prototype.next = function() {
    	this.n++ ;
    	this.n = this.n % 4 ;

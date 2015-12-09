@@ -6,8 +6,9 @@ Msgs = new Mongo.Collection("msgs") ;
 // Server Methods about the Msgs collection.
 
 // Method to create the entry in Msgs shared between IA and UI
-initMsg = function (idGame) {
-	var msg = new Msg (idGame) ;		// Msg declare at the bottom
+initMsg = function (idGame, Names) {
+	var msg = new Msg (idGame) ;		// Msg declared at the bottom
+	msg.allNames = Names ;
 	return Msgs.insert(msg) ;
 }
 
@@ -57,6 +58,15 @@ removeMsg = function (Game) {
 //==> Client Methods to allow access to the collection from the client.
 
 Meteor.methods({
+
+	// Return the 4 Players names
+	getNames : function (Game) {
+		var msg = Msgs.findOne({idGame: Game});
+		if (!msg) {
+			return null ;
+		}	
+		return msg.allNames ;
+	}	
 
 	// Returns the current Player
 	getPlayer : function (Game) {
@@ -117,6 +127,7 @@ Meteor.methods({
 // Fields of each collection entry
 Msg = function (idGame) {
 	this.idGame = idGame ;
+	allNames = [] ;
 	idPlayer = "" ;		
 	idTile = -1 ;		// Tile type 0-23
 	

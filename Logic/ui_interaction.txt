@@ -3,6 +3,10 @@
 API for UI.
 ==================================================================================
 
+	getNames :  function (Game) 
+		/*
+		 * Returns all the players names in the game 
+		 */
 
 	getPlayer : function (Game)
 		/* 
