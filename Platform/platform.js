@@ -1,8 +1,8 @@
 //Collections
 Games = new Meteor.Collection('games');
+SuspendedGames = new Meteor.Collection('suspendedGames');
 Messages = new Meteor.Collection('messages');
 MessagesRoom = new Meteor.Collection('messagesRoom');
-PrivateMsgs = new Meteor.Collection('privateMsgs');
 Tournaments = new Meteor.Collection('tournaments');
 
 //Routes

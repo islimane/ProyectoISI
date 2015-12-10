@@ -1,8 +1,12 @@
-endGame = function(scores){
-    //scores es un array de pares id, socer (un diccionario)
-    //Puntuación máxisma
-    //Partidas ganadas
-    console.log("Juego terminado");
+endGame = function(scores, gameId){
+    /* 
+     * scores is an array of objects with 2 fields:
+     *   - id: the player id
+     *   - score: the score of this player
+     * gameId is the id of the game that have ended
+     */
+
+    console.log("Game ended");
     var winner =  {
         id: "",
         score: 0
@@ -22,11 +26,33 @@ endGame = function(scores){
     user = Meteor.users.findOne({_id: winner.id});
     user.profile.nWins++;
     Meteor.users.update({_id: user._id}, {$set: {profile: user.profile}});
+    SuspendedGames.remove({gameId: gameId});
+    //Should route or something
+};
 
+suspendGame = function(game){
+    /*
+     *  game is the game object and MUST have a gameId field
+     */
+    console.log("Game suspended");
+    var updated = SuspendedGames.update({gameId: game.gameId}, {$set: {game}});
+    if (!updated){
+        SuspendedGames.insert(game);
+    }
+    //Should route or something
 }
 
 Meteor.methods({
+    'startGame': function(players, gameId){
+        /* Players is an array of the players ids.
+         * The number of players is the length of the array
+         * It returns an array explaining the error or empty if everything is OK
+         */
 
+         console.log("game has been started");
+         //ADD LOGIC FUNCTIONALITY
+         return "";
+    },
     'addFriend': function(friendId){
         var user = Meteor.users.findOne({_id: Meteor.userId()}).profile;
         var friends = user.friends;
@@ -70,7 +96,6 @@ Meteor.methods({
         Meteor.users.update({_id:Meteor.userId()},{$set:{profile:data}});
     },
     'changeprofileimg':function(img){
-
         var user = Meteor.users.findOne({_id:Meteor.userId()}).profile;
 
         var data = {
@@ -82,8 +107,5 @@ Meteor.methods({
             friends: user.friends
         }
         Meteor.users.update({_id:Meteor.userId()},{$set:{profile:data}});
-
-
-
     }
 });
