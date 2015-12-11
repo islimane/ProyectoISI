@@ -142,12 +142,10 @@ if(Meteor.isClient){
 	});
 
 	Template.gameTemplate.events({
-		'click .watchGame': function(event){
-			event.preventDefault()
-			console.log("redirigiendo a la partida a observar");
+		'click .watchGame': function(){
+			Router.go("/partida/" + this._id);
 		},
-		'click .joinGame': function(event){
-			event.preventDefault()
+		'click .joinGame': function(){
 			Router.go("/comenzarPartida/" + this._id);
 		}
 	});

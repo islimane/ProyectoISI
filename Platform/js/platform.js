@@ -70,10 +70,6 @@ Router.route('/partidasjugandose', {
   template: "allOngoingGames",
   name: "allOngoingGames"
 });
-Router.route('/mensajesPrivados/:_id', {
-	template: 'privateMsgs',
-	name: "privateMsgs"
-});
 Router.route('/partida/:_id', {
 	template: "onGoingGame",
 	name: "onGoingGame"

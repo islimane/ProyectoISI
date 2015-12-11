@@ -4,5 +4,5 @@ endGame([{id, score}], gameId) -> lo llama lógica -> función en carpeta server
 
 suspendGame({Partida}) -> lo llama lógica -> función .> debe tener un campo gameId
 
-restartGame({Partida}) -> lo llamamos nosotros -> Meteor.call -> misma manera de informe de error que startGame
+resumeGame({Partida}) -> lo llamamos nosotros -> Meteor.call -> misma manera de informe de error que startGame
 

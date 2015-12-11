@@ -33,7 +33,7 @@ if (Meteor.isClient) {
 	      return Games.findOne(selectedPlayer)
 	    }
 
-	})
+	});
 
 	Template.startGame.events({
     	'click .exitGame':function(event){
@@ -224,8 +224,24 @@ if (Meteor.isClient) {
 			}
     		
 			Games.update({_id:this._id},{$set:{players:newArr, creator : creator}})
-    	}
+    	},
+    	'click .starGame': function(){
+  			var gameId = this._id;
+  			var players = Games.findOne({_id: gameId}).players;
+    		console.log("starting " + gameId);
 
+    		Meteor.call("startGame", players, gameId, function(err){
+    			console.log(err);
+    			if(!err){
+    				console.log("no hay errores");
+    				Games.update({_id: gameId}, {$set: {gameStart: true}});
+    				Router.go("/partida/" + gameId);
+    			}else{
+    				console.log("ERROR: " + err);
+    			}
+    		});
+    		
+    	}
     })
 
 }

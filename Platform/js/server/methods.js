@@ -27,6 +27,7 @@ endGame = function(scores, gameId){
     user.profile.nWins++;
     Meteor.users.update({_id: user._id}, {$set: {profile: user.profile}});
     SuspendedGames.remove({gameId: gameId});
+    Games.remove({_id: gameId});
     //Should route or something
 };
 
@@ -40,7 +41,7 @@ suspendGame = function(game){
         SuspendedGames.insert(game);
     }
     //Should route or something
-}
+};
 
 Meteor.methods({
     'startGame': function(players, gameId){
@@ -50,8 +51,17 @@ Meteor.methods({
          */
 
          console.log("game has been started");
-         //ADD LOGIC FUNCTIONALITY
+
+         // ADD LOGIC FUNCTIONALITY
+
          return "";
+    },
+    'resumeGame': function(game){
+        console.log("game has been resumed");
+
+        // ADD LOGIC FUNCIONALITY
+
+        return "";
     },
     'addFriend': function(friendId){
         var user = Meteor.users.findOne({_id: Meteor.userId()}).profile;

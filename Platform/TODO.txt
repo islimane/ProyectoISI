@@ -1,0 +1,1 @@
+avisar a UI de que se empieza la partida, pasar solo el id partida(de cuando se termina avisa logicas)
