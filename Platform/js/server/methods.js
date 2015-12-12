@@ -53,9 +53,7 @@ Meteor.methods({
          console.log("game has been started");
 
          Game = new Game(players, gameId);
-         Game.start();
-
-         return "";
+         return Game.start();
     },
     'resumeGame': function(game){
         console.log("game has been resumed");
