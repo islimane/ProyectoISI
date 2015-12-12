@@ -52,7 +52,8 @@ Meteor.methods({
 
          console.log("game has been started");
 
-         // ADD LOGIC FUNCTIONALITY
+         Game = new Game(players, gameId);
+         Game.start();
 
          return "";
     },

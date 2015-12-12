@@ -2,15 +2,15 @@
 //    PLAYERS OBJECT     //
 /////////////////////////////
 
-Players = function()  {
+Players = function(arguments)  {
 
-	this.players = this.init(arguments[0], arguments[1], arguments[2], arguments[3]) ;
+	this.players = this.init(arguments) ;
 	this.n = 0 ;				 // Current player's index in players[]
 	this.currentPlayer = this.players[0];    // Current player
 	  			        
 }
 
-Players.prototype.init = function(){
+Players.prototype.init = function(arguments){
 	var Max_Players = 4 ;			
   	var arry = [] ;
     	for ( i = 0 ; i < Max_Players ; i++){
