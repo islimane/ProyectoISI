@@ -8,7 +8,6 @@
 Game = function(players, id){
     this.id = id;
     this.players = new Players (players);
-    this.currentPlayer = this.players.currentPlayer;
     this.tiles = new Tiles();
     this.tiles.initTiles();
     this.board = new Board();
@@ -22,7 +21,7 @@ Game.prototype.start = function() {
             //put the current tile
             position = play();
             this.board.insertTile(tile.type, tile.orientation, position);
-            this.currentPlayer = Players.nextPlayer();
+            this.players.next();
         }catch (err) {
             return "Abort: " + err;
         }
