@@ -262,5 +262,6 @@ Tiles.prototype.initTiles = function() {
 Tiles.prototype.popTile = function() {
     if(this.queue.length > 0){
         this.currentTile = this.queue.pop();
+        return this.currentTile;
     }
 };

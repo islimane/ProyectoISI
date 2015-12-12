@@ -4,16 +4,28 @@
 
 // args:
 // players: array of all the players names
-Game = function(playersNames){
-    this.players = new Players (playersNames);
+// id: ID of the current game
+Game = function(players, id){
+    this.id = id;
+    this.players = new Players (players);
+    this.currentPlayer = this.players.currentPlayer;
     this.tiles = new Tiles();
-    this.tile.initTiles();
+    this.tiles.initTiles();
     this.board = new Board();
 }
 
-Game.prototype.startGame = function() {
-    while (tiles.queue.length > 0){
-        Players.nextPlayer();
-        Tiles.popTile();
+Game.prototype.start = function() {
+    while (this.tiles.queue.length > 0){
+        try {
+            tile = this.tiles.popTile();
+            //Function that will return the position where the player
+            //put the current tile
+            position = play();
+            this.board.insertTile(tile.type, tile.orientation, position);
+            this.currentPlayer = Players.nextPlayer();
+        }catch (err) {
+            return "Abort: " + err;
+        }
     }
+    return "";
 };
