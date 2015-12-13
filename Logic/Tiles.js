@@ -203,18 +203,18 @@ predefTiles = [
 Tile = function (type, orientation){
     this.type = type;
     var tmpTile = predefTiles[type].positions;
-    this.orientation = orientation || 0;
     this.positions = {
-        get n  () { return predefTiles[type].positions[(0+this.orientation*2)%8]; },
-        get nw () { return predefTiles[type].positions[(1+this.orientation*2)%8]; },
-        get w  () { return predefTiles[type].positions[(2+this.orientation*2)%8]; },
-        get sw () { return predefTiles[type].positions[(3+this.orientation*2)%8]; },
-        get s  () { return predefTiles[type].positions[(4+this.orientation*2)%8]; },
-        get se () { return predefTiles[type].positions[(5+this.orientation*2)%8]; },
-        get e  () { return predefTiles[type].positions[(6+this.orientation*2)%8]; },
-        get ne () { return predefTiles[type].positions[(7+this.orientation*2)%8]; },
+        get n  () { return predefTiles[type].positions[(0+orientation*2)%8]; },
+        get nw () { return predefTiles[type].positions[(1+orientation*2)%8]; },
+        get w  () { return predefTiles[type].positions[(2+orientation*2)%8]; },
+        get sw () { return predefTiles[type].positions[(3+orientation*2)%8]; },
+        get s  () { return predefTiles[type].positions[(4+orientation*2)%8]; },
+        get se () { return predefTiles[type].positions[(5+orientation*2)%8]; },
+        get e  () { return predefTiles[type].positions[(6+orientation*2)%8]; },
+        get ne () { return predefTiles[type].positions[(7+orientation*2)%8]; },
         get c  () { return predefTiles[type].positions[8]; }
     }
+    this.orientation = orientation;
 }
 
 // Turns 90 degrees clockwise
@@ -252,16 +252,23 @@ Tiles.prototype.initTiles = function() {
     while(this.queue.length < 72){
         var remainingTiles = startingTiles.filter(filterByTotal);
         var Type = getRandomArbitrary(remainingTiles.length,0);
-        --remainingTiles[Type].total;
-        var tile = new Tile(remainingTiles[Type].type, 0);
-        console.log(tile.type);
-        this.queue.push(tile);
+        if(remainingTiles[Type].total !== 0){
+            --remainingTiles[Type].total;
+            var tile = new Tile(remainingTiles[Type].type, 0);
+            console.log(tile.type);
+            this.queue.push(tile);
+        }else {
+            throw "No more units of the picked tile"
+        }
     }
 };
 
 Tiles.prototype.popTile = function() {
     if(this.queue.length > 0){
         this.currentTile = this.queue.pop();
+        if(this.currentTile == null){
+            throw "Popped null tile"
+        }
         return this.currentTile;
     }
 };

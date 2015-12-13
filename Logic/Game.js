@@ -16,10 +16,10 @@ Game = function(players, id){
 Game.prototype.start = function() {
     while (this.tiles.queue.length > 0){
         try {
-            tile = this.tiles.popTile();
+            var tile = this.tiles.popTile();
             //Function that will return the position where the player
             //put the current tile
-            position = play();
+            var position = play();
             this.board.insertTile(tile.type, tile.orientation, position);
             this.players.next();
         }catch (err) {
