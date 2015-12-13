@@ -1,11 +1,11 @@
 
 ///////////////////////////
-//    MAIN NODE OBJECT   //
+//      TREE OBJECT      //
 ///////////////////////////
 
 
 // type: 'r', 'f', 'ci'
-MainNode = function(type){
+Tree = function(type){
 	this.type = type;
 	this.firstNode = undefined;
 }
@@ -15,7 +15,7 @@ MainNode = function(type){
 // childrenCoords: [{x:2, y:2}, {x:1, y:3}, ...]
 // Check first if exists the node in the tree. If exists,
 // call this function to indicate that is placed
-MainNode.prototype.placeNode = function(coord, childrenCoords) {
+Tree.prototype.placeNode = function(coord, childrenCoords) {
     var childrenCoords = childrenCoords || [];
 
 	if (this.firstNode == undefined){
@@ -32,7 +32,7 @@ MainNode.prototype.placeNode = function(coord, childrenCoords) {
 
 // Returns frue or false if coord is in the tree
 // coord: {x:1, y:2}
-MainNode.prototype.existsNode = function(coord){
+Tree.prototype.existsNode = function(coord){
     if (this.findNode(coord))
         return true;
     else
@@ -41,7 +41,7 @@ MainNode.prototype.existsNode = function(coord){
 
 
 // Returns the number of tiles not placed
-MainNode.prototype.getNumNotPlaced = function(){
+Tree.prototype.getNumNotPlaced = function(){
     if (this.firstNode)
         return this.firstNode.numChildrenNotPlaced();
     else
@@ -50,18 +50,18 @@ MainNode.prototype.getNumNotPlaced = function(){
 
 // Returns the number of tiles that are in
 // the board and in this structure 
-MainNode.prototype.getNumPlaced = function(){
+Tree.prototype.getNumPlaced = function(){
     if (this.firstNode)
         return this.firstNode.numChildrenPlaced();
     else
         return 0;
 }
 
-
+//TODO: Improve
 // Merge two trees
 // Call this when you're going to place a coord that is in two trees.
 // coord is the common point in the two trees
-MainNode.prototype.mergeWith = function(remoteTree, coord){
+Tree.prototype.mergeWith = function(remoteTree, coord){
     remoteTree._setFirstNode(coord);
     var nodeDel = this.findNode(coord);
     var parent = nodeDel.parent;
@@ -74,7 +74,7 @@ MainNode.prototype.mergeWith = function(remoteTree, coord){
 
 
 //private methods: _
-MainNode.prototype._getNotDupCoords = function(coords){
+Tree.prototype._getNotDupCoords = function(coords){
     var outCoords = [];
     for (var i = 0; i < coords.length; i++) {
         if (this.findNode(coords[i]) == undefined){
@@ -85,7 +85,7 @@ MainNode.prototype._getNotDupCoords = function(coords){
 }
 
 // Change the first node to coord's node
-MainNode.prototype._setFirstNode = function(coord){
+Tree.prototype._setFirstNode = function(coord){
     var firstNode = this.findNode(coord);
     if (!firstNode)
         return;
@@ -109,7 +109,7 @@ MainNode.prototype._setFirstNode = function(coord){
 }
 
 // coord: {x:1, y:2}
-MainNode.prototype.findNode = function(coord){
+Tree.prototype.findNode = function(coord){
     var output = undefined;
     if (this.firstNode == undefined){
         output = undefined;
@@ -120,7 +120,7 @@ MainNode.prototype.findNode = function(coord){
 }
 
 
-MainNode.prototype._deleteDupNodes = function(){
+Tree.prototype._deleteDupNodes = function(){
     var coords = [];
     if (this.firstNode)
         coords.push(this.firstNode.coord);
@@ -128,7 +128,7 @@ MainNode.prototype._deleteDupNodes = function(){
 }
 
 // For debug issues
-MainNode.prototype.printTree = function(){
+Tree.prototype.printTree = function(){
     if (this.firstNode)
         this.firstNode.printTree(1);
     else
@@ -261,10 +261,10 @@ coord5 = {x: 5, y: 5};
 coord6 = {x: 6, y: 6};
 coord7 = {x: 7, y: 7};
 coord8 = {x: 8, y: 8};
-coord9 = {x: 9, y: 9};*/
+coord9 = {x: 9, y: 9};
 
-/*console.log("--- Creating mainNode 1 ---");
-var fieldTree1 = new MainNode('f');
+console.log("--- Creating Tree 1 ---");
+var fieldTree1 = new Tree('f');
 console.log("Adding c1");
 fieldTree1.placeNode(coord1, [coord2, coord3]);
 console.log("Adding c2");
@@ -278,8 +278,8 @@ console.log("placed: " + fieldTree1.getNumPlaced());
 fieldTree1.printTree();
 
 
-console.log("--- Creating mainNode 2 ---");
-var fieldTree2 = new MainNode('f');
+console.log("--- Creating Tree 2 ---");
+var fieldTree2 = new Tree('f');
 console.log("Adding c1");
 fieldTree2.placeNode(coord5, [coord4, coord6]);
 console.log("Adding c2");
@@ -296,8 +296,8 @@ console.log("Merged!");
 fieldTree1.printTree();*/
 
 
-/*console.log("--- Creating mainNode 1 ---");
-var fieldTree1 = new MainNode('f');
+/*console.log("--- Creating Tree 1 ---");
+var fieldTree1 = new Tree('f');
 console.log("Adding nodes 1... ");
 fieldTree1.placeNode(coord1, [coord2, coord3, coord4, coord5]);
 fieldTree1.placeNode(coord2, [coord3, coord7]);
@@ -308,8 +308,8 @@ console.log("not placed: " + fieldTree1.getNumNotPlaced());
 console.log("placed: " + fieldTree1.getNumPlaced());
 fieldTree1.printTree();
 
-console.log("--- Creating mainNode 2 ---");
-var fieldTree2 = new MainNode('f');
+console.log("--- Creating Tree 2 ---");
+var fieldTree2 = new Tree('f');
 console.log("Adding nodes 2... ");
 fieldTree2.placeNode(coord5, [coord2, coord3, coord6]);
 fieldTree2.placeNode(coord2, [coord3, coord6]);
@@ -326,3 +326,164 @@ console.log("--- Merging the trees ---");
 fieldTree1.mergeWith(fieldTree2, coord9);
 console.log("Merged!");
 fieldTree1.printTree();*/
+
+
+//////////////////////////
+//    GET COORD CHILD   //
+//////////////////////////
+getCoordChild = function(parentCoord, zone){
+    if (zone == 'n' || zone == 'ne' || zone == 'nw'){
+        return {x: parentCoord.x, y: parentCoord.y - 1};
+    } else if (zone == 's' || zone == 'se' || zone == 'sw'){
+        return {x: parentCoord.x, y: parentCoord.y + 1};
+    } else if (zone == 'w' || zone == 'ws' || zone == 'wn'){
+        return {x: parentCoord.x - 1, y: parentCoord.y};
+    } else if (zone == 'e' || zone == 'es' || zone == 'en'){
+        return {x: parentCoord.x + 1, y: parentCoord.y};
+    } else{
+        console.warn('In treeStructure getCoordChild: Not a valid zone: <' + zone + '>');
+        return {};
+    }
+}
+
+
+//////////////////////////
+//    GET AREAS TILE    //
+//////////////////////////
+
+// The comments that are  above the return are the type without turning the tile
+getAreasTile = function(typeTile, orientation){
+    //       0    1     2     3    4     5     6     7    8     9    10    11
+    zone = ['n', 'ne', 'en', 'e', 'es', 'se', 's', 'sw', 'ws', 'w', 'wn', 'nw'];
+    turn = (orientation*3)%12;
+    switch(typeTile){
+    case 0:
+        //              n             s             e             w
+        return {f:  [ [ zone[0+turn], zone[6+turn], zone[3+turn], zone[9+turn] ] ],
+                // no roads, no cities:
+                r:  [],
+                ci: []
+                }
+        break;
+    case 1:
+        return {f:  [ [ zone[0+turn], zone[3+turn], zone[9+turn], zone[7+turn], zone[5+turn] ] ],
+                r:  [ [ zone[6+turn] ] ],
+                ci: [] }
+        break;
+    case 2:
+        return {f:  [],
+                r:  [],
+                ci: [ [ zone[0+turn], zone[3+turn], zone[6+turn], zone[9+turn] ] ] }
+        break;
+    case 3:
+        return {f:  [ [ zone[6+turn] ] ],
+                r:  [],
+                ci: [ [ zone[0+turn], zone[3+turn], zone[9+turn] ] ] }
+        break;
+    case 4://banner
+        return {f:  [ [ zone[6+turn] ] ],
+                r:  [],
+                ci: [ [ zone[0+turn], zone[3+turn], zone[9+turn] ] ] }
+        break;
+    case 5:
+        return {f:  [ [ zone[5+turn], zone[7+turn] ] ],
+                r:  [ [ zone[6+turn] ] ],
+                ci: [ [ zone[0+turn], zone[3+turn], zone[9+turn] ] ] }
+        break;
+    case 6://banner
+        return {f:  [ [ zone[5+turn], zone[7+turn] ] ],
+                r:  [ [ zone[6+turn] ] ],
+                ci: [ [ zone[0+turn], zone[3+turn], zone[9+turn] ] ] }
+        break;
+    case 7:
+        return {f:  [ [ zone[3+turn], zone[6+turn] ] ],
+                r:  [],
+                ci: [ [ zone[0+turn], zone[9+turn] ] ] }
+        break;
+    case 8: //banner
+        return {f:  [ [ zone[3+turn], zone[6+turn] ] ],
+                r:  [],
+                ci: [ [ zone[0+turn], zone[9+turn] ] ] }
+        break;
+    case 9:
+        return {f:  [ [ zone[2+turn], zone[7+turn] ], [ zone[4+turn], zone[5+turn] ] ],
+                r:  [ [ zone[3+turn], zone[6+turn] ] ],
+                ci: [ [ zone[0+turn], zone[9+turn] ] ] }
+        break;
+    case 10: //banner
+        return {f:  [ [ zone[2+turn], zone[7+turn] ], [ zone[4+turn], zone[5+turn] ] ],
+                r:  [ [ zone[3+turn], zone[6+turn] ] ],
+                ci: [ [ zone[0+turn], zone[9+turn] ] ] }
+        break;
+    case 11:
+        return {f:  [ [ zone[0+turn] ], [ zone[6+turn] ] ],
+                r:  [],
+                ci: [ [ zone[3+turn], zone[9+turn] ] ] }
+        break;
+    case 12: //banner
+        return {f:  [ [ zone[0+turn] ], [ zone[6+turn] ] ],
+                r:  [],
+                ci: [ [ zone[3+turn], zone[9+turn] ] ] }
+        break;
+    case 13:
+        return {f:  [ [ zone[3+turn], zone[6+turn] ] ],
+                r:  [],
+                ci: [ [ zone[0+turn] ], [ zone[9+turn] ] ] }
+        break;
+    case 14:
+        return {f:  [ [ zone[3+turn], zone[9+turn] ] ],
+                r:  [],
+                ci: [ [ zone[0+turn] ], [ zone[6+turn] ] ] }
+        break;
+    case 15:
+        return {f:  [ [ zone[3+turn], zone[6+turn], zone[9+turn] ] ],
+                r:  [],
+                ci: [ [ zone[0+turn] ] ] }
+        break;
+    case 16:
+        return {f:  [ [ zone[3+turn], zone[5+turn], zone[10+turn] ], [ zone[7+turn], zone[8+turn] ] ],
+                r:  [ [ zone[6+turn], zone[9+turn] ] ],
+                ci: [ [ zone[0+turn] ] ] }
+        break;
+    case 17:
+        return {f:  [ [ zone[2+turn], zone[7+turn], zone[9+turn] ], [ zone[4+turn], zone[5+turn] ] ],
+                r:  [ [ zone[3+turn], zone[6+turn] ] ],
+                ci: [ [ zone[0+turn] ] ] }
+        break;
+    case 18:
+        return {f:  [ [ zone[2+turn], zone[10+turn] ], [ zone[4+turn], zone[5+turn] ], [ zone[7+turn], zone[8+turn] ] ],
+                r:  [ [ zone[3+turn] ], [ zone[6+turn] ], [ zone[9+turn] ] ],
+                ci: [ [ zone[0+turn] ] ] }
+        break;
+    case 19:
+        return {f:  [ [ zone[4+turn], zone[6+turn], zone[8+turn] ], [ zone[2+turn], zone[10+turn] ] ],
+                r:  [ [ zone[3+turn], zone[9+turn] ] ],
+                ci: [ [ zone[0+turn] ] ] }
+        break;
+    case 20:
+        return {f:  [ [ zone[1+turn], zone[3+turn], zone[5+turn] ], [ zone[7+turn], zone[9+turn], zone[11+turn] ] ],
+                r:  [ [ zone[0+turn], zone[6+turn] ] ],
+                ci: [] }
+        break;
+    case 21:
+        return {f:  [ [ zone[0+turn], zone[3+turn], zone[5+turn], zone[10+turn] ], [ zone[7+turn], zone[8+turn] ] ],
+                r:  [ [ zone[6+turn], zone[9+turn] ] ],
+                ci: [] }
+        break;
+    case 22:
+        return {f:  [ [ zone[0+turn], zone[2+turn], zone[10+turn] ], [ zone[4+turn], zone[5+turn] ], [ zone[7+turn], zone[8+turn] ] ],
+                r:  [ [ zone[3+turn] ], [ zone[6+turn] ], [ zone[9+turn] ] ],
+                ci: [] }
+        break;
+    case 23:
+        return {f:  [ [ zone[1+turn], zone[2+turn] ], [ zone[4+turn], zone[5+turn] ], [ zone[7+turn], zone[8+turn] ], [ zone[10+turn], zone[11+turn] ] ],
+                r:  [ [ zone[0+turn] ], [ zone[3+turn] ], [ zone[6+turn] ], [ zone[9+turn] ] ],
+                ci: [] }
+        break;
+    default:
+        console.error ("In TreeStructure getAreasTile: It's not a valid type: <" + typeTile + ">");
+        return {f: [], r: [], ci: []}
+    }
+
+}
+
