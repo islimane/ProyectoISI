@@ -9,12 +9,16 @@
 <template name="meterJugadores">
     <form>
         <br>
+        METE UN JUGADOR
+        <br>
         pos
         <input type="text" name="pos">
         puntos
         <input type="text" name="puntos">
         nombre
         <input type="text" name="nombre">
+        idPlayer
+        <input type="text" name="idPlayer">
         <input type="submit" value="Add Jugador">
     </form>
 </template>
@@ -22,38 +26,69 @@
 <template name="meterfichaActiva">
     <form>
         <br>
+        METE UNA FICHA ACTIVA
+        <br>
         numero
         <input type="text" name="num">
         coordx
         <input type="text" name="coordx">
         coordy
         <input type="text" name="coordy">
-        rotacion(1-4)
+        rotacion(0-3)
         <input type="text" name="rot">
-        token
+        token (int 0-8)
         <input type="text" name="token">
+        
+        
+
         <input type="submit" value="Add FichaActiva">
     </form>
 </template>
 
 <template name="meterfichaValida">
     <form>
-        numero
-        <input type="text" name="num">
+        <br>
+        METE UNA POSICION POSIBLE DE ROTACION     
+        <br>
         coordx
         <input type="text" name="coordx">
         coordy
         <input type="text" name="coordy">
-        rotacion(1-4)
+        rotacion(0-3)
         <input type="text" name="rot">
-        token
-        <input type="text" name="token">
+        <br>
+        
+        <br>
+        POSICION POSIBLE DE TOKEN (poner 0 para false 1 para true)
+        <br>
+        <br>
+        N
+        <input type="text" name="n">
+        NW
+        <input type="text" name="nw">
+        W
+        <input type="text" name="w">
+        SW
+        <input type="text" name="sw">
+        S
+        <input type="text" name="s">
+        SE
+        <input type="text" name="se">
+        E
+        <input type="text" name="e">
+        NE
+        <input type="text" name="ne">
+        C
+        <input type="text" name="c">
         <input type="submit" value="Add FichaValida">
     </form>
 </template>
 
 <template name="puntosAjugadores">
     <form>
+        <br>
+        <br>
+        <br>
         Jugador1
         <input type="text" name="jugador1">
         Jugador2
