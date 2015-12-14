@@ -1,102 +1,152 @@
 if (Meteor.isClient) {
 
-	var fichasActivas=[];
-	var fichasValidas=[];
-	var jugadores=[];
+	var fichasActivas = [];
+	var rot0 = [];
+	var rot1 = [];
+	var rot2 = [];
+	var rot3 = [];
+	var fichasValidas = [rot0,rot1,rot2,rot3];
+	var jugadores = [];
 
-	function jugador(posicion, puntos, nombre){
+	function jugador(posicion, puntos, nombre,idPlayer){
 		this.pos=posicion;
 		this.puntos=puntos;
 		this.nombre=nombre;
+		this.idPlayer=idPlayer;
+	}
+
+	function creadummie(pos){
+		for (i = 0; i < 10 ; i++) {
+			if (i == pos) {
+				dummies[i] =true;
+			}else{
+				dummies[i]=false;
+			}
+		} 
+		return dummies;
 	}
 
 	function ficha(num, coordx, coordy, rot, token) {
 	    this.num = num;
-	    this.coordx = coordx;
-	    this.coordy = coordy;
+	    this.coord = [coordx,coordy];
 	    this.rot = rot;
 	    this.token=token;
 	}
 	//////////////////////PARCHEADO/////////////////
 	Template.meterJugadores.events({
-		'submit form': function(event){
-		    event.preventDefault();
-		    var pos = event.target.pos.value;
-		    var puntos = event.target.puntos.value;
-		    var nombre = event.target.nombre.value;
+	'submit form': function(event){
+	    event.preventDefault();
+	    var pos = event.target.pos.value;
+	    var puntos = event.target.puntos.value;
+	    var nombre = event.target.nombre.value;
+	    var idPlayer = event.target.idPlayer.value;
+	    jugadores[pos] = new jugador(pos,puntos,nombre,idPlayer);
+	}
+});
+Template.meterfichaActiva.events({
+	'submit form': function(event){
+	    event.preventDefault();
+	    var num = event.target.num.value;
+	    var coordx = event.target.coordx.value;
+	    var coordy = event.target.coordy.value;
+	    var rot = event.target.rot.value;
+	    var token= creadummie(event.target.token.value);
+	    var ficha= new ficha(num,coordx,coordy,rot,token);
+	    fichasActivas.push(ficha);
+	}
 
-		    jugadores[pos] = new jugador(pos,puntos,nombre);
+});
+
+Template.meterfichaValida.events({
+	'submit form': function(event){
+	    event.preventDefault();
+	    var coordx = event.target.coordx.value;
+	    var coordy = event.target.coordy.value;
+	    var rot = event.target.rot.value;
+	    var info= [];
+	    var n = event.target.n.value
+	    if (n==1){
+	    	info[0]=true;
+	    }else{
+	    	info[0]=false;
+	    }
+	     var nw = event.target.nw.value
+	    if (nw==1){
+	    	info[1]=true;
+	    }else{
+	    	info[1]=false;
+	    }
+	     var w = event.target.w.value
+	    if (w==1){
+	    	info[2]=true;
+	    }else{
+	    	info[2]=false;
+	    }
+	     var sw = event.target.sw.value
+	    if (n==1){
+	    	info[3]=true;
+	    }else{
+	    	info[3]=false;
+	    }
+	     var s = event.target.s.value
+	    if (s==1){
+	    	info[4]=true;
+	    }else{
+	    	info[4]=false;
+	    }
+	    var se = event.target.se.value
+	    if (se==1){
+	    	info[5]=true;
+	    }else{
+	    	info[5]=false;
+	    }
+	    var e = event.target.e.value
+	    if (e==1){
+	    	info[6]=true;
+	    }else{
+	    	info[6]=false;
+	    }
+	    var ne = event.target.ne.value
+	    if (ne==1){
+	    	info[7]=true;
+	    }else{
+	    	info[7]=false;
+	    }
+	    var c = event.target.c.value
+	    if (c==1){
+	    	info[8]=true;
+	    }else{
+	    	info[8]=false;
+	    }
+	   
+	    fichasValidas[rot].push([coordx,coordy],info);
+	}
+
+});
+
+Template.puntosAjugadores.events({
+	'submit form': function(event){
+		event.preventDefault();
+		var j1= event.target.jugador1.value;
+		var j2= event.target.jugador2.value;
+		var j3= event.target.jugador3.value;
+		var j4= event.target.jugador4.value;
+		if (j1){
+			jugadores[0].puntos = jugadores[0].puntos +j1;
 		}
-	});
-	Template.meterfichaActiva.events({
-		'submit form': function(event){
-		    event.preventDefault();
-		    console.log("entra a meterfichaActiva");
-		    var num = event.target.num.value;
-		    console.log("sacamos num");
-		    console.log(num);
-		    var coordx = event.target.coordx.value;
-		    console.log("sacamos coordx");
-		    console.log(coordx);
-		    var coordy = event.target.coordy.value;
-		    console.log("sacamos coordy");
-		    console.log(coordy);
-		    var rot = event.target.rot.value;
-		    console.log("sacamos rot");
-		    console.log(rot);
-		    var token= event.target.token.value;
-		    console.log("sacamos token");
-		    console.log(token);
-		    var fichanew = new ficha(num,coordx,coordy,rot,token);
-		    fichasActivas.push(fichanew);
-
-		    var arrayLength = fichasActivas.length;
-		    console.log("longitud array");
-		    console.log(arrayLength);
-			for (var i = 0; i < arrayLength; i++) {
-			     console.log(fichasActivas[i].num)
-			}
-		
+		if (j2){
+			jugadores[1].puntos = jugadores[1].puntos +j2;
+		}
+		if (j3){
+			jugadores[2].puntos = jugadores[2].puntos +j3;
+		}
+		if (j4){
+			jugadores[3].puntos = jugadores[3].puntos +j4;
 		}
 
-	});
+	}
+})
 
-	Template.meterfichaValida.events({
-		'submit form': function(event){
-		    event.preventDefault();
-		    var num = event.target.num.value;
-		    var coordx = event.target.coordx.value;
-		    var coordy = event.target.coordy.value;
-		    var rot = event.target.rot.value;
-		    var token= event.target.token.value;
-		    var fichanew= new ficha(num,coordx,coordy,rot,token);
-		    fichasValidas.push(fichanew);
-		}
-
-	});
-
-	Template.puntosAjugadores.events({
-		'submit form': function(event){
-			event.preventDefault();
-			var j1= event.target.jugador1.value;
-			var j2= event.target.jugador2.value;
-			var j3= event.target.jugador3.value;
-			var j4= event.target.jugador4.value;
-			if (j1){
-				jugadores[0].puntos = jugadores[0].puntos +j1;
-			}
-			if (j2){
-				jugadores[1].puntos = jugadores[1].puntos +j2;
-			}
-			if (j3){
-				jugadores[2].puntos = jugadores[2].puntos +j3;
-			}
-			if (j4){
-				jugadores[3].puntos = jugadores[3].puntos +j4;
-			}
-
-		}
-	})
 
 	///////////////////////FIN DEL PARCHEADO///////////////////
 
