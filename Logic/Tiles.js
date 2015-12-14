@@ -255,7 +255,6 @@ Tiles.prototype.initTiles = function() {
         if(remainingTiles[Type].total !== 0){
             --remainingTiles[Type].total;
             var tile = new Tile(remainingTiles[Type].type, 0);
-            console.log(tile.type);
             this.queue.push(tile);
         }else {
             throw "No more units of the picked tile"
