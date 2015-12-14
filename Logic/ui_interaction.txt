@@ -84,7 +84,7 @@ newTurn(idGame, idPlayer, idTile, rotations)
 	info = {
 		coord: [x,y];
 		// 		 [ n,  nw,   w,  sw,   s,  se,   e,  ne,   c  ]
-		dummies: [] // de 0 a 9 true y false donde vaya el dummy
+		dummies: [] // de 0 a 8 true y false donde vaya el dummy
 	}
 
 
@@ -95,7 +95,7 @@ endTurn(backInfo)
 	backInfo = {
 		coord: [x,y];
 		// 		 [ n,  nw,   w,  sw,   s,  se,   e,  ne,   c  ]
-		dummies: [] // de 0 a 9 true y false donde vaya el dummy
+		dummies: [] // de 0 a 8 true y false donde vaya el dummy
 		rotation: 0-3
 	}
 
