@@ -20,9 +20,12 @@ saveTileInTreesOfAType = function(areas, treesOfType, coord, type){
         } else if (trees.length == 1){
             trees[0].placeNode(coord, area);
         } else {
-            console.log("merging trees, isn't implemented yet");
-            //mergeTrees
-            //delete a tree
+            for (var i = 1; i< (trees.length -1); i++){
+                trees[0].mergeWith(trees[i], coord, area);
+                var delTree = treesOfType.indexOf(trees[i]);
+                treesOfType.splice(delTree, 1);
+            }
+            trees[0].placeNode(coord, area);
         }
     });
 }
