@@ -55,6 +55,7 @@ Tree.prototype.numRemainingTiles = function(){
     }
 }
 
+
 // Returns the number of tiles placed
 Tree.prototype.numTilesPlaced = function(){
     if (this.firstNode){
@@ -65,6 +66,28 @@ Tree.prototype.numTilesPlaced = function(){
     }
 }
 
+
+// Merge two trees
+// Call this when you're going to place a coord that is in two trees.
+// coord is the common point in the two trees
+// Return -1 if an error occurred. It is printed in the terminal
+Tree.prototype.mergeWith = function(remoteTree, coord, area){
+    var output = remoteTree._setFirstNode(coord, area);
+    if (output == -1)
+        return -1; 
+    var nodes = this.findNodes(coord, area);
+    if (nodes.length == 0){
+        console.warn("Node<" + node + ">,area<" + area + "> not found in this tree");
+        return -1;
+    }
+    var nodeMerge = nodes[0];
+    var childrenFNRemote = remoteTree.firstNode.children;
+    childrenFNRemote.forEach(function(nodeChild){
+        nodeMerge.children.push(nodeChild);
+    });
+}
+
+
 /***********************
 **  USED INTERNALLY   **
 ***********************/
@@ -72,7 +95,10 @@ Tree.prototype.numTilesPlaced = function(){
 
 // coord: {x:1, y:2}
 // area: ['n', 'se' ...]
+// coord is obligatory. If area is not passed by argument
+// it find only the nodes with that coord
 Tree.prototype.findNodes = function(coord, area){
+    var area = area || ['n','s','e','w','nw','sw','wn','ws','ne','se','en','es'];
     var nodes = [];
     var that = this;
     if (this.firstNode != undefined){
@@ -80,6 +106,7 @@ Tree.prototype.findNodes = function(coord, area){
     }
     return nodes;
 }
+
 
 // Guiven coords returns wich of that coords arent placed
 Tree.prototype._getNotPlacedCoords = function(childrenElements){
@@ -90,6 +117,7 @@ Tree.prototype._getNotPlacedCoords = function(childrenElements){
     });
     return notPlaced;
 }
+
 
 // Returns if a coord is in the tree and is placed
 Tree.prototype._isPlaced = function(coord){
@@ -111,6 +139,35 @@ Tree.prototype.printTree = function(){
         console.log("Empty tree");
 }
 
+
+// Set the first node of a tree a determinate coord
+// and keep all the nodes
+Tree.prototype._setFirstNode = function(coord, area){
+    var nodes = this.findNodes(coord, area);
+    if (nodes.length == 0){
+        console.warn("coord " + coord + " isn't in the tree");
+        return -1;
+    }
+    var firstNode = nodes[0];
+
+    var aux = firstNode;
+    var prev = null;
+    var parent = null;
+    var delIndex = 0;
+    while (aux){
+        parent = aux.parent;
+        aux.parent = prev;
+        if (prev){
+            delIndex = aux.children.indexOf(prev);
+            aux.children.splice(delIndex, 1);
+        }
+        if (parent)
+            aux.children.push(parent);
+        prev = aux;
+        aux = parent;
+    }
+    this.firstNode = firstNode;
+}
 
 
 
@@ -141,9 +198,10 @@ Node.prototype.setChildren = function(childrenElements){
     var childrenElements = childrenElements || [];
     var that = this;
     childrenElements.forEach(function(child){
-        that.children.push(new Node(child.coord, this, child.zone, [], false));
+        that.children.push(new Node(child.coord, that, child.zone, [], false));
     });
 }
+
 
 // coord: {x:1, y:2}
 // returns: Nodes found
@@ -164,6 +222,7 @@ Node.prototype.findNodes = function(coord, area) {
 
     return nodes;
 }
+
 
 //Returns the number of all the coordinates not placed
 Node.prototype.remainingCoords = function (coordsNotPlaced){
@@ -254,6 +313,7 @@ var posInArea = function(pos, area){
     return is;
 }
 
+
 // Returns if the coord is in the array
 var coordInArray = function(coord, coordsArray){
     var is = false;
@@ -330,5 +390,6 @@ getCoordAndZoneChild = function(parentCoord, parentZone){
     }
     return {coord: coordc, zone: zonec}
 }
+
 
 
