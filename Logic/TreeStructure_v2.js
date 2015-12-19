@@ -5,15 +5,22 @@
 
 
 // type: 'r', 'f', 'ci'
-Tree = function(type){
+// Allow create a tree with a node
+// Coord: {x:1, y:2}
+// area: ['se','sw']
+// Coord and area aren't required
+Tree = function(type, coord, area){
+    this.dummies = [];
     this.type = type;
     this.firstNode = undefined;
+    if (coord && area)
+        this.placeNode(coord, area);
 }
 
 // coord: {x:1, y:2}
 // area: ['se','sw']
-// Check first if exists the node in the tree. If exists,
-// call this function to indicate that is placed
+// ---Check first if exists the node in the tree---.
+// If exists, call this function to indicate that is placed
 // Return 0 is everything was ok
 // Return -1 is something was wrong, msg in the console.
 Tree.prototype.placeNode = function(coord, area){
