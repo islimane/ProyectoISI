@@ -72,7 +72,11 @@ Router.route('/partidasjugandose', {
 });
 Router.route('/partida/:_id', {
 	template: "onGoingGame",
-	name: "onGoingGame"
+	name: "onGoingGame",
+    data: function(){
+        var gameId = this.params._id;
+        return Games.findOne({_id: gameId});
+    }
 });
 
 Router.route('pruebaUI', {
