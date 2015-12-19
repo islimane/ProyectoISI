@@ -7,7 +7,7 @@
 
 
 
-/*IAplayer = function () {
+IAplayer = function () {
     Player.call(this, 0);
 
     if (this.constructor === IAplayer) {
@@ -41,4 +41,3 @@ FirstMode.prototype.constructor = FirstMode;
 FirstMode.prototype.playTile = function (tile) {
     // Yet to be implemented
 }
-*/
