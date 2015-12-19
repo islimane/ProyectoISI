@@ -46,7 +46,8 @@ Tree.prototype.existsNode = function(coord, area){
 
 
 // Returns the number of tiles not placed
-Tree.prototype.numRemainingTiles = function(){
+// 0 -> Tree completed
+Tree.prototype.getLeftChildren = function(){
     if (this.firstNode){
         var remaining = this.firstNode.remainingCoords();
         return remaining.length;
@@ -56,8 +57,8 @@ Tree.prototype.numRemainingTiles = function(){
 }
 
 
-// Returns the number of tiles placed
-Tree.prototype.numTilesPlaced = function(){
+// Returns the number of tiles placed in this tree
+Tree.prototype.getNumOfTiles = function(){
     if (this.firstNode){
         var placed = this.firstNode.placedCoords();
         return placed.length;
@@ -70,7 +71,7 @@ Tree.prototype.numTilesPlaced = function(){
 // Merge two trees
 // Call this when you're going to place a coord that is in two trees.
 // coord is the common point in the two trees
-// Return -1 if an error occurred. It is printed in the terminal
+// Return -1 if an error occurred. Error is printed in the terminal
 Tree.prototype.mergeWith = function(remoteTree, coord, area){
     var output = remoteTree._setFirstNode(coord, area);
     if (output == -1)
