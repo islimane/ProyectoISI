@@ -5,11 +5,15 @@
 saveTileInTrees = function(coord, tile, fieldTrees, cityTrees, roadTrees){
     var areasOfAllTypes = getAreasTile(tile.type, tile.orientation); //{f: [['se'],['sw']], r: [['s']], ci: [['n','e','w']] }
 
-    saveTileInTreesOfAType(areasOfAllTypes.f, fieldTrees, coord, 'f')
-    saveTileInTreesOfAType(areasOfAllTypes.ci, cityTrees, coord, 'ci')
-    saveTileInTreesOfAType(areasOfAllTypes.r, roadTrees, coord, 'r')
+    saveTileInTreesOfAType(areasOfAllTypes.f, fieldTrees, coord, 'f');
+    saveTileInTreesOfAType(areasOfAllTypes.ci, cityTrees, coord, 'ci');
+    saveTileInTreesOfAType(areasOfAllTypes.r, roadTrees, coord, 'r');
 }
 
+// areas: eg. areasOfAllTypes.f
+// treesOfType: eg. the array of field Trees
+// coord: {x: 0, y: 4}
+// type: 'r', 'f' or 'r'
 saveTileInTreesOfAType = function(areas, treesOfType, coord, type){
     areas.forEach(function(area){
         var trees = findTreesNeed(coord, area, treesOfType);
@@ -30,6 +34,9 @@ saveTileInTreesOfAType = function(areas, treesOfType, coord, type){
     });
 }
 
+// coord: {x: 0, y: 4}
+// area: a part of areasOfAllTypes.f, eg. ['se'] or ['n','e','w']
+// treesArray: eg. the array of field Trees
 findTreesNeed = function(coord, area, treesArray){
     var trees = [];
     treesArray.forEach(function(tree){
@@ -45,7 +52,7 @@ findTreesNeed = function(coord, area, treesArray){
 //////////////////////////
 
 // This is a preset method than guiven a typeTile returns all the posibles
-// areas in the tile of city, road and field.                                 //TODO: Copy somewhere
+// areas in the tile of city, road and field.
 getAreasTile = function(typeTile, orientation){
     //       0    1     2     3    4     5     6     7    8     9    10    11
     zone = ['n', 'ne', 'en', 'e', 'es', 'se', 's', 'sw', 'ws', 'w', 'wn', 'nw'];
