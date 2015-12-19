@@ -1,4 +1,4 @@
-/*/////////////////////////////
+/////////////////////////////
 //    IA PLAYER OBJECT     //
 /////////////////////////////
 
@@ -7,7 +7,7 @@
 
 
 
-IAplayer = function () {
+/*IAplayer = function () {
     Player.call(this, 0);
 
     if (this.constructor === IAplayer) {
