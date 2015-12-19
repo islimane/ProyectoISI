@@ -1,9 +1,12 @@
-/////////////////////////////
+/*/////////////////////////////
 //    IA PLAYER OBJECT     //
 /////////////////////////////
 
 // IA Player inherits from Player class
 // IAplayer is an abstract class
+
+
+
 IAplayer = function () {
     Player.call(this, 0);
 
@@ -38,3 +41,4 @@ FirstMode.prototype.constructor = FirstMode;
 FirstMode.prototype.playTile = function (tile) {
     // Yet to be implemented
 }
+*/
