@@ -2,4 +2,26 @@
 
 	<h1> Sala Torneo </h1>
 
+
+    {{#if ImInTheGame}}
+      <input type="button" class="exitTournament" value="Salir del torneo">
+    {{else}}
+        <input type="button" class="accessTournament" value="Entrar al torneo">
+        <div hidden class="formpass">
+            <form>
+              <input type ="password" name = "password" required>
+              <input type ="submit" class ="creatGame" value = "Confirmar contraseña"/>
+            </form>
+        </div>
+    {{/if}}
+
+	 <p> Jugadores</p>
+		<ul>
+			{{#each players}}
+        <li class="player {{selectedClass}}" id ="{{this.id}}">{{this.name}}</li>
+  		{{/each}}
+
+		</ul>
+
+
 </template>
