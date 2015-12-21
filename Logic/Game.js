@@ -17,10 +17,13 @@ Game.prototype.start = function() {
     while (this.tiles.queue.length > 0){
         try {
             var tile = this.tiles.popTile();
-            //Function that will return the position where the player
-            //put the current tile
-            var position = play();
-            this.board.insertTile(tile.type, tile.orientation, position);
+            var currentPlayer = this.players.currentPlayer;
+            if(currentPlayer.id == 0) {
+                //If the player is automatic, we call its playTile method.
+                currentPlayer.playTile(tile, this.board);
+            }else{
+                //If the player is human, we wait for him to play the tile.
+            }
             this.players.next();
         }catch (err) {
             return "Abort: " + err;

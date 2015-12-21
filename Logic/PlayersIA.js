@@ -38,6 +38,18 @@ FirstMode = function () {
 FirstMode.prototype = Object.create(IAplayer.prototype);
 FirstMode.prototype.constructor = FirstMode;
 
-FirstMode.prototype.playTile = function (tile) {
-    // Yet to be implemented
+// Gets possible positions in the board and then it
+// just assigns the tile to the first possition it finds
+// (If for a given orientation there are no possible positions
+// it tries with a new orientation of the tile)
+FirstMode.prototype.playTile = function (tile, board) {
+    var cells = [];
+    while (cells.length == 0) {
+        cells = board.getMatchingCells(tile);
+        if (cells.length == 0) {
+            tile.turnTile();
+        }
+    }
+
+    board.insertTile(tile.type, tile.orientation, cells[0]);
 }
