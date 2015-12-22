@@ -10,7 +10,8 @@ describe('Board', function() {
 
 	it('should insert a tile on the board with type=15 and orientation=1', function() {
 		var board = new Board();
-		board.insertTile(15, 1, [49,49]);
+		var tile = new Tile(15, 1);
+		board.insertTile(tile, [49,49]);
 		expect(board.cells[49][49].tile.type).toEqual(15);
 		expect(board.cells[49][49].tile.orientation).toEqual(1);
 	});
