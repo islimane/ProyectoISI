@@ -1,3 +1,6 @@
+debug = true;
+
+
 /////////////////////////////
 // TreesCollection OBJECT  //
 /////////////////////////////
@@ -9,6 +12,13 @@ TreesCollection = function(){
         cityTrees: [],
         roadTrees: []
     };
+
+    // Poinst per tile
+    this.points = {
+        fieldTile: 1,
+        cityTile: 2,
+        roadTile: 1
+    }
 }
 
 // This function inserts the tile in one
@@ -16,10 +26,14 @@ TreesCollection = function(){
 // the zones of the tile.
 // coor: [xx,yy] --> e.g [4,52]
 TreesCollection.prototype.insertTile = function(tile, coor){
-    saveTileInTrees(coor, tile, 
+    var completedTrees = saveTileInTrees(coor, tile, 
         this.collection.fieldTrees, 
         this.collection.cityTrees, 
         this.collection.roadTrees);
+    if(checkCompletedTrees(completedTrees))
+        if(debug) console.log("completedTrees:\n" + completedTrees);
+    else
+        if(debug) console.log("There is no completed tree");
 }
 
 
@@ -29,10 +43,19 @@ TreesCollection.prototype.insertTile = function(tile, coor){
 //    FOR MANAGING TREES     //
 ///////////////////////////////
 
+checkCompletedTrees = function(completedTrees){
+    for(i in completedTrees){
+        if(completedTrees[i].length>0)
+            return true;
+    }
+    return false;
+}
+
 // this function returns an array of completed Trees by type of zone
 // completedTrees = [[completed fTrees],[completed ciTrees],[completed rTrees]];
 saveTileInTrees = function(coord, tile, fieldTrees, cityTrees, roadTrees){
     var areasOfAllTypes = getAreasTile(tile.type, tile.orientation); //{f: [['se'],['sw']], r: [['s']], ci: [['n','e','w']] }
+    if(debug) console.log(areasOfAllTypes);
     var completedTrees = [];
     var fTrees = saveTileInTreesOfAType(areasOfAllTypes.f, fieldTrees, coord, 'f');
     var ciTrees = saveTileInTreesOfAType(areasOfAllTypes.ci, cityTrees, coord, 'ci');
@@ -51,11 +74,14 @@ saveTileInTreesOfAType = function(areas, treesOfType, coord, type){
     areas.forEach(function(area){
         var trees = findTreesNeed(coord, area, treesOfType);
         if (trees.length == 0){
+            if(debug) console.log("NEW TREE: (" + type + ", [" + coord.x  + "," + coord.y + "],  " + area + ")");
             var newTree = new Tree(type, coord, area);
             treesOfType.push(newTree);
         } else if (trees.length == 1){
+            if(debug) console.log("ONE TREE");
             trees[0].placeNode(coord, area);
         } else {
+            if(debug) console.log("MULTIPLE TREES");
             for (var i = 1; i< (trees.length -1); i++){
                 trees[0].mergeWith(trees[i], coord, area);
                 var delTree = treesOfType.indexOf(trees[i]);
@@ -64,8 +90,10 @@ saveTileInTreesOfAType = function(areas, treesOfType, coord, type){
             trees[0].placeNode(coord, area);
         }
         // If the tree is completed, add it to completedTrees
-        if(trees[0]!=undefined && trees[0].getLeftChildren==0)
+        if(trees[0]!=undefined && trees[0].getLeftChildren()==0){
             completedTrees.push(trees[0]);
+            trees[0].printTree();
+        }
     });
     return completedTrees;
 }
@@ -224,6 +252,22 @@ getAreasTile = function(typeTile, orientation){
 }
 
 
-t = new Tile(5, 1);
-c = new TreesCollection(t);
-c.insertTile(t, [3,4]);
+/*c = new TreesCollection();
+
+t = new Tile(19, 2);
+c.insertTile(t, {x:49, y:49});
+
+t = new Tile(1, 3);
+c.insertTile(t, {x:49, y:48});
+
+t = new Tile(21, 1);
+c.insertTile(t, {x:49, y:46});
+
+t = new Tile(3, 3);
+c.insertTile(t, {x:48, y:49});
+
+t = new Tile(17, 1);
+c.insertTile(t, {x:50, y:49});
+
+t = new Tile(15, 0);
+c.insertTile(t, {x:49, y:50});*/
