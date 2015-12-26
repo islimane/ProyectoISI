@@ -8,25 +8,27 @@
 // Allow create a tree with a node
 // Coord: {x:1, y:2}
 // area: ['se','sw']
+// tileType: eg. 19
 // Coord and area aren't required
-Tree = function(type, coord, area){
+Tree = function(type, coord, area, tileType){
     this.dummies = [];
     this.type = type;
     this.firstNode = undefined;
-    if (coord && area)
-        this.placeNode(coord, area);
+    if (coord && area && tileType)
+        this.placeNode(coord, area, tileType);
 }
 
 // coord: {x:1, y:2}
 // area: ['se','sw']
+// tileType: eg. 19
 // ---Check first if exists the node in the tree---.
 // If exists, call this function to indicate that is placed
 // Return 0 is everything was ok
 // Return -1 is something was wrong, msg in the console.
-Tree.prototype.placeNode = function(coord, area){
+Tree.prototype.placeNode = function(coord, area, tileType){
     var childrenElements = getChildrenElements(coord, area);
     if (this.firstNode == undefined){
-        this.firstNode = new Node(coord, null, 'x', childrenElements, true);
+        this.firstNode = new Node(coord, null, 'x', childrenElements, true, tileType);
     } else {
         childrenElements = this._getNotPlacedCoords(childrenElements);
         var nodes = this.findNodes(coord, area);
@@ -34,6 +36,7 @@ Tree.prototype.placeNode = function(coord, area){
             nodes.forEach(function(node){
                 node.placed = true;
                 node.setChildren(childrenElements);
+                node.tileType = tileType || -1;
             });
             return 0;
         }else{
@@ -93,6 +96,17 @@ Tree.prototype.mergeWith = function(remoteTree, coord, area){
     childrenFNRemote.forEach(function(nodeChild){
         nodeMerge.children.push(nodeChild);
     });
+}
+
+
+// Returns the number of banners in a tree (only for cities)
+Tree.prototype.getNumOfBanners = function(){
+    if (this.firstNode){
+        var tilesBanner = this.firstNode.nodesBanners();
+        return tilesBanner.length;
+    } else {
+        return 0;
+    }
 }
 
 
@@ -189,12 +203,14 @@ Tree.prototype._setFirstNode = function(coord, area){
 // parent: Node
 // pos: 'n' ... or 'x' when is the first node
 // placed: true or false
-Node = function(coord, parent, pos, childrenElements, placed){
+// tileType
+Node = function(coord, parent, pos, childrenElements, placed, tileType){
     var childrenElements = childrenElements || [];
     this.pos = pos || 'x';
     this.coord = coord;
     this.placed = placed || false;
     this.parent = parent || null;
+    this.tileType = tileType || -1;
     this.children = [];
     this.setChildren(childrenElements);
 }
@@ -278,14 +294,24 @@ Node.prototype.isPlaced = function(coord){
 // For debug issues
 Node.prototype.printTree = function(indent){
     console.log(Array(2 * indent).join(" ") + "- coord(" + 
-        this.coord.x + "," + this.coord.y +")zone(" + this.pos + ")Placed:" + this.placed);
+        this.coord.x + "," + this.coord.y +")zone(" + this.pos + 
+        ")Placed(" + this.placed + ")Type(" + this.tileType + ")");
     for (var i=0; i<this.children.length; i++){
         this.children[i].printTree(indent + 1);
     }
 }
 
 
+Node.prototype.nodesBanners = function(coordsBanner){
+    var coordsBanner = coordsBanner || [];
+    if (hasBanner(this.tileType) && !coordInArray(this.coord, coordsBanner))
+        coordsBanner.push(this.coord)
 
+    this.children.forEach(function(child){
+        coordsBanner = child.nodesBanners(coordsBanner);
+    });
+    return coordsBanner;
+}
 
 ////////////////////////////
 //     OTHER FUNCTIONS    //
@@ -330,6 +356,17 @@ var coordInArray = function(coord, coordsArray){
             is = true;
     });
     return is;
+}
+
+
+// Returns if a tile type has banner
+var hasBanner = function(tileType){
+    var bannerTypes = [2, 4, 6, 8, 10, 12];
+    for (var i = 0; i< bannerTypes.length; i++){
+        if (tileType == bannerTypes[i])
+            return true;
+    }
+    return false;
 }
 
 
