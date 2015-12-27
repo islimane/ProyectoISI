@@ -1,131 +1,74 @@
-// This a collection to interact with UI, both ( UI and IA, server and client)
-// by some methods (called by client) to check the collection stored in the server.
+// Interaction Methods between IA(server) and UI(client)
 
-Msgs = new Mongo.Collection("msgs") ;
-
-// Server Methods about the Msgs collection.
-
-// Method to create the entry in Msgs shared between IA and UI
-initMsg = function (idGame, Names) {
-	var msg = new Msg (idGame) ;		// Msg declared at the bottom
-	msg.allNames = Names ;
-	return Msgs.insert(msg) ;
-}
-
-// Fills the Games msg with the new turns information ( Player, Tile, positions..)
-newTurnMsg = function (Game, Player, Tile) {
-	var msg = Msgs.findOne({idGame: Game});
-	if (!msg) {
-		return null ;
-	}
-	msg.idPlayer = Player ;
-	msg.idTile = Tile ;
-}
-// Sets the plausible coords for the current tile.
-setCoords = function (Game , rot0, rot1, rot2, rot3) {
-	var msg = Msgs.findOne({idGame: Game});
-	if (!msg) {
-		return null ;
-	}
-	msg.coords.rot0 = rot0 ;
-	msg.coords.rot1 = rot1 ;
-	msg.coords.rot2 = rot2 ;
-	msg.coords.rot3 = rot3 ;
-}
-// Returns the info from UI
-getBackInfo = function (Game) {
-	var msg = Msgs.findOne({idGame: Game});
-	if (!msg) {
-		return null ;
-	}
-}
-
-// New info once checked backInfo from UI.
-setUpdatedInfo = function (Game , coords , score) {
-	var msg = Msgs.findOne({idGame: Game});
-	if (!msg) {
-		return null ;
-	}
-	msg.updatedInfo.coord = coords ;
-	msg.updatedInfo.score = score ;
-}
-// Removes the Msg entry for the game
-removeMsg = function (Game) {
-	Msgs.remove({idGame: Game})
-}
-
-
-//==> Client Methods to allow access to the collection from the client.
 
 Meteor.methods({
 
-	// Return the 4 Players names
-	getNames : function (Game) {
-		var msg = Msgs.findOne({idGame: Game});
-		if (!msg) {
-			return null ;
-		}	
-		return msg.allNames ;
-	},
+	// Return the 4 Players names to UI
+	getNames : function (gameId) {
+		game = Games.findOne({_id:gameId});
 
-	// Returns the current Player
-	getPlayer : function (Game) {
-		var msg = Msgs.findOne({idGame: Game});
-		if (!msg) {
+		if(!( Meteor.userId() == game.players.currentPlayer.id )){
 			return null ;
 		}
-		return msg.idPlayer ;
+
+		names = game.players.names() ;
+		return names ;
 	},
 
-	getTile : function (Game) {
-		var msg = Msgs.findOne({idGame: Game});
-		if (!msg) {
+	// Returns the current Player's name to UI.
+	getPlayer : function (gameId) {
+		game = Games.findOne({_id:gameId});
+
+		if(!( Meteor.userId() == game.players.currentPlayer.id )){
 			return null ;
 		}
-		return msg.idTile ;
+		
+		return game.players.currentPlayer.name ;
+	},
+
+	getTile : function (gameId) {
+		game = Games.findOne({_id:gameId});
+
+		if(!( Meteor.userId() == game.players.currentPlayer.id )){
+			return null ;
+		}
+
+		return game.tiles.currentTile.type ;
 	},
 
 	// Returns the arry of the 4 rotations coords 
-	getCoords : function(Game){
-		var msg = Msgs.findOne({idGame: Game});
-		if (!msg) {
-			return null ;
-		}
-		return msg.coords ;
-	} ,
+	getCoords : function(gameId){
+		// TODO 
+	},
+
+	// Set the positions when the tile is placed on the board and its rotation
+	setPos : function (gameId, x, y, rot) {
+		// TODO 
+	},
+
+	// Sets the position when dummy is placed in the tile.
+	setDummy : function (gameId, arry) {
+		// TODO 
+	},
+
 	// Returns the updated info for UI, the new players score and the dummies
 	// coords to be removed.
-	getUpdatedInfo : function (Game) {
-		var msg = Msgs.findOne({idGame: Game});
-		if (!msg) {
-			return null ;
-		}
-		return msg.updatedInfo ;
+	getUpdatedInfo : function (gameId) {
+		// TODO 
 	},
-	// Set the positions when the tile is placed on the board and its rotation
-	setPos : function (Game, x, y, rot) {
-		var msg = Msgs.findOne({idGame: Game});
-		if (!msg) {
-			return null ;
-		}
-		msg.backInfo.x = x ;
-		msg.backInfo.y = y ;
-		msg.backInfo.rotation = rot ;
-	},
-	// Sets the position when dummy is placed in the tile.
-	setDummy : function (Game, arry) {
-		var msg = Msgs.findOne({idGame: Game});
-		if (!msg) {
-			return null ;
-		}
-		msg.backInfo.dummy = arry ;
-	},
+
+	// Return the Automatic Players movement.
+	getIA : function (gameId) {
+		// TODO 
+		// call currentPlayer.playTile and return its decision.
+	}
 });
 
 
 
-// Fields of each collection entry
-Msg = function (idGame) {
+
+
+/*
 	this.idGame = idGame ;
 	allNames = [] ;
 	idPlayer = "" ;		
@@ -153,3 +96,4 @@ Msg = function (idGame) {
 		score : 0 , 	// new score
 	}
 }
+*/

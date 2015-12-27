@@ -11,6 +11,7 @@ API for UI.
 	getPlayer : function (Game)
 		/* 
 		 *	Returns the current Player
+		 *  NEW!! ==> If the player's name is "IA" call get IA and omit the others calls.
 		 */
 	
 
@@ -57,6 +58,18 @@ API for UI.
 		 *				all false except the dummy position in the tile if set
 		 *				all false if dummy is not set
 		 */
+
+	getIA : function (Game)  	<===== NEW !!!
+		/*
+		 * Returns the Automatic Player's decision
+		 *		
+		 *		·tileCoord
+		 *		·tileRot
+		 *		·dummyPos           		if set, null otherwise
+		 *		·coord: [[x, y], ...]  		coords of the removed dummies
+		 *		·score:  					the new player's core
+		 */		
+
 
 
 On any error this methods return null.
