@@ -34,7 +34,7 @@ Meteor.methods({
     },
     'deleteUser':function(myid){
         Meteor.users.remove({_id:myid});
-        Router.go("/");
+        
     },
     'deleteFriend': function(friendId){
         var user = Meteor.users.findOne({_id:Meteor.userId()}).profile;

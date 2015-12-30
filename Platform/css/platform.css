@@ -4,6 +4,20 @@ input#message{
 	 margin-top:10px;
 }
 
+
+input[type="text"]{
+  width:200px;
+  height:30px;
+}
+
+input[type="number"]{
+  width:200px;
+  height:30px;
+}
+input[type="email"]{
+  width:200px;
+  height:30px;
+}
 #messages {
 	background-color: #ffffff; 
 	border: 1px solid darkgray;

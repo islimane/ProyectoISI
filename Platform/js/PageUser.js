@@ -74,8 +74,10 @@ if (Meteor.isClient) {
     		Meteor.call('deleteFriend', this._id);
     	},
     	'click .deleteCount':function(event){
+    		console.log("hola caracola")
     		event.preventDefault();
     		Meteor.call('deleteUser', Meteor.userId());
+    		Router.go("/");
     	},
     	'submit form' : function(event){
     		//event.preventDefault();
