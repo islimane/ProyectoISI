@@ -1,5 +1,5 @@
 if (Meteor.isClient){
-		Template.startGame.helpers({
+		Template.startTournament.helpers({
 		'players':function(){
 			return Tournaments.findOne({_id:this._id}).players;
 		},
@@ -21,7 +21,7 @@ if (Meteor.isClient){
 		}
 	})
 
-	Template.startGame.events({
+	Template.startTournament.events({
     	'click .exitTournament':function(event){
     		event.preventDefault();
     		var players = Tournaments.findOne({_id:this._id}).players

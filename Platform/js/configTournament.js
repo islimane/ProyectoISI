@@ -1,5 +1,4 @@
 if(Meteor.isClient){
-
 	Template.configTournament.events({
 		'click .paramTournament #privateTournament': function(){
 			if($('#privateTournament').is(':checked')){

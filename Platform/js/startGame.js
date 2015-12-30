@@ -1,4 +1,4 @@
-if (Meteor.isClient) {
+    if (Meteor.isClient) {
 	Template.startGame.helpers({
 		'infoGame':function(){
 			return Games.findOne({_id:this._id});
@@ -53,7 +53,7 @@ if (Meteor.isClient) {
 			Games.update({_id:this._id},{$set:{players:newArr}})
     	},
     	'click .accessGame':function(){
-
+    		console.log("hola caracola")
     		if(Games.findOne({_id:this._id}).password == ""){
     			var players = Games.findOne({_id:this._id}).players
     			var data = {

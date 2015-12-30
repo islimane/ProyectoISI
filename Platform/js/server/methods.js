@@ -7,8 +7,9 @@ Meteor.methods({
 
          console.log("game has been started");
 
-         Game = new Game(players, gameId);
-         return Game.start();
+         //Game = new Game(players, gameId);
+         //return Game.start();
+         return true
     },
     'resumeGame': function(game){
         console.log("game has been resumed");
