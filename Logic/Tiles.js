@@ -53,7 +53,7 @@ predefTiles = [
         positions: ['ci', 'ci', 'ci', 'f', 'r', 'f', 'ci', 'ci', 'ci'],
         dummies: [false, false, false, true, true, true, false, false, true],
         banner: true,
-        total: 2   
+        total: 2
     },
     {
         type: 7,
@@ -61,7 +61,7 @@ predefTiles = [
         positions: ['ci', 'ci', 'ci', 'f', 'f', 'f', 'f', 'f', 'f'],
         dummies: [false, true, false, false, false, true, false, false, false],
         banner: false,
-        total: 3   
+        total: 3
     },
     {
         type: 8,
@@ -69,7 +69,7 @@ predefTiles = [
         positions: ['ci', 'ci', 'ci', 'f', 'f', 'f', 'f', 'f', 'f'],
         dummies: [false, true, false, false, false, true, false, false, false],
         banner: true,
-        total: 2   
+        total: 2
     },
     {
         type: 9,
@@ -77,7 +77,7 @@ predefTiles = [
         positions: ['ci', 'ci', 'ci', 'f', 'r', 'f', 'r', 'f', 'f'],
         dummies: [false, true, false, false, true, true, false, false, true],
         banner: false,
-        total: 3   
+        total: 3
     },
     {
         type: 10,
@@ -85,7 +85,7 @@ predefTiles = [
         positions: ['ci', 'ci', 'ci', 'f', 'r', 'f', 'r', 'f', 'f'],
         dummies: [false, true, false, false, true, true, false, false, true],
         banner: true,
-        total: 2   
+        total: 2
     },
     {
         type: 11,
@@ -93,7 +93,7 @@ predefTiles = [
         positions: ['f',  'f',  'ci', 'f', 'f', 'f', 'ci', 'f', 'ci'],
         dummies: [true, false, false, false, true, false, false, false, true],
         banner: false,
-        total: 1  
+        total: 1
     },
     {
         type: 12,
@@ -101,7 +101,7 @@ predefTiles = [
         positions: ['f',  'f',  'ci', 'f', 'f', 'f', 'ci', 'f', 'ci'],
         dummies: [true, false, false, false, true, false, false, false, true],
         banner: true,
-        total: 2  
+        total: 2
     },
     {
         type: 13,
@@ -109,7 +109,7 @@ predefTiles = [
         positions: ['ci',  'f',  'ci', 'f', 'f', 'f', 'f', 'f', 'f'],
         dummies: [true, false, true, false, false, false, false, false, true],
         banner: false,
-        total: 2  
+        total: 2
     },
     {
         type: 14,
@@ -117,7 +117,7 @@ predefTiles = [
         positions: ['ci',  'f',  'f', 'f', 'ci', 'f', 'f', 'f', 'f'],
         dummies: [true, false, false, false, true, false, false, false, true],
         banner: false,
-        total: 3  
+        total: 3
     },
     {
         type: 15,
@@ -125,7 +125,7 @@ predefTiles = [
         positions: ['ci',  'f',  'f', 'f', 'f', 'f', 'f', 'f', 'f'],
         dummies: [true, false, false, false, false, false, false, false, true],
         banner: false,
-        total: 5  
+        total: 5
     },
     {
         type: 16,
@@ -133,7 +133,7 @@ predefTiles = [
         positions: ['ci',  'f',  'r', 'f', 'r', 'f', 'f', 'f', 'f'],
         dummies: [true, false, false, true, true, false, false, false, true],
         banner: false,
-        total: 3 
+        total: 3
     },
     {
         type: 17,
@@ -141,7 +141,7 @@ predefTiles = [
         positions: ['ci',  'f',  'f', 'f', 'r', 'f', 'r', 'f', 'f'],
         dummies: [true, false, false, false, true, true, false, false, true],
         banner: false,
-        total: 3 
+        total: 3
     },
     {
         type: 18,
@@ -149,7 +149,7 @@ predefTiles = [
         positions: ['ci',  'f',  'r', 'f', 'r', 'f', 'r', 'f', 'x'],
         dummies: [true, false, true, true, true, true, true, true, false],
         banner: false,
-        total: 3 
+        total: 3
     },
     {
         type: 19,
@@ -157,7 +157,7 @@ predefTiles = [
         positions: ['ci',  'f',  'r', 'f', 'f', 'f', 'r', 'f', 'r'],
         dummies: [true, false, false, false, true, false, false, true, true],
         banner: false,
-        total: 4 
+        total: 4
     },
     {
         type: 20,
@@ -165,7 +165,7 @@ predefTiles = [
         positions: ['r',  'f',   'f', 'f', 'r', 'f', 'f', 'f',  'r'],
         dummies: [false, false, true, false, false, false, true, false, true],
         banner: false,
-        total: 8 
+        total: 8
     },
     {
         type: 21,
@@ -173,7 +173,7 @@ predefTiles = [
         positions: ['f',  'f',  'r', 'f', 'r', 'f', 'f', 'f',  'r'],
         dummies: [false, false, false, true, true, false, false, true, false],
         banner: false,
-        total: 9 
+        total: 9
     },
     {
         type: 22,
@@ -181,7 +181,7 @@ predefTiles = [
         positions: ['f',  'f',   'r', 'f', 'r', 'f', 'r', 'f',  'x'],
         dummies: [true, false, true, true, true, true, true, false, false],
         banner: false,
-        total: 4 
+        total: 4
     },
     {
         type: 23,
@@ -189,7 +189,7 @@ predefTiles = [
         positions: ['r',  'f',   'r', 'f', 'r', 'f', 'r', 'f',  'x'],
         dummies: [true, true, true, true, true, true, true, true, false],
         banner: false,
-        total: 1 
+        total: 1
     },
 
 ];
@@ -214,6 +214,17 @@ Tile = function (type, orientation){
         get e  () { return predefTiles[type].positions[(6+this.orientation*2)%8]; },
         get ne () { return predefTiles[type].positions[(7+this.orientation*2)%8]; },
         get c  () { return predefTiles[type].positions[8]; }
+    };
+    this.dummies = {
+        get n  () { return predefTiles[type].dummies[(0+this.orientation*2)%8]; },
+        get nw () { return predefTiles[type].dummies[(1+this.orientation*2)%8]; },
+        get w  () { return predefTiles[type].dummies[(2+this.orientation*2)%8]; },
+        get sw () { return predefTiles[type].dummies[(3+this.orientation*2)%8]; },
+        get s  () { return predefTiles[type].dummies[(4+this.orientation*2)%8]; },
+        get se () { return predefTiles[type].dummies[(5+this.orientation*2)%8]; },
+        get e  () { return predefTiles[type].dummies[(6+this.orientation*2)%8]; },
+        get ne () { return predefTiles[type].dummies[(7+this.orientation*2)%8]; },
+        get c  () { return predefTiles[type].dummies[8]; }
     }
 }
 
