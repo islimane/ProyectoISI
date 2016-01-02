@@ -9,26 +9,30 @@
 // Coord: {x:1, y:2}
 // area: ['se','sw']
 // tileType: eg. 19
-// Coord and area aren't required
-Tree = function(type, coord, area, tileType){
+// dummy: Dummy object
+// Coord, area, tileType and dummy aren't required
+Tree = function(type, coord, area, tileType, dummy){
     this.dummies = [];
     this.type = type;
     this.firstNode = undefined;
-    if (coord && area && tileType)
-        this.placeNode(coord, area, tileType);
+    if (coord && area)
+        this.placeNode(coord, area, tileType, dummy);
 }
 
 // coord: {x:1, y:2}
 // area: ['se','sw']
 // tileType: eg. 19
+// dummy: Dummy object
 // ---Check first if exists the node in the tree---.
 // If exists, call this function to indicate that is placed
 // Return 0 is everything was ok
 // Return -1 is something was wrong, msg in the console.
-Tree.prototype.placeNode = function(coord, area, tileType){
+Tree.prototype.placeNode = function(coord, area, tileType, dummy){
     var childrenElements = getChildrenElements(coord, area);
     if (this.firstNode == undefined){
         this.firstNode = new Node(coord, null, 'x', childrenElements, true, tileType);
+        if (dummy)
+            this.dummies.push(dummy);
     } else {
         childrenElements = this._getNotPlacedCoords(childrenElements);
         var nodes = this.findNodes(coord, area);
@@ -38,6 +42,8 @@ Tree.prototype.placeNode = function(coord, area, tileType){
                 node.setChildren(childrenElements);
                 node.tileType = tileType || -1;
             });
+            if (dummy)
+                this.dummies.push(dummy);
             return 0;
         }else{
             console.warn("There wasn't any node with: <" + coord + "><" + area + ">");
@@ -96,6 +102,11 @@ Tree.prototype.mergeWith = function(remoteTree, coord, area){
     childrenFNRemote.forEach(function(nodeChild){
         nodeMerge.children.push(nodeChild);
     });
+    var dummiesRemote = remoteTree.dummies;
+    thisTree = this;
+    dummiesRemote.forEach(function(dummy){
+        thisTree.dummies.push(dummy);
+    });
 }
 
 
@@ -107,6 +118,19 @@ Tree.prototype.getNumOfBanners = function(){
     } else {
         return 0;
     }
+}
+
+
+// coord: {x:1, y:2}
+// Returns if a coord is in the tree and is placed (true or false)
+Tree.prototype.isPlaced = function(coord){
+    var output = false;
+    if (this.firstNode == undefined){
+        output = false;
+    } else {
+        output = this.firstNode.isPlaced(coord);
+    }
+    return output;
 }
 
 
@@ -135,30 +159,25 @@ Tree.prototype._getNotPlacedCoords = function(childrenElements){
     var notPlaced = [];
     var that = this;
     notPlaced = childrenElements.filter(function(element){
-        return !that._isPlaced(element.coord)
+        return !that.isPlaced(element.coord)
     });
     return notPlaced;
 }
 
 
-// Returns if a coord is in the tree and is placed
-Tree.prototype._isPlaced = function(coord){
-    var output = false;
-    if (this.firstNode == undefined){
-        output = false;
-    } else {
-        output = this.firstNode.isPlaced(coord);
-    }
-    return output;
-}
 
 
 // For debug issues
 Tree.prototype.printTree = function(){
-    if (this.firstNode)
+    if (this.firstNode){
+        console.log(" LEFT:" + this.getLeftChildren() + 
+                    ",TOTAL:" + this.getNumOfTiles()  +
+                    ",BANNERS:" + this.getNumOfBanners() + 
+                    ",DUMMIES:" + this.dummies.length);
         this.firstNode.printTree(1);
-    else
+    }else{
         console.log("Empty tree");
+    }
 }
 
 
