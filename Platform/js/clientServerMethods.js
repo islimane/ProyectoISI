@@ -31,15 +31,23 @@ endGame = function(scores, gameId){
 
     Games.remove({_id: gameId});
     Router.go("/");
-    //Should route or something
 
 };
 
 suspendGame = function(game){
     /*
-     *  game is the game object and MUST have a gameId field
+     *  game is the game object and MUST have this field:
+     *      - gameId
      */
-    console.log("Game suspended");
+    console.log("Game suspended: " + game.gameId);
+    var currentGame = Games.findOne({_id: game.gameId});
+    game.nameGame = currentGame.gameName;
+    game.creator = currentGame.creator;
+    game.numPlayerHuman = currentGame.numPlayerHuman;
+    game.numPlayerIA = currentGame.numPlayerIA;
+    game.suspended = true
     SuspendedGames.insert(game);
+    Games.remove({_id: game.gameId})
+    Router.go("/");
     //Should route or something
 };

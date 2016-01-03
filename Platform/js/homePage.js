@@ -9,6 +9,9 @@ if(Meteor.isClient){
 		},
 		"onGoingGames": function(){
 			return Games.find({gameStart: true}).fetch().slice(0,20);
+		},
+		"suspendedGames": function(){
+			return  SuspendedGames.find().fetch().slice(0,20);
 		}
 	});
 
@@ -52,6 +55,12 @@ if(Meteor.isClient){
 			return Games.find({gameStart: false}).fetch();
 		}
 	});
+
+	Template.allSuspendedGames.helpers({
+		'suspendedGames': function(){
+			return SuspendedGames.find().fetch();
+		}
+	})
 
 	var filterGames = function(event){
 		event.preventDefault();

@@ -70,6 +70,10 @@ Router.route('/partidasjugandose', {
   template: "allOngoingGames",
   name: "allOngoingGames"
 });
+Router.route('/partidasinterrumpidas', {
+	template: "allSuspendedGames",
+	name: "allSuspendedGames"
+});
 Router.route('/partida/:_id', {
 	template: "onGoingGame",
 	name: "onGoingGame",

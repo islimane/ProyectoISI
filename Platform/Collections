@@ -22,9 +22,3 @@ Collections P_messages: // Mensajes privados entre usuarios logueados
 	- Usuarios []
 	- message
 	- time
-
-Collections PrivateMsgs:
-	- to
-	- subject
-	- msgs
-	- from

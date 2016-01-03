@@ -31,7 +31,7 @@
 	    'showSelectedPlayer': function(){
 	      var selectedPlayer = Session.get('selectedPlayer');
 	      return Games.findOne(selectedPlayer)
-	    }
+	    },
 
 	});
 
@@ -228,19 +228,15 @@
     	'click .starGame': function(){
   			var gameId = this._id;
   			var players = Games.findOne({_id: gameId}).players;
-    		console.log("starting " + gameId);
 
     		Meteor.call("startGame", players, gameId, function(err){
-    			console.log(err);
     			if(!err){
-    				console.log("no hay errores");
     				Games.update({_id: gameId}, {$set: {gameStart: true}});
     				Router.go("/partida/" + gameId);
     			}else{
     				console.log("ERROR: " + err);
     			}
     		});
-    		
     	}
     })
 

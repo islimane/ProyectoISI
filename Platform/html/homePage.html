@@ -4,7 +4,6 @@
 	<div id="content">
 
 		<h2>Página Principal</h2>
-	<h3>{{prueba}}</h3>
 	<div class="listOtherPlayers">
 		<h4>Jugadores:</h4>
 		<ul>
@@ -32,7 +31,15 @@
 		</ul>
 		<p>Ver todas las partidas jugándose <a href="/partidasjugandose">aquí</a></p>
 	</div>
-
+	<div class='listSuspendedGames'>
+		<h4>Partidas Interrumpidas:</h4>
+		<ul>
+		{{#each suspendedGames}}
+			<li>{{>gameTemplate}}</li>
+		{{/each}}
+		</ul>
+		<p>Ver todas las partidas en pausa <a href="/partidasinterrumpidas">aquí</a></p>
+	</div>
 
 	</div>
 </template>
@@ -110,6 +117,16 @@
 	{{>formGamesTemplate}}
 	<ul>
 		{{#each ongoingGames}}
+			{{>gameTemplate}}
+		{{/each}}
+	</ul>
+</template>
+
+<template name="allSuspendedGames">
+	<h3>Partidas Interrumpidas:</h3>
+	{{>formGamesTemplate}}
+	<ul>
+		{{#each suspendedGames}}
 			{{>gameTemplate}}
 		{{/each}}
 	</ul>
