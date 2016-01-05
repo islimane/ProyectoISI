@@ -177,6 +177,14 @@ Tree.prototype._getNotPlacedCoords = function(childrenElements){
 // For debug issues
 Tree.prototype.printTree = function(){
     if (this.firstNode){
+        var treeType ="";
+        switch(this.type){
+        case 'ci': treeType = 'city'; break;
+        case 'r': treeType = 'road'; break;
+        case 'f': treeType = 'field'; break;
+        default: treeType = 'Unknow';
+        }
+        console.log(" ------ " + treeType + " tree ------ ");
         console.log(" LEFT:" + this.getLeftChildren() + 
                     ",TOTAL:" + this.getNumOfTiles()  +
                     ",BANNERS:" + this.getNumOfBanners() + 
