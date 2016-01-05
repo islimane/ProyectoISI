@@ -54,7 +54,9 @@ Tree.prototype.placeNode = function(coord, area, tileType, dummy){
 
 
 // Returns true or false if coord is in the tree
+// independently it is placed or not
 // coord: {x:1, y:2}
+// area: ['n', 'se' ...]
 Tree.prototype.existsNode = function(coord, area){
     var nodes = this.findNodes(coord, area);
     return nodes.length > 0
@@ -88,6 +90,9 @@ Tree.prototype.getNumOfTiles = function(){
 // Call this when you're going to place a coord that is in two trees.
 // coord is the common point in the two trees
 // Return -1 if an error occurred. Error is printed in the terminal
+// remoteTree: Tree object for adding to this tree
+// coord: {x:1, y:2}
+// area: ['n', 'se' ...]
 Tree.prototype.mergeWith = function(remoteTree, coord, area){
     var output = remoteTree._setFirstNode(coord, area);
     if (output == -1)
@@ -122,13 +127,15 @@ Tree.prototype.getNumOfBanners = function(){
 
 
 // coord: {x:1, y:2}
+// area: ['n', 'se' ...] -----> YOU CAN SKYP THIS ARGUMENT
 // Returns if a coord is in the tree and is placed (true or false)
-Tree.prototype.isPlaced = function(coord){
+Tree.prototype.isPlaced = function(coord, area){
+    var area = area || ['n','s','e','w','nw','sw','wn','ws','ne','se','en','es'];
     var output = false;
     if (this.firstNode == undefined){
         output = false;
     } else {
-        output = this.firstNode.isPlaced(coord);
+        output = this.firstNode.isPlaced(coord, area);
     }
     return output;
 }
@@ -294,15 +301,18 @@ Node.prototype.placedCoords = function (coordsPlaced){
 
 
 // Returns if a coord is already placed in the tree
-Node.prototype.isPlaced = function(coord){
+// coord: {x:1, y:2}
+// area: ['n', 'se' ...]
+Node.prototype.isPlaced = function(coord, area){
+    var area = area || ['n','s','e','w','nw','sw','wn','ws','ne','se','en','es'];
     var output = false;
     if (!coord)
         return false;
-    if (sameCoord(this.coord, coord) && this.placed){
+    if (sameCoord(this.coord, coord) && this.placed && posInArea(this.pos, area)){
         output = true;
     }else{
         this.children.forEach(function(child){
-            if (child.isPlaced(coord))
+            if (child.isPlaced(coord, area))
                 output = true;
         });
     }
@@ -359,6 +369,7 @@ var sameCoord = function(coord1, coord2){
 // Returns if the pos guiven is in the area
 var posInArea = function(pos, area){
     var is = false;
+    var area = area || [];
     area.forEach(function(element){
         if (element == pos)
             is = true;
