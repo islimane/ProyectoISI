@@ -130,7 +130,7 @@ Tree.prototype.getNumOfBanners = function(){
 // area: ['n', 'se' ...] -----> YOU CAN SKYP THIS ARGUMENT
 // Returns if a coord is in the tree and is placed (true or false)
 Tree.prototype.isPlaced = function(coord, area){
-    var area = area || ['n','s','e','w','nw','sw','wn','ws','ne','se','en','es'];
+    var area = area || ['n','s','e','w','nw','sw','wn','ws','ne','se','en','es','x'];
     var output = false;
     if (this.firstNode == undefined){
         output = false;
@@ -151,7 +151,7 @@ Tree.prototype.isPlaced = function(coord, area){
 // coord is obligatory. If area is not passed by argument
 // it find only the nodes with that coord
 Tree.prototype.findNodes = function(coord, area){
-    var area = area || ['n','s','e','w','nw','sw','wn','ws','ne','se','en','es'];
+    var area = area || ['n','s','e','w','nw','sw','wn','ws','ne','se','en','es','x'];
     var nodes = [];
     var that = this;
     if (this.firstNode != undefined){
@@ -304,7 +304,7 @@ Node.prototype.placedCoords = function (coordsPlaced){
 // coord: {x:1, y:2}
 // area: ['n', 'se' ...]
 Node.prototype.isPlaced = function(coord, area){
-    var area = area || ['n','s','e','w','nw','sw','wn','ws','ne','se','en','es'];
+    var area = area || ['n','s','e','w','nw','sw','wn','ws','ne','se','en','es','x'];
     var output = false;
     if (!coord)
         return false;
