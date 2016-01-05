@@ -7,7 +7,7 @@ debug = false;
 
 // TreesCollection constructor
 TreesCollection = function(){
-	this.collection = {
+	this.trees = {
         fieldTrees: [],
         cityTrees: [],
         roadTrees: []
@@ -30,12 +30,13 @@ TreesCollection = function(){
 // some tree has completed with the following
 // format: [["Player1", points],["Player2",points],...]
 // coor: {x: 0, y: 4}
-TreesCollection.prototype.insertTile = function(tile, coor){
+TreesCollection.prototype.insertTile = function(tile, coor, tileType, dummy){
     if(debug) console.log("insertTile({" + tile.type + ", " + tile.orientation + "}, [" + coor.x  + "," + coor.y + "]" + ")");
     var completedTrees = saveTileInTrees(coor, tile, 
-        this.collection.fieldTrees, 
-        this.collection.cityTrees, 
-        this.collection.roadTrees);
+        this.trees.fieldTrees, 
+        this.trees.cityTrees, 
+        this.trees.roadTrees,
+        tileType, dummy);
     if(checkCompletedTrees(completedTrees)){
         toArrayOfTrees(completedTrees);
     }else{
@@ -45,11 +46,62 @@ TreesCollection.prototype.insertTile = function(tile, coor){
 }
 
 
+// This function returns all trees in wich
+// a given coordenate exist and is placed.
+// coord: {x:1, y:2}
+// types: array of types -> format: 'f', 'ci', 'r'
+TreesCollection.prototype.getTrees = function(types, coor){
+    var trees = [];
+    console.log('TYPES: ' + types);
+    for (i in types){
+        switch (types[i]) {
+            case 'f':
+                addFieldTrees(this, trees, coor);
+                break;
+            case 'ci':
+                addCityTrees(this, trees, coor);
+                break;
+            // default -> 'r'
+            default:
+                addRoadTrees(this, trees, coor);
+                break;
+        }
+    }
+
+    return trees;
+}
 
 
 ///////////////////////////////
 //    FOR MANAGING TREES     //
 ///////////////////////////////
+addFieldTrees = function(collection, trees, coor){
+    var currentTree = null;
+    for (i in collection.trees.fieldTrees){
+        currentTree = collection.trees.fieldTrees[i];
+        if(currentTree.isPlaced(coor))
+            trees.push(currentTree);
+    }
+}
+
+addCityTrees = function(collection, trees, coor){
+    var currentTree = null;
+    for (i in collection.trees.cityTrees){
+        currentTree = collection.trees.cityTrees[i];
+        if(currentTree.isPlaced(coor))
+            trees.push(currentTree);
+    }
+}
+
+addRoadTrees = function(collection, trees, coor){
+    var currentTree = null;
+    for (i in collection.trees.roadTrees){
+        currentTree = collection.trees.roadTrees[i];
+        if(currentTree.isPlaced(coor))
+            trees.push(currentTree);
+    }
+}
+
 
 computePoints = function(completedTrees){
     // TO DO: process the trees in orther to
@@ -82,13 +134,13 @@ toArrayOfTrees = function(arrayOfArrays){
 
 // this function returns an array of completed Trees by type of zone
 // completedTrees = [[completed fTrees],[completed ciTrees],[completed rTrees]];
-saveTileInTrees = function(coord, tile, fieldTrees, cityTrees, roadTrees){
+saveTileInTrees = function(coord, tile, fieldTrees, cityTrees, roadTrees, tileType, dummy){
     var areasOfAllTypes = getAreasTile(tile.type, tile.orientation); //{f: [['se'],['sw']], r: [['s']], ci: [['n','e','w']] }
     if(debug) console.log(areasOfAllTypes);
     var completedTrees = [];
-    var fTrees = saveTileInTreesOfAType(areasOfAllTypes.f, fieldTrees, coord, 'f');
-    var ciTrees = saveTileInTreesOfAType(areasOfAllTypes.ci, cityTrees, coord, 'ci');
-    var rTrees = saveTileInTreesOfAType(areasOfAllTypes.r, roadTrees, coord, 'r');
+    var fTrees = saveTileInTreesOfAType(areasOfAllTypes.f, fieldTrees, coord, 'f', tileType, dummy);
+    var ciTrees = saveTileInTreesOfAType(areasOfAllTypes.ci, cityTrees, coord, 'ci', tileType, dummy);
+    var rTrees = saveTileInTreesOfAType(areasOfAllTypes.r, roadTrees, coord, 'r', tileType, dummy);
     completedTrees.push(fTrees, ciTrees, rTrees);
     return completedTrees;
 }
@@ -98,13 +150,13 @@ saveTileInTrees = function(coord, tile, fieldTrees, cityTrees, roadTrees){
 // coord: {x: 0, y: 4}
 // type: 'r', 'f' or 'r'
 // this function returns an array of completed Trees
-saveTileInTreesOfAType = function(areas, treesOfType, coord, type){
+saveTileInTreesOfAType = function(areas, treesOfType, coord, type, tileType, dummy){
     var completedTrees = [];
     areas.forEach(function(area){
         var trees = findTreesNeed(coord, area, treesOfType);
         if (trees.length == 0){
             if(debug) console.log("NEW TREE: (" + type + ", [" + coord.x  + "," + coord.y + "],  " + area + ")");
-            var newTree = new Tree(type, coord, area);
+            var newTree = new Tree(type, coord, area, tileType, dummy);
             treesOfType.push(newTree);
             if(debug){
                 console.log("****************************************************");
@@ -113,7 +165,7 @@ saveTileInTreesOfAType = function(areas, treesOfType, coord, type){
             }
         } else if (trees.length == 1){
             if(debug) console.log("ONE TREE");
-            trees[0].placeNode(coord, area);
+            trees[0].placeNode(coord, area, tileType, dummy);
             if(debug){
                 console.log("****************************************************");
                 trees[0].printTree();
@@ -126,7 +178,7 @@ saveTileInTreesOfAType = function(areas, treesOfType, coord, type){
                 var delTree = treesOfType.indexOf(trees[i]);
                 treesOfType.splice(delTree, 1);
             }
-            trees[0].placeNode(coord, area);
+            trees[0].placeNode(coord, area, tileType, dummy);
             if(debug){
                 console.log("****************************************************");
                 trees[0].printTree();
@@ -296,7 +348,27 @@ getAreasTile = function(typeTile, orientation){
 }
 
 
-c = new TreesCollection();
+/*c = new TreesCollection();
 
 t = new Tile(19, 2);
-c.insertTile(t, {x:49, y:49});
+c.insertTile(t, {x:49, y:49}, 19, null);
+
+t = new Tile(1, 1);
+c.insertTile(t, {x:50, y:49}, 1, null);
+
+t = new Tile(7, 0);
+c.insertTile(t, {x:49, y:50}, 7, null);
+
+t = new Tile(1, 3);
+c.insertTile(t, {x:48, y:49}, 1, null);
+
+t = new Tile(15, 1);
+c.insertTile(t, {x:48, y:50}, 15, null);
+
+var trees = c.getTrees(['ci','r', 'f'], {x: 49, y: 49});
+console.log('\n\n\n\n**********************');
+for(i in trees){
+    trees[i].printTree();
+    console.log('**********************');
+}
+*/
