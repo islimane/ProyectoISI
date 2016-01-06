@@ -21,6 +21,7 @@ Game.prototype.start = function() {
             if(currentPlayer.id == 0) {
                 //If the player is automatic, we call its playTile method.
                 currentPlayer.playTile(tile, this.board);
+                
             }else{
                 //If the player is human, we wait for him to play the tile.
             }

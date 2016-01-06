@@ -18,7 +18,7 @@ Players.prototype.init = function(ids){
         	if (ids[i]) {
         		arry[i] = new Player(ids[i]) ;
         	}else {
-        		arry[i] = new Player(0) ;
+        		arry[i] = new Player(i) ;
         	}
    	}
   	return arry ;
@@ -58,12 +58,22 @@ Players.prototype.getPlayerById = function(id) {
 //    PLAYER OBJECT     //
 //////////////////////////  
 
-// The id = 0 means IA player.
+// The id = 1..Max_Players means IA player.
+
+IAid = function(id){
+	if (id > -1 && id < Max_Players) {
+		return true ;
+		
+	} else {
+		return false ;
+	}
+}
+
 
 Player = function(id)  {
 	this.id = id;		
 
-	if ( id != 0){
+	if ( !IAid(id)){
 		this.name = Meteor.users.findOne({_id:id}).profile.user ;
 		if (!this.name){			// check if user id is found
 			throw new Error("For " + id + " name not found in Meteor.users");
@@ -73,38 +83,31 @@ Player = function(id)  {
 	}
 
 	this.score = 0 ;
-	dummies = [] ;
+	dummies = this.initDummies() ;
 }
 
-Player.prototype.hasDummies = function() {
-	return Max_Dummies - this.dummies.length ;
-}
-
-Player.prototype.addDummy = function(dum) {
-	if ( this.dummies.length < Max_Dummies ) {
-		this.dummies.push(dum) ;
-	}else  {
-		throw new Error("No more available dummies");
+Player.prototype.isIA = function(){
+	if (IAid(this.id)){
+		return true ;
 	}
-}
-
-// Returns true on found and deleted dummy otherwise returns false.
-
-Player.prototype.delDummy = function (attr, val) {
-	var i = this.dummies.length ;
-
-	if (!i) {
-		throw new Error(" Empty dummies array") ;
-	}
-
-	while (i--) {
-		if ( this.dummies[i] && this.dummies[i][attr] === value ) {
-			this.dummies.splice(i , 1) ;
-			return true ;
-		} 
-	}
-
 	return false ;
+}
+
+Player.prototype.initDummies = function() {
+	var arry[] ;
+	for (i= 0; i < Max_Dummies ; i++) {
+		arry[i] = new Dummy(this.id , i);
+	}
+	return arry ;
+}
+
+Player.prototype.getNewDummy = function () {
+	for ( i = 0 ; i < Max_Dummies ; i++) {
+		if ( this.dummies[i].coord == null ){
+			return this.dummies[i] ;
+		}
+	}
+	return null ;
 }
 
 Player.prototype.incScoreBy = function (n){
