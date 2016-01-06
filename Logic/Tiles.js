@@ -239,7 +239,7 @@ Tile.prototype.turnTile = function(){
 
 Tiles = function() {
     this.queue = [];
-    this.currentTile = null;
+    this.currentTile = popTile();
 }
 
 //Returns random int between maximum(excluded)

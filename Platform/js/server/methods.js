@@ -7,8 +7,7 @@ Meteor.methods({
 
          console.log("game has been started");
 
-         //Game = new Game(players, gameId);
-         //return Game.start();
+         game = new Game(players, gameId);
          return true
     },
     'resumeGame': function(game){
@@ -34,7 +33,7 @@ Meteor.methods({
     },
     'deleteUser':function(myid){
         Meteor.users.remove({_id:myid});
-        
+
     },
     'deleteFriend': function(friendId){
         var user = Meteor.users.findOne({_id:Meteor.userId()}).profile;

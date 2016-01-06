@@ -12,7 +12,7 @@ Players = function(ids)  {
 }
 
 Players.prototype.init = function(ids){
-		
+
   	var arry = [] ;
     	for ( i = 0 ; i < Max_Players ; i++){
         	if (ids[i]) {
@@ -25,12 +25,12 @@ Players.prototype.init = function(ids){
 }
 
 Players.prototype.names = function() {
-	
+
 	var arry = [] ;
 	for ( i = 0 ; i < Max_Players ; i++ ){
 		arry[i] = this.CurrentPlayer.name ;
 		this.next() ;
-	}	
+	}
 	return arry ;
 }
 
@@ -56,14 +56,14 @@ Players.prototype.getPlayerById = function(id) {
 
 //////////////////////////
 //    PLAYER OBJECT     //
-//////////////////////////  
+//////////////////////////
 
 // The id = 1..Max_Players means IA player.
 
 IAid = function(id){
 	if (id > -1 && id < Max_Players) {
 		return true ;
-		
+
 	} else {
 		return false ;
 	}
@@ -71,7 +71,7 @@ IAid = function(id){
 
 
 Player = function(id)  {
-	this.id = id;		
+	this.id = id;
 
 	if ( !IAid(id)){
 		this.name = Meteor.users.findOne({_id:id}).profile.user ;
@@ -94,7 +94,7 @@ Player.prototype.isIA = function(){
 }
 
 Player.prototype.initDummies = function() {
-	var arry[] ;
+	var arry = [] ;
 	for (i= 0; i < Max_Dummies ; i++) {
 		arry[i] = new Dummy(this.id , i);
 	}
