@@ -15,6 +15,7 @@ Tree = function(type, coord, area, tileType, dummy){
     this.dummies = [];
     this.type = type;
     this.firstNode = undefined;
+    this.id = getRandomId(type);
     if (coord && area)
         this.placeNode(coord, area, tileType, dummy);
 }
@@ -40,7 +41,7 @@ Tree.prototype.placeNode = function(coord, area, tileType, dummy){
             nodes.forEach(function(node){
                 node.placed = true;
                 node.setChildren(childrenElements);
-                node.tileType = tileType || -1;
+                node.tileType = (tileType===undefined) ? -1 : tileType;
             });
             if (dummy)
                 this.dummies.push(dummy);
@@ -244,7 +245,7 @@ Node = function(coord, parent, pos, childrenElements, placed, tileType){
     this.coord = coord;
     this.placed = placed || false;
     this.parent = parent || null;
-    this.tileType = tileType || -1;
+    this.tileType = (tileType===undefined) ? -1 : tileType;
     this.children = [];
     this.setChildren(childrenElements);
 }
@@ -407,6 +408,15 @@ var hasBanner = function(tileType){
     return false;
 }
 
+
+// Generate an id 
+var getRandomId = function(){
+    var id = "";
+    id += Math.floor(1 + Math.random()*1000).toString();
+    var d = new Date();
+    id += d.getTime().toString();
+    return id;
+}
 
 //////////////////////////
 //    GET COORD CHILD   //
