@@ -10,7 +10,6 @@ Game = function(players, id){
     this.turns = turns - 1;
     this.players = new Players (players);
     this.tiles = new Tiles();
-    this.tiles.initTiles();
     this.board = new Board();
     this.trees = new TreesCollection();
 }

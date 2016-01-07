@@ -237,41 +237,42 @@ Tile.prototype.turnTile = function(){
 //    TILES OBJECT     //
 /////////////////////////
 
+var initTiles = function (queue) {
+    var startingTiles = JSON.parse(JSON.stringify(predefTiles));
+    while(queue.length < 72){
+        var remainingTiles = startingTiles.filter(filterByTotal);
+        var Type = getRandomArbitrary(remainingTiles.length,0);
+        if(remainingTiles[Type].total !== 0){
+            --remainingTiles[Type].total;
+            var tile = new Tile(remainingTiles[Type].type, 0);
+            queue.push(tile);
+        }else {
+            throw "No more units of the picked tile"
+        }
+    }
+}
+
 Tiles = function() {
     this.queue = [];
-    this.currentTile = popTile();
+    initTiles(this.queue);
+    this.currentTile = this.queue.pop();
 }
 
 //Returns random int between maximum(excluded)
 //and minimum(included)
-function getRandomArbitrary (max, min) {
+var getRandomArbitrary = function (max, min) {
     return Math.floor(Math.random() * (max - min) + min);
 }
 
 //Returns true if there are tiles left from
 //each type, false if the contrary
-function filterByTotal (obj) {
+var filterByTotal = function (obj) {
     if(obj.total > 0){
         return true;
     }else{
         return false;
     }
 }
-
-Tiles.prototype.initTiles = function() {
-    var startingTiles = JSON.parse(JSON.stringify(predefTiles));
-    while(this.queue.length < 72){
-        var remainingTiles = startingTiles.filter(filterByTotal);
-        var Type = getRandomArbitrary(remainingTiles.length,0);
-        if(remainingTiles[Type].total !== 0){
-            --remainingTiles[Type].total;
-            var tile = new Tile(remainingTiles[Type].type, 0);
-            this.queue.push(tile);
-        }else {
-            throw "No more units of the picked tile"
-        }
-    }
-};
 
 Tiles.prototype.popTile = function() {
     if(this.queue.length > 0){
@@ -281,4 +282,4 @@ Tiles.prototype.popTile = function() {
         }
         return this.currentTile;
     }
-};
+}
