@@ -1,833 +1,3 @@
-predefTiles = [
-    {
-        type: 0,
-        //         [ n,  nw,   w,  sw,   s,  se,   e,  ne,   c  ]
-        positions: ['f', 'f', 'f', 'f', 'f', 'f', 'f', 'f', 'cl'],
-        dummies: [true, false, false, false, false, false, false, false, true],
-        banner: false,
-        total: 4
-    },
-    {
-        type: 1,
-        //         [ n,  nw,   w,  sw,   s,  se,   e,  ne,   c  ]
-        positions: ['f', 'f', 'f', 'f', 'r', 'f', 'f', 'f', 'cl'],
-        dummies: [true, false, false, false, true, false, false, false, true],
-        banner: false,
-        total: 2
-    },
-    {
-        type: 2,
-        //         [ n,    nw,   w,    sw,   s,    se,   e,    ne,   c  ]
-        positions: ['ci', 'ci', 'ci', 'ci', 'ci', 'ci', 'ci', 'ci', 'ci'],
-        dummies: [false, false, false, false, false, false, false, false, true],
-        banner: true,
-        total: 1
-    },
-    {
-        type: 3,
-        //         [ n,    nw,   w,   sw,  s,   se,   e,   ne,   c  ]
-        positions: ['ci', 'ci', 'ci', 'f', 'f', 'f', 'ci', 'ci', 'ci'],
-        dummies: [false, false, false, false, true, false, false, false, true],
-        banner: false,
-        total: 3
-    },
-    {
-        type: 4,
-        //         [ n,   nw,   w,   sw,   s,  se,   e,   ne,   c  ]
-        positions: ['ci', 'ci', 'ci', 'f', 'f', 'f', 'ci', 'ci', 'ci'],
-        dummies: [false, false, false, false, true, false, false, false, true],
-        banner: true,
-        total: 1
-    },
-    {
-        type: 5,
-        //         [ n,    nw,   w,   sw,   s,  se,   e,   ne,   c  ]
-        positions: ['ci', 'ci', 'ci', 'f', 'r', 'f', 'ci', 'ci', 'ci'],
-        dummies: [false, false, false, true, true, true, false, false, true],
-        banner: false,
-        total: 1
-    },
-    {
-        type: 6,
-        //         [ n,    nw,   w,   sw,   s,  se,   e,   ne,   c  ]
-        positions: ['ci', 'ci', 'ci', 'f', 'r', 'f', 'ci', 'ci', 'ci'],
-        dummies: [false, false, false, true, true, true, false, false, true],
-        banner: true,
-        total: 2
-    },
-    {
-        type: 7,
-        //         [ n,    nw,   w,   sw,   s,  se,   e,   ne,   c  ]
-        positions: ['ci', 'ci', 'ci', 'f', 'f', 'f', 'f', 'f', 'f'],
-        dummies: [false, true, false, false, false, true, false, false, false],
-        banner: false,
-        total: 3
-    },
-    {
-        type: 8,
-        //         [ n,    nw,   w,   sw,   s,  se,   e,   ne,   c  ]
-        positions: ['ci', 'ci', 'ci', 'f', 'f', 'f', 'f', 'f', 'f'],
-        dummies: [false, true, false, false, false, true, false, false, false],
-        banner: true,
-        total: 2
-    },
-    {
-        type: 9,
-        //         [ n,    nw,   w,   sw,   s,  se,   e,   ne,   c  ]
-        positions: ['ci', 'ci', 'ci', 'f', 'r', 'f', 'r', 'f', 'f'],
-        dummies: [false, true, false, false, true, true, false, false, true],
-        banner: false,
-        total: 3
-    },
-    {
-        type: 10,
-        //         [ n,    nw,   w,   sw,   s,  se,   e,   ne,   c  ]
-        positions: ['ci', 'ci', 'ci', 'f', 'r', 'f', 'r', 'f', 'f'],
-        dummies: [false, true, false, false, true, true, false, false, true],
-        banner: true,
-        total: 2
-    },
-    {
-        type: 11,
-        //         [ n,    nw,   w,   sw,   s,  se,   e,   ne,   c  ]
-        positions: ['f',  'f',  'ci', 'f', 'f', 'f', 'ci', 'f', 'ci'],
-        dummies: [true, false, false, false, true, false, false, false, true],
-        banner: false,
-        total: 1
-    },
-    {
-        type: 12,
-        //         [ n,    nw,   w,   sw,   s,  se,   e,   ne,   c  ]
-        positions: ['f',  'f',  'ci', 'f', 'f', 'f', 'ci', 'f', 'ci'],
-        dummies: [true, false, false, false, true, false, false, false, true],
-        banner: true,
-        total: 2
-    },
-    {
-        type: 13,
-        //         [ n,    nw,   w,   sw,   s,  se,   e,   ne,   c  ]
-        positions: ['ci',  'f',  'ci', 'f', 'f', 'f', 'f', 'f', 'f'],
-        dummies: [true, false, true, false, false, false, false, false, true],
-        banner: false,
-        total: 2
-    },
-    {
-        type: 14,
-        //         [ n,    nw,   w,   sw,   s,  se,   e,   ne,   c  ]
-        positions: ['ci',  'f',  'f', 'f', 'ci', 'f', 'f', 'f', 'f'],
-        dummies: [true, false, false, false, true, false, false, false, true],
-        banner: false,
-        total: 3
-    },
-    {
-        type: 15,
-        //         [ n,    nw,   w,   sw,   s,  se,   e,   ne,   c  ]
-        positions: ['ci',  'f',  'f', 'f', 'f', 'f', 'f', 'f', 'f'],
-        dummies: [true, false, false, false, false, false, false, false, true],
-        banner: false,
-        total: 5
-    },
-    {
-        type: 16,
-        //         [ n,    nw,   w,   sw,   s,  se,   e,   ne,   c  ]
-        positions: ['ci',  'f',  'r', 'f', 'r', 'f', 'f', 'f', 'f'],
-        dummies: [true, false, false, true, true, false, false, false, true],
-        banner: false,
-        total: 3
-    },
-    {
-        type: 17,
-        //         [ n,    nw,   w,   sw,   s,  se,   e,   ne,   c  ]
-        positions: ['ci',  'f',  'f', 'f', 'r', 'f', 'r', 'f', 'f'],
-        dummies: [true, false, false, false, true, true, false, false, true],
-        banner: false,
-        total: 3
-    },
-    {
-        type: 18,
-        //         [ n,    nw,   w,   sw,   s,  se,   e,   ne,   c  ]
-        positions: ['ci',  'f',  'r', 'f', 'r', 'f', 'r', 'f', 'x'],
-        dummies: [true, false, true, true, true, true, true, true, false],
-        banner: false,
-        total: 3
-    },
-    {
-        type: 19,
-        //         [ n,    nw,   w,   sw,   s,  se,   e,   ne,   c  ]
-        positions: ['ci',  'f',  'r', 'f', 'f', 'f', 'r', 'f', 'r'],
-        dummies: [true, false, false, false, true, false, false, true, true],
-        banner: false,
-        total: 4
-    },
-    {
-        type: 20,
-        //         [ n,    nw,   w,   sw,   s,  se,   e,   ne,   c  ]
-        positions: ['r',  'f',   'f', 'f', 'r', 'f', 'f', 'f',  'r'],
-        dummies: [false, false, true, false, false, false, true, false, true],
-        banner: false,
-        total: 8
-    },
-    {
-        type: 21,
-        //         [ n,    nw,   w,   sw,   s,  se,   e,   ne,   c  ]
-        positions: ['f',  'f',  'r', 'f', 'r', 'f', 'f', 'f',  'r'],
-        dummies: [false, false, false, true, true, false, false, true, false],
-        banner: false,
-        total: 9
-    },
-    {
-        type: 22,
-        //         [ n,    nw,   w,   sw,   s,  se,   e,   ne,   c  ]
-        positions: ['f',  'f',   'r', 'f', 'r', 'f', 'r', 'f',  'x'],
-        dummies: [true, false, true, true, true, true, true, false, false],
-        banner: false,
-        total: 4
-    },
-    {
-        type: 23,
-        //         [ n,    nw,   w,   sw,   s,  se,   e,   ne,   c  ]
-        positions: ['r',  'f',   'r', 'f', 'r', 'f', 'r', 'f',  'x'],
-        dummies: [true, true, true, true, true, true, true, true, false],
-        banner: false,
-        total: 1
-    },
-
-];
-
-////////////////////////
-//    TILE OBJECT     //
-////////////////////////
-
-// args:
-// orientation: 0, 1, 2, 3 (clockwise)
-Tile = function (type, orientation){
-    this.type = type;
-    var tmpTile = predefTiles[type].positions;
-    this.orientation = orientation || 0;
-    this.positions = {
-        get n  () { return predefTiles[type].positions[(0+this.orientation*2)%8]; },
-        get nw () { return predefTiles[type].positions[(1+this.orientation*2)%8]; },
-        get w  () { return predefTiles[type].positions[(2+this.orientation*2)%8]; },
-        get sw () { return predefTiles[type].positions[(3+this.orientation*2)%8]; },
-        get s  () { return predefTiles[type].positions[(4+this.orientation*2)%8]; },
-        get se () { return predefTiles[type].positions[(5+this.orientation*2)%8]; },
-        get e  () { return predefTiles[type].positions[(6+this.orientation*2)%8]; },
-        get ne () { return predefTiles[type].positions[(7+this.orientation*2)%8]; },
-        get c  () { return predefTiles[type].positions[8]; }
-    };
-    this.dummies = {
-        get n  () { return predefTiles[type].dummies[(0+this.orientation*2)%8]; },
-        get nw () { return predefTiles[type].dummies[(1+this.orientation*2)%8]; },
-        get w  () { return predefTiles[type].dummies[(2+this.orientation*2)%8]; },
-        get sw () { return predefTiles[type].dummies[(3+this.orientation*2)%8]; },
-        get s  () { return predefTiles[type].dummies[(4+this.orientation*2)%8]; },
-        get se () { return predefTiles[type].dummies[(5+this.orientation*2)%8]; },
-        get e  () { return predefTiles[type].dummies[(6+this.orientation*2)%8]; },
-        get ne () { return predefTiles[type].dummies[(7+this.orientation*2)%8]; },
-        get c  () { return predefTiles[type].dummies[8]; }
-    }
-}
-
-// Turns 90 degrees clockwise
-Tile.prototype.turnTile = function(){
-    this.orientation = (this.orientation + 1) % 4;
-}
-
-/////////////////////////
-//    TILES OBJECT     //
-/////////////////////////
-
-var initTiles = function (queue) {
-    var startingTiles = JSON.parse(JSON.stringify(predefTiles));
-    while(queue.length < 72){
-        var remainingTiles = startingTiles.filter(filterByTotal);
-        var Type = getRandomArbitrary(remainingTiles.length,0);
-        if(remainingTiles[Type].total !== 0){
-            --remainingTiles[Type].total;
-            var tile = new Tile(remainingTiles[Type].type, 0);
-            queue.push(tile);
-        }else {
-            throw "No more units of the picked tile"
-        }
-    }
-}
-
-Tiles = function() {
-    this.queue = [];
-    initTiles(this.queue);
-    this.currentTile = this.queue.pop();
-}
-
-//Returns random int between maximum(excluded)
-//and minimum(included)
-var getRandomArbitrary = function (max, min) {
-    return Math.floor(Math.random() * (max - min) + min);
-}
-
-//Returns true if there are tiles left from
-//each type, false if the contrary
-var filterByTotal = function (obj) {
-    if(obj.total > 0){
-        return true;
-    }else{
-        return false;
-    }
-}
-
-Tiles.prototype.popTile = function() {
-    if(this.queue.length > 0){
-        this.currentTile = this.queue.pop();
-        if(this.currentTile == null){
-            throw "Popped null tile"
-        }
-        return this.currentTile;
-    }
-}
-
-
-///////////////////////////
-//      TREE OBJECT      //
-///////////////////////////
-
-
-// type: 'r', 'f', 'ci'
-// Allow create a tree with a node
-// Coord: {x:1, y:2}
-// area: ['se','sw']
-// tileType: eg. 19
-// dummy: Dummy object
-// Coord, area, tileType and dummy aren't required
-Tree = function(type, coord, area, tileType, dummy){
-    this.dummies = [];
-    this.type = type;
-    this.firstNode = undefined;
-    this.id = getRandomId(type);
-    if (coord && area)
-        this.placeNode(coord, area, tileType, dummy);
-}
-
-// coord: {x:1, y:2}
-// area: ['se','sw']
-// tileType: eg. 19
-// dummy: Dummy object
-// ---Check first if exists the node in the tree---.
-// If exists, call this function to indicate that is placed
-// Return 0 is everything was ok
-// Return -1 is something was wrong, msg in the console.
-Tree.prototype.placeNode = function(coord, area, tileType, dummy){
-    var childrenElements = getChildrenElements(coord, area);
-    if (this.firstNode == undefined){
-        this.firstNode = new Node(coord, null, 'x', childrenElements, true, tileType);
-        if (dummy)
-            this.dummies.push(dummy);
-    } else {
-        childrenElements = this._getNotPlacedCoords(childrenElements);
-        var nodes = this.findNodes(coord, area);
-        if (nodes.length > 0){
-            nodes.forEach(function(node){
-                node.placed = true;
-                node.setChildren(childrenElements);
-                node.tileType = (tileType===undefined) ? -1 : tileType;
-            });
-            if (dummy)
-                this.dummies.push(dummy);
-            return 0;
-        }else{
-            console.warn("There wasn't any node with: <" + coord + "><" + area + ">");
-            return -1;
-        }
-    }
-}
-
-
-// Returns true or false if coord is in the tree
-// independently it is placed or not
-// coord: {x:1, y:2}
-// area: ['n', 'se' ...]
-Tree.prototype.existsNode = function(coord, area){
-    var nodes = this.findNodes(coord, area);
-    return nodes.length > 0
-}
-
-
-// Returns the number of tiles not placed
-// 0 -> Tree completed
-Tree.prototype.getLeftChildren = function(){
-    if (this.firstNode){
-        var remaining = this.firstNode.remainingCoords();
-        return remaining.length;
-    } else {
-        return 0;
-    }
-}
-
-
-// Returns the number of tiles placed in this tree
-Tree.prototype.getNumOfTiles = function(){
-    if (this.firstNode){
-        var placed = this.firstNode.placedCoords();
-        return placed.length;
-    } else {
-        return 0;
-    }
-}
-
-
-// Merge two trees
-// Call this when you're going to place a coord that is in two trees.
-// coord is the common point in the two trees
-// Return -1 if an error occurred. Error is printed in the terminal
-// remoteTree: Tree object for adding to this tree
-// coord: {x:1, y:2}
-// area: ['n', 'se' ...]
-Tree.prototype.mergeWith = function(remoteTree, coord, area){
-    var output = remoteTree._setFirstNode(coord, area);
-    if (output == -1)
-        return -1; 
-    var nodes = this.findNodes(coord, area);
-    if (nodes.length == 0){
-        console.warn("Node<" + node + ">,area<" + area + "> not found in this tree");
-        return -1;
-    }
-    var nodeMerge = nodes[0];
-    var childrenFNRemote = remoteTree.firstNode.children;
-    childrenFNRemote.forEach(function(nodeChild){
-        nodeMerge.children.push(nodeChild);
-    });
-    var dummiesRemote = remoteTree.dummies;
-    thisTree = this;
-    dummiesRemote.forEach(function(dummy){
-        thisTree.dummies.push(dummy);
-    });
-}
-
-
-// Returns the number of banners in a tree (only for cities)
-Tree.prototype.getNumOfBanners = function(){
-    if (this.firstNode){
-        var tilesBanner = this.firstNode.nodesBanners();
-        return tilesBanner.length;
-    } else {
-        return 0;
-    }
-}
-
-
-// coord: {x:1, y:2}
-// area: ['n', 'se' ...] -----> YOU CAN SKYP THIS ARGUMENT
-// Returns if a coord is in the tree and is placed (true or false)
-Tree.prototype.isPlaced = function(coord, area){
-    var area = area || ['n','s','e','w','nw','sw','wn','ws','ne','se','en','es','x'];
-    var output = false;
-    if (this.firstNode == undefined){
-        output = false;
-    } else {
-        output = this.firstNode.isPlaced(coord, area);
-    }
-    return output;
-}
-
-
-/***********************
-**  USED INTERNALLY   **
-***********************/
-
-
-// coord: {x:1, y:2}
-// area: ['n', 'se' ...]
-// coord is obligatory. If area is not passed by argument
-// it find only the nodes with that coord
-Tree.prototype.findNodes = function(coord, area){
-    var area = area || ['n','s','e','w','nw','sw','wn','ws','ne','se','en','es','x'];
-    var nodes = [];
-    var that = this;
-    if (this.firstNode != undefined){
-        nodes = that.firstNode.findNodes(coord, area);
-    }
-    return nodes;
-}
-
-
-// Guiven coords returns wich of that coords arent placed
-Tree.prototype._getNotPlacedCoords = function(childrenElements){
-    var notPlaced = [];
-    var that = this;
-    notPlaced = childrenElements.filter(function(element){
-        return !that.isPlaced(element.coord)
-    });
-    return notPlaced;
-}
-
-
-
-
-// For debug issues
-Tree.prototype.printTree = function(){
-    if (this.firstNode){
-        var treeType ="";
-        switch(this.type){
-        case 'ci': treeType = 'city'; break;
-        case 'r': treeType = 'road'; break;
-        case 'f': treeType = 'field'; break;
-        default: treeType = 'Unknow';
-        }
-        console.log(" ------ " + treeType + " tree ------ ");
-        console.log(" LEFT:" + this.getLeftChildren() + 
-                    ",TOTAL:" + this.getNumOfTiles()  +
-                    ",BANNERS:" + this.getNumOfBanners() + 
-                    ",DUMMIES:" + this.dummies.length);
-        this.firstNode.printTree(1);
-    }else{
-        console.log("Empty tree");
-    }
-}
-
-
-// Set the first node of a tree a determinate coord
-// and keep all the nodes
-Tree.prototype._setFirstNode = function(coord, area){
-    var nodes = this.findNodes(coord, area);
-    if (nodes.length == 0){
-        console.warn("coord " + coord + " isn't in the tree");
-        return -1;
-    }
-    var firstNode = nodes[0];
-
-    var aux = firstNode;
-    var prev = null;
-    var parent = null;
-    var delIndex = 0;
-    while (aux){
-        parent = aux.parent;
-        aux.parent = prev;
-        if (prev){
-            delIndex = aux.children.indexOf(prev);
-            aux.children.splice(delIndex, 1);
-        }
-        if (parent)
-            aux.children.push(parent);
-        prev = aux;
-        aux = parent;
-    }
-    this.firstNode = firstNode;
-}
-
-
-
-///////////////////////////
-//      NODE OBJECT      //
-///////////////////////////
-
-
-// coord: {x:1, y:2}
-// childrenElements: [{coord: {x:2, y:4}, zone: 'n'}, {...}, ...]
-// parent: Node
-// pos: 'n' ... or 'x' when is the first node
-// placed: true or false
-// tileType
-Node = function(coord, parent, pos, childrenElements, placed, tileType){
-    var childrenElements = childrenElements || [];
-    this.pos = pos || 'x';
-    this.coord = coord;
-    this.placed = placed || false;
-    this.parent = parent || null;
-    this.tileType = (tileType===undefined) ? -1 : tileType;
-    this.children = [];
-    this.setChildren(childrenElements);
-}
-
-
-// childrenElements: [{coord: {x:2, y:4}, zone: 'n'}, {...}, ...]
-// Assign new children to this Node
-Node.prototype.setChildren = function(childrenElements){
-    var childrenElements = childrenElements || [];
-    var that = this;
-    childrenElements.forEach(function(child){
-        that.children.push(new Node(child.coord, that, child.zone, [], false));
-    });
-}
-
-
-// coord: {x:1, y:2}
-// returns: Nodes found
-Node.prototype.findNodes = function(coord, area) {
-    var nodes = [];
-    if (!coord || !area)
-        return [];
-
-    if (sameCoord(this.coord, coord) && posInArea(this.pos, area))
-        nodes.push(this);
-
-    this.children.forEach(function(child){
-        var nodesIn = child.findNodes(coord, area);
-        nodesIn.forEach(function(node){
-            nodes.push(node);
-        });
-    });
-
-    return nodes;
-}
-
-
-//Returns the number of all the coordinates not placed
-Node.prototype.remainingCoords = function (coordsNotPlaced){
-    var coordsNotPlaced = coordsNotPlaced || [];
-    if (!this.placed && !coordInArray(this.coord, coordsNotPlaced))
-        coordsNotPlaced.push(this.coord)
-
-    this.children.forEach(function(child){
-        coordsNotPlaced = child.remainingCoords(coordsNotPlaced);
-    });
-    return coordsNotPlaced;
-}
-
-
-//Returns the number of all the children placed and the own node
-Node.prototype.placedCoords = function (coordsPlaced){
-    var coordsPlaced = coordsPlaced || [];
-    if (this.placed && !coordInArray(this.coord, coordsPlaced))
-        coordsPlaced.push(this.coord)
-
-    this.children.forEach(function(child){
-        coordsPlaced = child.placedCoords(coordsPlaced);
-    });
-    return coordsPlaced;
-}
-
-
-// Returns if a coord is already placed in the tree
-// coord: {x:1, y:2}
-// area: ['n', 'se' ...]
-Node.prototype.isPlaced = function(coord, area){
-    var area = area || ['n','s','e','w','nw','sw','wn','ws','ne','se','en','es','x'];
-    var output = false;
-    if (!coord)
-        return false;
-    if (sameCoord(this.coord, coord) && this.placed && posInArea(this.pos, area)){
-        output = true;
-    }else{
-        this.children.forEach(function(child){
-            if (child.isPlaced(coord, area))
-                output = true;
-        });
-    }
-    return output;
-}
-
-
-// For debug issues
-Node.prototype.printTree = function(indent){
-    console.log(Array(2 * indent).join(" ") + "- coord(" + 
-        this.coord.x + "," + this.coord.y +")zone(" + this.pos + 
-        ")Placed(" + this.placed + ")Type(" + this.tileType + ")");
-    for (var i=0; i<this.children.length; i++){
-        this.children[i].printTree(indent + 1);
-    }
-}
-
-
-Node.prototype.nodesBanners = function(coordsBanner){
-    var coordsBanner = coordsBanner || [];
-    if (hasBanner(this.tileType) && !coordInArray(this.coord, coordsBanner))
-        coordsBanner.push(this.coord)
-
-    this.children.forEach(function(child){
-        coordsBanner = child.nodesBanners(coordsBanner);
-    });
-    return coordsBanner;
-}
-
-////////////////////////////
-//     OTHER FUNCTIONS    //
-////////////////////////////
-
-
-// This function returns the coordinates and the zone
-// of the children that a parent need to be completed
-// input: coord: {x:2, y:2}; area: ['n','e','w']
-// output:  [{coord: {x:2, y:4}, zone: 'n'}, ...]
-var getChildrenElements = function(coord, area){
-    var output = [];
-    area.forEach(function(element){
-        output.push(getCoordAndZoneChild(coord, element));
-    });
-    return output;
-}
-
-
-// Compare 2 coords
-var sameCoord = function(coord1, coord2){
-    return coord1.x == coord2.x && coord1.y == coord2.y;
-}
-
-
-// Returns if the pos guiven is in the area
-var posInArea = function(pos, area){
-    var is = false;
-    var area = area || [];
-    area.forEach(function(element){
-        if (element == pos)
-            is = true;
-    });
-    return is;
-}
-
-
-// Returns if the coord is in the array
-var coordInArray = function(coord, coordsArray){
-    var is = false;
-    coordsArray.forEach(function(element){
-        if (sameCoord(coord, element))
-            is = true;
-    });
-    return is;
-}
-
-
-// Returns if a tile type has banner
-var hasBanner = function(tileType){
-    var bannerTypes = [2, 4, 6, 8, 10, 12];
-    for (var i = 0; i< bannerTypes.length; i++){
-        if (tileType == bannerTypes[i])
-            return true;
-    }
-    return false;
-}
-
-
-// Generate an id 
-var getRandomId = function(){
-    var id = "";
-    id += Math.floor(1 + Math.random()*1000).toString();
-    var d = new Date();
-    id += d.getTime().toString();
-    return id;
-}
-
-//////////////////////////
-//    GET COORD CHILD   //
-//////////////////////////
-// From parentCoord  ({x:2, y:3}) and parentZone('s') returns
-// the tuple coord and zone of the child next to the parent
-// output: {coord: {x:2, y:4}, zone: 'n'}
-getCoordAndZoneChild = function(parentCoord, parentZone){
-    var coordc;
-    var zonec;
-    switch(parentZone){
-    case 'n':
-        coordc = {x: parentCoord.x, y: parentCoord.y - 1};
-        zonec = 's';
-        break;
-    case 'ne':
-        coordc = {x: parentCoord.x, y: parentCoord.y - 1};
-        zonec = 'se';
-        break;
-    case 'nw':
-        coordc = {x: parentCoord.x, y: parentCoord.y - 1};
-        zonec = 'sw';
-        break;
-    case 's':
-        coordc = {x: parentCoord.x, y: parentCoord.y + 1};
-        zonec = 'n';
-        break;
-    case 'se':
-        coordc = {x: parentCoord.x, y: parentCoord.y + 1};
-        zonec = 'ne';
-        break;
-    case 'sw':
-        coordc = {x: parentCoord.x, y: parentCoord.y + 1};
-        zonec = 'nw';
-        break;
-    case 'e':
-        coordc = {x: parentCoord.x + 1, y: parentCoord.y};
-        zonec = 'w';
-        break;
-    case 'es':
-        coordc = {x: parentCoord.x + 1, y: parentCoord.y};
-        zonec = 'ws';
-        break;
-    case 'en':
-        coordc = {x: parentCoord.x + 1, y: parentCoord.y};
-        zonec = 'wn';
-        break;
-    case 'w':
-        coordc = {x: parentCoord.x - 1, y: parentCoord.y};
-        zonec = 'e';
-        break;
-    case 'wn':
-        coordc = {x: parentCoord.x - 1, y: parentCoord.y};
-        zonec = 'en';
-        break;
-    case 'ws':
-        coordc = {x: parentCoord.x - 1, y: parentCoord.y};
-        zonec = 'es';
-        break;
-    default:
-        console.warn('In treeStructure getCoordChild: Not a valid zone: <' + parentZone + '>');
-        coordc = {};
-        zonec = '';
-    }
-    return {coord: coordc, zone: zonec}
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 debug = false;
 
 
@@ -861,10 +31,15 @@ TreesCollection = function(){
 // coor: {x: 0, y: 4}
 // object returned:
 // {
-//     points: [[Player1_ID, points],[Player2_ID, points],...],
+//     playersPoints: [[Player1_ID, points],[Player2_ID, points],...],
 //     dummies: []
 // }
 TreesCollection.prototype.insertTile = function(tile, coor, dummy){
+    var data = {
+        playersPoints: [],
+        dummies: []
+    };
+
     if(debug) console.log("insertTile({" + tile.type + ", " + tile.orientation + "}, [" + coor.x  + "," + coor.y + "]" + ")");
     var completedTrees = saveTileInTrees(coor, tile, 
         this.trees.fieldTrees, 
@@ -872,12 +47,25 @@ TreesCollection.prototype.insertTile = function(tile, coor, dummy){
         this.trees.roadTrees,
         dummy);
     if(checkCompletedTrees(completedTrees)){
-        toArrayOfTrees(completedTrees);
-        computePoints(completedTrees);
+        completedTrees = toArrayOfTrees(completedTrees);
+        var playersPoints = computePoints(data, completedTrees);
+        var dummies = getDummies(completedTrees);
+        if(dummies.length>0){
+            data.playersPoints = playersPoints;
+            data.dummies = dummies;
+            console.log("Data:");
+            printPlayersPoints(data.playersPoints);
+            printDummies(data.dummies);
+            console.log("****************************");
+        }else{
+            return null;
+        }
     }else{
         if(debug) console.log("There is no completed tree");
         return null;
     }
+
+
 }
 
 
@@ -910,6 +98,146 @@ TreesCollection.prototype.getTrees = function(types, coor){
 ///////////////////////////////
 //    FOR MANAGING TREES     //
 ///////////////////////////////
+computePoints = function(data, completedTrees){
+    var playersPoints = [];
+    for(i in completedTrees){
+        var points = getPoints(completedTrees[i]);
+        if(completedTrees[i].dummies!=undefined && completedTrees[i].dummies.length>0){
+            // These are the players that are going
+            // to increase their points
+            var playersId = getPlayersId(completedTrees[i].dummies);
+            //console.log("playersId: " + playersId);
+            addPlayers(playersPoints, playersId);
+            addPoints(playersPoints, playersId, points);
+        }
+        //console.log("Points: " + (points*10));
+    }
+    return playersPoints;
+}
+
+// For debug issues
+printPlayersPoints = function(playersPoints){
+    console.log("playersPoints: ");
+    for(i in playersPoints){
+        console.log("\t[playerID: " + playersPoints[i][0] + ", points: " + playersPoints[i][1] + "]");
+    }
+}
+
+addPoints = function(playersPoints, playersId, points){
+    for(i in playersId){
+        for(j in playersPoints){
+            if(playersPoints[j][0]==playersId[i])
+                playersPoints[j][1] += points;
+        }
+    }
+}
+
+// This function add the playersId of the
+// players that are not yet in the playersPoints
+// array
+addPlayers = function(playersPoints, playersId){
+    var playerAlreadyIn = false;
+    for(i in playersId){
+        for(j in playersPoints){
+            if(playersPoints[j][0] == playersId[i]){
+                playerAlreadyIn = true;
+                break;
+            }
+        }
+        if(!playerAlreadyIn)
+            playersPoints.push([playersId[i],0]);
+    }
+}
+
+// This function returns the points
+// for each type of tree (zone type)
+getPoints = function(completedTree){
+    var numofTiles = completedTree.getNumOfTiles();
+    var treeType = completedTree.type;
+    var factor = 0;
+    var points = 0;
+    switch (treeType) {
+        // A tricky way for multiple cases
+        case 'f':
+        case 'r':
+            factor = 1;
+            points += numofTiles*factor;
+            break;
+        // default -> 'ci'
+        default:
+            var numOfBanners = completedTree.getNumOfBanners();
+            factor = 2;
+            points = (numofTiles*factor) + (2*numOfBanners);
+            break;
+    }
+    return points;
+}
+
+// This function returns an array of playesrID
+// that represents all users that have a dummy
+// on the given dummies array
+getPlayersId = function(dummies){
+    var playersId = [];
+    for(i in dummies){
+        var playerAlreadyIn = contains.call(playersId, dummies[i].playerId);
+        // If the player is not already in the array add it
+        if(!playerAlreadyIn)
+            playersId.push(dummies[i].playerId);
+    }
+    return playersId;
+}
+
+// This function returns all the dummies
+// contained in the completedTrees
+getDummies = function(completedTrees){
+    var dummies = [];
+    for(i in completedTrees){
+        for(j in completedTrees[i].dummies){
+            var dummyAlreadyIn = contains.call(dummies, completedTrees[i].dummies[j].dummyId);
+            if(!dummyAlreadyIn)
+                dummies.push(completedTrees[i].dummies[j].dummyId);
+        }
+    }
+    return dummies;
+}
+
+// For debug issues
+printDummies = function(dummies){
+    console.log("dummies: [");
+    for(i in dummies){
+        console.log("\tdummyID: " + dummies[i]);
+    }
+    console.log("]");
+}
+
+// This function determine whether an array contains a value
+var contains = function(needle) {
+    // Per spec, the way to identify NaN is that it is not equal to itself
+    var findNaN = needle !== needle;
+    var indexOf;
+
+    if(!findNaN && typeof Array.prototype.indexOf === 'function') {
+        indexOf = Array.prototype.indexOf;
+    } else {
+        indexOf = function(needle) {
+            var i = -1, index = -1;
+
+            for(i = 0; i < this.length; i++) {
+                var item = this[i];
+
+                if((findNaN && item !== item) || item === needle) {
+                    index = i;
+                    break;
+                }
+            }
+
+            return index;
+        };
+    }
+
+    return indexOf.call(this, needle) > -1;
+};
+
 addFieldTrees = function(collection, trees, coor){
     var currentTree = null;
     for (i in collection.trees.fieldTrees){
@@ -937,12 +265,6 @@ addRoadTrees = function(collection, trees, coor){
     }
 }
 
-
-computePoints = function(completedTrees){
-    // TO DO: process the trees in orther to
-    //        get the players points
-}
-
 // this function check if there is at least
 // a completed Tree in the completedTrees array
 checkCompletedTrees = function(completedTrees){
@@ -954,7 +276,7 @@ checkCompletedTrees = function(completedTrees){
 }
 
 // this function turns an array of arrays of trees
-// into an array of trees
+// into an array of trees, and it returns it
 toArrayOfTrees = function(arrayOfArrays){
     var arrayOfTrees = [];
     for(i in arrayOfArrays){
@@ -964,7 +286,7 @@ toArrayOfTrees = function(arrayOfArrays){
             }
         }
     }
-    arrayOfArrays = arrayOfTrees;
+    return arrayOfTrees;
 }
 
 // this function returns an array of completed Trees by type of zone
@@ -1186,22 +508,96 @@ getAreasTile = function(typeTile, orientation){
 }
 
 
-c = new TreesCollection();
+/*c = new TreesCollection();
 
 t = new Tile(19, 2);
 c.insertTile(t, {x:49, y:49}, null);
 
-t = new Tile(21, 2);
+
+t = new Tile(22, 2);
 c.insertTile(t, {x:48, y:49}, null);
 
-t = new Tile(1, 0);
-c.insertTile(t, {x:48, y:48}, null);
+d = new Dummy(1, 1);
+t = new Tile(0, 0);
+c.insertTile(t, {x:49, y:48}, d);
 
 
+d = new Dummy(2, 2);
+t = new Tile(0, 0);
+c.insertTile(t, {x:49, y:47}, d);
 
-var trees = c.getTrees(['ci','r', 'f'], {x: 49, y: 49});
-console.log('\n\n\n\n**********************');
-for(i in trees){
-    trees[i].printTree();
-    console.log('**********************');
-}
+
+t = new Tile(8, 0);
+c.insertTile(t, {x:49, y:46}, null);
+
+
+d = new Dummy(2, 3);
+t = new Tile(8, 1);
+c.insertTile(t, {x:49, y:50}, d);
+
+
+t = new Tile(0, 0);
+c.insertTile(t, {x:49, y:51}, null);
+
+
+d = new Dummy(2, 4);
+t = new Tile(5, 2);
+c.insertTile(t, {x:50, y:50}, d);
+
+
+t = new Tile(23, 0);
+c.insertTile(t, {x:50, y:49}, null);
+
+
+d = new Dummy(2, 3);
+t = new Tile(20, 0);
+c.insertTile(t, {x:48, y:48}, d);
+
+
+d = new Dummy(1, 2);
+t = new Tile(20, 0);
+c.insertTile(t, {x:48, y:46}, d);
+
+
+t = new Tile(16, 2);
+c.insertTile(t, {x:49, y:45}, null);
+
+
+t = new Tile(21, 3);
+c.insertTile(t, {x:49, y:44}, null);
+
+
+d = new Dummy(2, 4);
+t = new Tile(13, 3);
+c.insertTile(t, {x:51, y:50}, d);
+
+
+t = new Tile(20, 0);
+c.insertTile(t, {x:48, y:47}, null);
+
+
+t = new Tile(14, 0);
+c.insertTile(t, {x:50, y:51}, null);
+
+
+t = new Tile(9, 1);
+c.insertTile(t, {x:50, y:45}, null);
+
+t = new Tile(21, 0);
+c.insertTile(t, {x:48, y:45}, null);
+
+
+t = new Tile(17, 3);
+c.insertTile(t, {x:49, y:43}, null);
+
+
+t = new Tile(17, 0);
+c.insertTile(t, {x:49, y:42}, null);
+
+
+t = new Tile(21, 0);
+c.insertTile(t, {x:50, y:43}, null);
+
+
+t = new Tile(18, 2);
+c.insertTile(t, {x:47, y:45}, null);*/
