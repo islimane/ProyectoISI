@@ -205,25 +205,25 @@ Tile = function (type, orientation){
     var tmpTile = predefTiles[type].positions;
     this.orientation = orientation || 0;
     this.positions = {
-        get n  () { return predefTiles[type].positions[(0+this.orientation*2)%8]; },
-        get nw () { return predefTiles[type].positions[(1+this.orientation*2)%8]; },
-        get w  () { return predefTiles[type].positions[(2+this.orientation*2)%8]; },
-        get sw () { return predefTiles[type].positions[(3+this.orientation*2)%8]; },
-        get s  () { return predefTiles[type].positions[(4+this.orientation*2)%8]; },
-        get se () { return predefTiles[type].positions[(5+this.orientation*2)%8]; },
-        get e  () { return predefTiles[type].positions[(6+this.orientation*2)%8]; },
-        get ne () { return predefTiles[type].positions[(7+this.orientation*2)%8]; },
+        get n  () { return predefTiles[type].positions[(0+orientation*2)%8]; },
+        get nw () { return predefTiles[type].positions[(1+orientation*2)%8]; },
+        get w  () { return predefTiles[type].positions[(2+orientation*2)%8]; },
+        get sw () { return predefTiles[type].positions[(3+orientation*2)%8]; },
+        get s  () { return predefTiles[type].positions[(4+orientation*2)%8]; },
+        get se () { return predefTiles[type].positions[(5+orientation*2)%8]; },
+        get e  () { return predefTiles[type].positions[(6+orientation*2)%8]; },
+        get ne () { return predefTiles[type].positions[(7+orientation*2)%8]; },
         get c  () { return predefTiles[type].positions[8]; }
     };
     this.dummies = {
-        get n  () { return predefTiles[type].dummies[(0+this.orientation*2)%8]; },
-        get nw () { return predefTiles[type].dummies[(1+this.orientation*2)%8]; },
-        get w  () { return predefTiles[type].dummies[(2+this.orientation*2)%8]; },
-        get sw () { return predefTiles[type].dummies[(3+this.orientation*2)%8]; },
-        get s  () { return predefTiles[type].dummies[(4+this.orientation*2)%8]; },
-        get se () { return predefTiles[type].dummies[(5+this.orientation*2)%8]; },
-        get e  () { return predefTiles[type].dummies[(6+this.orientation*2)%8]; },
-        get ne () { return predefTiles[type].dummies[(7+this.orientation*2)%8]; },
+        get n  () { return predefTiles[type].dummies[(0+orientation*2)%8]; },
+        get nw () { return predefTiles[type].dummies[(1+orientation*2)%8]; },
+        get w  () { return predefTiles[type].dummies[(2+orientation*2)%8]; },
+        get sw () { return predefTiles[type].dummies[(3+orientation*2)%8]; },
+        get s  () { return predefTiles[type].dummies[(4+orientation*2)%8]; },
+        get se () { return predefTiles[type].dummies[(5+orientation*2)%8]; },
+        get e  () { return predefTiles[type].dummies[(6+orientation*2)%8]; },
+        get ne () { return predefTiles[type].dummies[(7+orientation*2)%8]; },
         get c  () { return predefTiles[type].dummies[8]; }
     }
 }
