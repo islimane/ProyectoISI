@@ -34,6 +34,24 @@ Board.prototype.insertTile = function(tile, coor){
 }
 
 // this function returns an array
+// of arrays of cells in which, the given tile,
+// fits, for each rotation
+// allMatchingCells: [[matchingCells for Rot0], 
+//                    [matchingCells for Rot3], 
+//                    [matchingCells for Rot2],
+//                    [matchingCells for Rot3]]
+Board.prototype.getAllMatchingCells = function(tile){
+    var allMatchingCells = [];
+    for(var i=0; i<4; i++){
+        var tempTile = new Tile(tile.type, i);
+        var matchingCells = this.getMatchingCells(tempTile);
+        allMatchingCells.push(matchingCells);
+        //console.log("MATCHINGCELLS: " + matchingCells);
+    }
+    return allMatchingCells;
+}
+
+// this function returns an array
 // of cells in which, the given tile,
 // fits
 Board.prototype.getMatchingCells = function(tile){
@@ -64,7 +82,7 @@ var initializeBoard = function(){
         column = [];
     }
     // Insert the initial tile on the board
-    var t = new Tile(19, 0);
+    var t = new Tile(19, 2);
     cells[49][49].tile = t;
     return cells;
 }
@@ -210,22 +228,19 @@ var getZones = function(tile, elem, index){
     return [zone1, zone2];
 }
 
-/*var b = new Board();
-b.insertTile(19,0,[49,49]);
-b.insertTile(0,0,[49,50]);
-b.insertTile(20,0,[50,50]);
-b.insertTile(0,0,[51,50]);
-b.insertTile(15,0,[51,49]);
 
-console.log("availableCells:");
+/*var b = new Board();
+
+t = new Tile(2, 0);
+b.insertTile(t, [49,50]);
+
+t = new Tile(14, 0);
+b.insertTile(t, [49,51]);
+
+console.log("\navailableCells:");
 console.log(b.availableCells);
 
-var t = new Tile(21, 0);
-
-console.log("matchingCells:");
-console.log(b.getMatchingCells(t));
+t = new Tile(19, 0);
+console.log("\nmatchingCells:");
+console.log(b.getAllMatchingCells(t));
 */
-
-
-
-
