@@ -186,7 +186,8 @@ Tree.prototype.printTree = function(){
         default: treeType = 'Unknow';
         }
         console.log(" ------ " + treeType + " tree ------ ");
-        console.log(" LEFT:" + this.getLeftChildren() + 
+        console.log(" ID:" + this.id + 
+                    " LEFT:" + this.getLeftChildren() + 
                     ",TOTAL:" + this.getNumOfTiles()  +
                     ",BANNERS:" + this.getNumOfBanners() + 
                     ",DUMMIES:" + this.dummies.length);
