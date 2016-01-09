@@ -306,7 +306,7 @@ var toArrayOfTrees = function(arrayOfArrays){
 
 // this function returns an array of completed Trees by type of zone
 // completedTrees = [[completed fTrees],[completed ciTrees],[completed rTrees]];
-var saveTileInTrees = function(coord, tile, fieldTrees, cityTrees, roadTrees, dummy){
+saveTileInTrees = function(coord, tile, fieldTrees, cityTrees, roadTrees, dummy){
     var areasOfAllTypes = getAreasTile(tile.type, tile.orientation); //{f: [['se'],['sw']], r: [['s']], ci: [['n','e','w']] }
     if(debug) console.log(areasOfAllTypes);
     var completedTrees = [];
@@ -322,7 +322,7 @@ var saveTileInTrees = function(coord, tile, fieldTrees, cityTrees, roadTrees, du
 // coord: {x: 0, y: 4}
 // type: 'r', 'f' or 'r'
 // this function returns an array of completed Trees
-var saveTileInTreesOfAType = function(areas, treesOfType, coord, type, tileType, dummy){
+saveTileInTreesOfAType = function(areas, treesOfType, coord, type, tileType, dummy){
     var completedTrees = [];
     areas.forEach(function(area){
         var trees = findTreesNeed(coord, area, treesOfType);
@@ -372,7 +372,7 @@ var saveTileInTreesOfAType = function(areas, treesOfType, coord, type, tileType,
 // coord: {x: 0, y: 4}
 // area: a part of areasOfAllTypes.f, eg. ['se'] or ['n','e','w']
 // treesArray: eg. the array of field Trees
-var findTreesNeed = function(coord, area, treesArray){
+findTreesNeed = function(coord, area, treesArray){
     var trees = [];
     treesArray.forEach(function(tree){
         if (tree.existsNode(coord, area))
@@ -388,7 +388,7 @@ var findTreesNeed = function(coord, area, treesArray){
 
 // This is a preset method than guiven a typeTile returns all the posibles
 // areas in the tile of city, road and field.
-var getAreasTile = function(typeTile, orientation){
+getAreasTile = function(typeTile, orientation){
     //       0    1     2     3    4     5     6     7    8     9    10    11
     zone = ['n', 'ne', 'en', 'e', 'es', 'se', 's', 'sw', 'ws', 'w', 'wn', 'nw'];
     turn = (orientation*3);
