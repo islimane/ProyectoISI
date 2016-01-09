@@ -5,16 +5,18 @@
 Max_Players = 4 ;
 Max_Dummies = 7 ;
 
-Players = function(ids)  {
+Players = function(ids )  {
+
 	this.players = this.init(ids) ;
 	this.n = 0 ;				 // Current player's index in players[]
 	this.currentPlayer = this.players[0];    // Current player, changes each turn.
 }
 
-Players.prototype.init = function(ids){
+Players.prototype.init = function(ids ){
 
   	var arry = [] ;
-    	for ( i = 0 ; i < Max_Players ; i++){
+ 
+    	for ( i = 0 ; i < ids.length ; i++){
         	if (ids[i]) {
         		arry[i] = new Player(ids[i]) ;
         	}else {
@@ -28,7 +30,7 @@ Players.prototype.names = function() {
 
 	var arry = [] ;
 	for ( i = 0 ; i < Max_Players ; i++ ){
-		arry[i] = this.CurrentPlayer.name ;
+		arry[i] = this.currentPlayer.name ;
 		this.next() ;
 	}
 	return arry ;
@@ -81,7 +83,6 @@ Player = function(id)  {
 	}else {
 		this.name =  "IA" ;
 	}
-
 	this.score = 0 ;
 	dummies = this.initDummies() ;
 }

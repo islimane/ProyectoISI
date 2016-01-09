@@ -6,7 +6,7 @@ Meteor.methods({
 	// Return the 4 Players names to UI
 	getNames : function (gameId) {
 		game = Games.findOne({_id:gameId});
-
+   
 		if(!( Meteor.userId() == game.players.currentPlayer.id )){
 			return null ;
 		}

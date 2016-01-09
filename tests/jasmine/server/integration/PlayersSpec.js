@@ -1,51 +1,16 @@
-/*
+describe('Players', function() { 
 
-These tests are for players object receiving names as arguments
-but arguments are changed to ids, so tests are not valid anymore.
-To be uptade....
-==============
-
-
-describe('Players', function() {
-
-	beforeEach(function() {
-		ids = [ "A", "B" , "C", "D" ] ;
-		players = new Players(ids);
-	});
-
-
-	it('should initialize 4 players with names A, B, C, D ', function() {
-		var names = "";
-		for (i = 0 ; i < 4 ; i ++  ) {
-			names = names + players.players[i].name ;
+	it( 'should create and init players with given ids' , function() {
+		users = Meteor.users.find().fetch();
+		ids = [users[0]._id , users[1]._id , users[2]._id , users[3]._id] ;
+		players = new Players( users[0]._id , users[1]._id , users[2]._id , users[3]._id ) ;
+		/*
+		for ( i = 0 ; i < ids.length ; i++){
+			console.log(players.players[i].name) ;
 		}
-		expect("ABCD").toEqual(names);
-	});
+		*/
+        } );
 
-	it('should give the next player each turn', function() {
-		var p = ["A" , "B" , "C", "D" , "A", "B", "C", "D"] ;
-		var out = true;
-		var names = "" ;
-		for (i = 0 ; i < p.length ; i++ ){
-			names = names + players.currentPlayer.name ;
-			players.next() ;
-			if(p[i] != players.currentPlayer.name ) {
-				out = false ;
-			}
-		}
-		expect("ABCDABCD").toBe(names) ;
-	});
 
-	it('should increase each players score by 10' , function() {
-		var totalScore = 0 ;
-		for (i = 0; i < 4; i ++ ) {
-			players.players[i].incScoreBy(10) ;
-		}
-		for ( i= 0; i < 4; i++ ) {
-			totalScore = totalScore + players.players[i].score ;
-		}
-		expect(40).toEqual(totalScore);
-	});
+} );
 
-});
-*/

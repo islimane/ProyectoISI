@@ -1,21 +1,21 @@
-// FIXTURES
-if (process.env.IS_MIRROR) {
-    Meteor.methods({
-        'loadFixtures': function(){
+
+loadFixtures = function(mail , pass , username){
             console.log('Loading default fixtures');
             Accounts.createUser({
-                email: 'pepe@gmail.com',
-                password: '123456'
+                email: mail,
+                password: pass
             });
             var data = {
-                user: 'pepe',
+                user: username,
             }
-            var user = Accounts.findUserByEmail('pepe@gmail.com');
+            var user = Accounts.findUserByEmail(mail);
             Meteor.users.update({_id:user._id},{$set:{profile:data}});
-            console.log('Finished loading default fixtures');
-        },
 
-        'clearDB': function(){
+
+            console.log('Finished loading default fixtures');
+}
+
+clearDB = function(){
             console.log('Clear DB');
 
             var collectionsRemoved = 0;
@@ -41,6 +41,11 @@ if (process.env.IS_MIRROR) {
                 });
             });
             console.log('Finished clearing');
-        }
-    });
 }
+
+
+clearDB() ;
+loadFixtures("pepe@gmail.com" , "123456" , "pepe") ;
+loadFixtures("pepito@gmail.com" , "123456" , "pepito") ;
+loadFixtures("my_email@gmail.com" , "123456" , "me") ;
+loadFixtures("user_mail@gmail.com" , "123456" , "user") ;
