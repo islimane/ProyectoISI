@@ -29,11 +29,16 @@ Tree = function(type, coord, area, tileType, dummy){
 // Return 0 is everything was ok
 // Return -1 is something was wrong, msg in the console.
 Tree.prototype.placeNode = function(coord, area, tileType, dummy){
+    if (tileType === undefined)
+        console.warn("Tree " + this.id + ": You aren't telling the tile type");
     var childrenElements = getChildrenElements(coord, area);
     if (this.firstNode == undefined){
         this.firstNode = new Node(coord, null, 'x', childrenElements, true, tileType);
-        if (dummy)
-            this.dummies.push(dummy);
+        if (dummy){
+            var coorDummy = {x:dummy.coord[0], y:dummy.coord[1]};
+            if (sameCoord(coorDummy, coord) && posInArea2(dummy.position, area))
+                this.dummies.push(dummy);
+        }
     } else {
         childrenElements = this._getNotPlacedCoords(childrenElements);
         var nodes = this.findNodes(coord, area);
@@ -43,8 +48,11 @@ Tree.prototype.placeNode = function(coord, area, tileType, dummy){
                 node.setChildren(childrenElements);
                 node.tileType = (tileType===undefined) ? -1 : tileType;
             });
-            if (dummy)
-                this.dummies.push(dummy);
+            if (dummy){
+                var coorDummy = {x:dummy.coord[0], y:dummy.coord[1]};
+                if (sameCoord(coorDummy, coord) &&  posInArea2(dummy.position, area))
+                    this.dummies.push(dummy);
+            }
             return 0;
         }else{
             console.warn("There wasn't any node with: <" + coord + "><" + area + ">");
@@ -388,6 +396,19 @@ var posInArea = function(pos, area){
 }
 
 
+// Returns if the pos guiven is in the area
+// with a conversion for predefTiles style
+var posInArea2 = function(pos, area){
+    var is = false;
+    var area = area || [];
+    area.forEach(function(element){
+        if (getOriginalZone(element) == pos)
+            is = true;
+    });
+    return is;
+}
+
+
 // Returns if the coord is in the array
 var coordInArray = function(coord, coordsArray){
     var is = false;
@@ -417,6 +438,29 @@ var getRandomId = function(){
     var d = new Date();
     id += d.getTime().toString();
     return id;
+}
+
+
+// Converts the zone
+// eg. 'en' -> 'ne'
+var getOriginalZone = function(zone){
+    switch(zone){
+    case 'en': 
+        return 'ne';
+        break;
+    case 'es':
+        return 'se';
+        break;
+    case 'wn':
+        return 'nw';
+        break;
+    case 'ws':
+        return 'sw';
+        break;
+    default:
+        return zone;
+        break;
+    }
 }
 
 //////////////////////////
@@ -484,6 +528,5 @@ getCoordAndZoneChild = function(parentCoord, parentZone){
     }
     return {coord: coordc, zone: zonec}
 }
-
 
 
