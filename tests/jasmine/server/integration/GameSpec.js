@@ -5,7 +5,7 @@ describe('Game', function() {
             var playersIds = [user._id];
             var game = new Game(playersIds, playersIds.length);
             storeGame(game);
-            var storedGame = findGameByID(1);
+            var storedGame = findGameByID(playersIds.length);
             expect(storedGame).toBe(game);
         });
     });
