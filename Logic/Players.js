@@ -6,23 +6,27 @@ Max_Players = 4 ;
 Max_Dummies = 7 ;
 
 Players = function(ids )  {
-
 	this.players = this.init(ids) ;
 	this.n = 0 ;				 // Current player's index in players[]
 	this.currentPlayer = this.players[0];    // Current player, changes each turn.
 }
 
 Players.prototype.init = function(ids ){
-
-  	var arry = [] ;
+  	var arry = new Array() ;
  
-    	for ( i = 0 ; i < ids.length ; i++){
-        	if (ids[i]) {
-        		arry[i] = new Player(ids[i]) ;
-        	}else {
-        		arry[i] = new Player(i) ;
-        	}
+ 	console.log(ids)
+
+	for ( var i = 0 ; i < ids.length ; i++){
+		console.log(ids.length)
+    	if (ids[i]) {
+    		arry.push(new Player(ids[i])) ;
+    	}else{
+    		console.log("PROBLEMA" + ids[i])
+    	}
    	}
+   	console.log("-------PLAYERS-------")
+   	console.log(arry)
+   	console.log("---------------------")
   	return arry ;
 }
 
@@ -74,7 +78,6 @@ IAid = function(id){
 
 Player = function(id)  {
 	this.id = id;
-
 	if ( !IAid(id)){
 		this.name = Meteor.users.findOne({_id:id}).profile.user ;
 		if (!this.name){			// check if user id is found
