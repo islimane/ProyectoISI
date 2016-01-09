@@ -32,7 +32,7 @@ TreesCollection = function(){
 // object returned:
 // {
 //     playersPoints: [[Player1_ID, points],[Player2_ID, points],...],
-//     dummies: []
+//     dummies: [dummy1, dummy2,...]
 // }
 TreesCollection.prototype.insertTile = function(tile, coor, dummy){
     var data = {
@@ -98,7 +98,7 @@ TreesCollection.prototype.getTrees = function(types, coor){
 ///////////////////////////////
 //    FOR MANAGING TREES     //
 ///////////////////////////////
-computePoints = function(data, completedTrees){
+var computePoints = function(data, completedTrees){
     var playersPoints = [];
     for(i in completedTrees){
         var points = getPoints(completedTrees[i]);
@@ -116,14 +116,14 @@ computePoints = function(data, completedTrees){
 }
 
 // For debug issues
-printPlayersPoints = function(playersPoints){
+var printPlayersPoints = function(playersPoints){
     console.log("playersPoints: ");
     for(i in playersPoints){
         console.log("\t[playerID: " + playersPoints[i][0] + ", points: " + playersPoints[i][1] + "]");
     }
 }
 
-addPoints = function(playersPoints, playersId, points){
+var addPoints = function(playersPoints, playersId, points){
     for(i in playersId){
         for(j in playersPoints){
             if(playersPoints[j][0]==playersId[i])
@@ -135,7 +135,7 @@ addPoints = function(playersPoints, playersId, points){
 // This function add the playersId of the
 // players that are not yet in the playersPoints
 // array
-addPlayers = function(playersPoints, playersId){
+var addPlayers = function(playersPoints, playersId){
     var playerAlreadyIn = false;
     for(i in playersId){
         for(j in playersPoints){
@@ -151,7 +151,7 @@ addPlayers = function(playersPoints, playersId){
 
 // This function returns the points
 // for each type of tree (zone type)
-getPoints = function(completedTree){
+var getPoints = function(completedTree){
     var numofTiles = completedTree.getNumOfTiles();
     var treeType = completedTree.type;
     var factor = 0;
@@ -176,7 +176,7 @@ getPoints = function(completedTree){
 // This function returns an array of playesrID
 // that represents all users that have a dummy
 // on the given dummies array
-getPlayersId = function(dummies){
+var getPlayersId = function(dummies){
     var playersId = [];
     for(i in dummies){
         var playerAlreadyIn = contains.call(playersId, dummies[i].playerId);
@@ -189,25 +189,40 @@ getPlayersId = function(dummies){
 
 // This function returns all the dummies
 // contained in the completedTrees
-getDummies = function(completedTrees){
+var getDummies = function(completedTrees){
     var dummies = [];
     for(i in completedTrees){
         for(j in completedTrees[i].dummies){
-            var dummyAlreadyIn = contains.call(dummies, completedTrees[i].dummies[j].dummyId);
-            if(!dummyAlreadyIn)
-                dummies.push(completedTrees[i].dummies[j].dummyId);
+            if(!dummyAlreadyIn(dummies, completedTrees[i].dummies[j])){
+                /*console.log("--------------------------------");
+                completedTrees[i].printTree();
+                console.log("********************************");*/
+                dummies.push(completedTrees[i].dummies[j]);
+            }
         }
     }
     return dummies;
 }
 
 // For debug issues
-printDummies = function(dummies){
+var printDummies = function(dummies){
     console.log("dummies: [");
     for(i in dummies){
-        console.log("\tdummyID: " + dummies[i]);
+        console.log("\tdummy(playerID: " + dummies[i].playerId + 
+                    ", dummyID: " + dummies[i].dummyId + 
+                    ", coor: [" + dummies[i].coord + "]" +
+                    ", pos: '" + dummies[i].position + "'" +
+                    ")");
     }
     console.log("]");
+}
+
+var dummyAlreadyIn = function(dummies, dummy){
+    for(i in dummies){
+        if(dummy.dummyId===dummies[i].dummyId && dummy.playerId===dummies[i].playerId)
+            return true;
+    }
+    return false;
 }
 
 // This function determine whether an array contains a value
@@ -238,7 +253,7 @@ var contains = function(needle) {
     return indexOf.call(this, needle) > -1;
 };
 
-addFieldTrees = function(collection, trees, coor){
+var addFieldTrees = function(collection, trees, coor){
     var currentTree = null;
     for (i in collection.trees.fieldTrees){
         currentTree = collection.trees.fieldTrees[i];
@@ -247,7 +262,7 @@ addFieldTrees = function(collection, trees, coor){
     }
 }
 
-addCityTrees = function(collection, trees, coor){
+var addCityTrees = function(collection, trees, coor){
     var currentTree = null;
     for (i in collection.trees.cityTrees){
         currentTree = collection.trees.cityTrees[i];
@@ -256,7 +271,7 @@ addCityTrees = function(collection, trees, coor){
     }
 }
 
-addRoadTrees = function(collection, trees, coor){
+var addRoadTrees = function(collection, trees, coor){
     var currentTree = null;
     for (i in collection.trees.roadTrees){
         currentTree = collection.trees.roadTrees[i];
@@ -267,7 +282,7 @@ addRoadTrees = function(collection, trees, coor){
 
 // this function check if there is at least
 // a completed Tree in the completedTrees array
-checkCompletedTrees = function(completedTrees){
+var checkCompletedTrees = function(completedTrees){
     for(i in completedTrees){
         if(completedTrees[i].length>0)
             return true;
@@ -277,7 +292,7 @@ checkCompletedTrees = function(completedTrees){
 
 // this function turns an array of arrays of trees
 // into an array of trees, and it returns it
-toArrayOfTrees = function(arrayOfArrays){
+var toArrayOfTrees = function(arrayOfArrays){
     var arrayOfTrees = [];
     for(i in arrayOfArrays){
         if(arrayOfArrays[i].length>0){
@@ -291,7 +306,7 @@ toArrayOfTrees = function(arrayOfArrays){
 
 // this function returns an array of completed Trees by type of zone
 // completedTrees = [[completed fTrees],[completed ciTrees],[completed rTrees]];
-saveTileInTrees = function(coord, tile, fieldTrees, cityTrees, roadTrees, dummy){
+var saveTileInTrees = function(coord, tile, fieldTrees, cityTrees, roadTrees, dummy){
     var areasOfAllTypes = getAreasTile(tile.type, tile.orientation); //{f: [['se'],['sw']], r: [['s']], ci: [['n','e','w']] }
     if(debug) console.log(areasOfAllTypes);
     var completedTrees = [];
@@ -307,7 +322,7 @@ saveTileInTrees = function(coord, tile, fieldTrees, cityTrees, roadTrees, dummy)
 // coord: {x: 0, y: 4}
 // type: 'r', 'f' or 'r'
 // this function returns an array of completed Trees
-saveTileInTreesOfAType = function(areas, treesOfType, coord, type, tileType, dummy){
+var saveTileInTreesOfAType = function(areas, treesOfType, coord, type, tileType, dummy){
     var completedTrees = [];
     areas.forEach(function(area){
         var trees = findTreesNeed(coord, area, treesOfType);
@@ -357,7 +372,7 @@ saveTileInTreesOfAType = function(areas, treesOfType, coord, type, tileType, dum
 // coord: {x: 0, y: 4}
 // area: a part of areasOfAllTypes.f, eg. ['se'] or ['n','e','w']
 // treesArray: eg. the array of field Trees
-findTreesNeed = function(coord, area, treesArray){
+var findTreesNeed = function(coord, area, treesArray){
     var trees = [];
     treesArray.forEach(function(tree){
         if (tree.existsNode(coord, area))
@@ -373,7 +388,7 @@ findTreesNeed = function(coord, area, treesArray){
 
 // This is a preset method than guiven a typeTile returns all the posibles
 // areas in the tile of city, road and field.
-getAreasTile = function(typeTile, orientation){
+var getAreasTile = function(typeTile, orientation){
     //       0    1     2     3    4     5     6     7    8     9    10    11
     zone = ['n', 'ne', 'en', 'e', 'es', 'se', 's', 'sw', 'ws', 'w', 'wn', 'nw'];
     turn = (orientation*3);
@@ -510,94 +525,45 @@ getAreasTile = function(typeTile, orientation){
 
 /*c = new TreesCollection();
 
-t = new Tile(19, 2);
+t = new Tile(19, 0);
 c.insertTile(t, {x:49, y:49}, null);
 
 
-t = new Tile(22, 2);
-c.insertTile(t, {x:48, y:49}, null);
-
 d = new Dummy(1, 1);
-t = new Tile(0, 0);
-c.insertTile(t, {x:49, y:48}, d);
+d.place([50,49], 'n');
+t = new Tile(21, 1);
+c.insertTile(t, {x:50, y:49}, d);
 
 
-d = new Dummy(2, 2);
-t = new Tile(0, 0);
-c.insertTile(t, {x:49, y:47}, d);
-
-
-t = new Tile(8, 0);
-c.insertTile(t, {x:49, y:46}, null);
-
-
-d = new Dummy(2, 3);
-t = new Tile(8, 1);
-c.insertTile(t, {x:49, y:50}, d);
-
-
-t = new Tile(0, 0);
-c.insertTile(t, {x:49, y:51}, null);
-
-
-d = new Dummy(2, 4);
-t = new Tile(5, 2);
-c.insertTile(t, {x:50, y:50}, d);
-
-
-t = new Tile(23, 0);
-c.insertTile(t, {x:50, y:49}, null);
-
-
-d = new Dummy(2, 3);
-t = new Tile(20, 0);
-c.insertTile(t, {x:48, y:48}, d);
+t = new Tile(22, 0);
+c.insertTile(t, {x:48, y:49}, null);
 
 
 d = new Dummy(1, 2);
-t = new Tile(20, 0);
-c.insertTile(t, {x:48, y:46}, d);
+d.place([48,48], 'e');
+t = new Tile(15, 1);
+c.insertTile(t, {x:48, y:48}, d);
 
 
-t = new Tile(16, 2);
-c.insertTile(t, {x:49, y:45}, null);
+t = new Tile(19, 3);
+c.insertTile(t, {x:50, y:48}, null);
 
 
-t = new Tile(21, 3);
-c.insertTile(t, {x:49, y:44}, null);
+d = new Dummy(2, 1);
+d.place([48,47], 'e');
+t = new Tile(1, 3);
+c.insertTile(t, {x:48, y:47}, d);
 
 
-d = new Dummy(2, 4);
-t = new Tile(13, 3);
-c.insertTile(t, {x:51, y:50}, d);
+d = new Dummy(2, 2);
+d.place([49,47], 's');
+t = new Tile(19, 2);
+c.insertTile(t, {x:49, y:47}, d);
 
 
-t = new Tile(20, 0);
-c.insertTile(t, {x:48, y:47}, null);
-
-
-t = new Tile(14, 0);
-c.insertTile(t, {x:50, y:51}, null);
-
-
-t = new Tile(9, 1);
-c.insertTile(t, {x:50, y:45}, null);
-
-t = new Tile(21, 0);
-c.insertTile(t, {x:48, y:45}, null);
-
-
-t = new Tile(17, 3);
-c.insertTile(t, {x:49, y:43}, null);
-
-
-t = new Tile(17, 0);
-c.insertTile(t, {x:49, y:42}, null);
+t = new Tile(2, 0);
+c.insertTile(t, {x:49, y:48}, null);
 
 
 t = new Tile(21, 0);
-c.insertTile(t, {x:50, y:43}, null);
-
-
-t = new Tile(18, 2);
-c.insertTile(t, {x:47, y:45}, null);*/
+c.insertTile(t, {x:50, y:47}, null);*/
