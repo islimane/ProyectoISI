@@ -256,7 +256,7 @@ var initTiles = function (queue) {
 Tiles = function() {
     this.queue = [];
     initTiles(this.queue);
-    this.currentTile = this.queue.pop();
+    this.currentTile = this.popTile();
 }
 
 //Returns random int between maximum(excluded)
