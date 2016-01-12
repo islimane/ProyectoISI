@@ -12,7 +12,11 @@ if(Meteor.isClient){
 		},
 		"suspendedGames": function(){
 			return  SuspendedGames.find().fetch().slice(0,20);
-		}
+		},
+		"waitingTournaments": function(){
+			console.log(Tournaments.find({tournamentStart: false}).fetch().slice(0,20));
+			return Tournaments.find({tournamentStart: false}).fetch().slice(0,20);
+		},
 	});
 
 	Template.homePage.events({
@@ -148,6 +152,17 @@ if(Meteor.isClient){
 			}
 			return nHumans + nIA;
 		}
+	});
+	Template.tournamentsTemplate.helpers({
+		'createdBy': function(){
+			var creator = Tournaments.findOne({_id: this._id});
+			if(creator){
+				var user = Meteor.users.findOne({_id: creator.creator});
+				if(user){
+					return user.profile.user;
+				}
+			}
+		},
 	});
 
 	Template.gameTemplate.events({

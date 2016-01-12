@@ -74,6 +74,10 @@ Router.route('/partidasinterrumpidas', {
 	template: "allSuspendedGames",
 	name: "allSuspendedGames"
 });
+Router.route('/torneoscreados', {
+  template: "allCreatedTournaments",
+  name: "allCreatedTournaments"
+});
 Router.route('/partida/:_id', {
 	template: "onGoingGame",
 	name: "onGoingGame",

@@ -40,7 +40,15 @@
 		</ul>
 		<p>Ver todas las partidas en pausa <a href="/partidasinterrumpidas">aquí</a></p>
 	</div>
-
+	<div class="listWaitingTournaments">
+		<h4>Torneos creados:</h4>
+		<ul>
+		{{#each waitingTournaments}}
+				<li>{{>tournamentsTemplate}}</li>
+		{{/each}}
+		</ul>
+		<p>Ver todos los torneos creados <a href="/torneoscreados">aquí</a></p>
+	</div>
 	</div>
 </template>
 
@@ -92,6 +100,18 @@
 	</li></div>
 </template>
 
+<template name="tournamentsTemplate">
+	<div class="tournament">
+	<li name="{{nameTournament}}" creator="{{createdBy}}" players="{{numPlayer}}">
+	<h4>{{nameTournament}}</h4>
+	<p>Creada por: {{createdBy}}</p>
+	<p>{{numPlayer}} jugadores.</p>
+	{{#if nottournamentStart}}
+		<input type="button" class="joinTournament" value="Visitar Sala"/>
+	{{/if}}
+	</li></div>
+</template>
+
 <template name="formGamesTemplate">
 	<form class="gamesForm">
 		<p>Filtrar por:</p>
@@ -127,6 +147,15 @@
 	{{>formGamesTemplate}}
 	<ul>
 		{{#each suspendedGames}}
+			{{>gameTemplate}}
+		{{/each}}
+	</ul>
+</template>
+
+<template name="allCreatedTournaments">
+	<h3>Torneos Creados:</h3>
+	<ul>
+		{{#each createdTournaments}}
 			{{>gameTemplate}}
 		{{/each}}
 	</ul>
