@@ -1,4 +1,11 @@
-    if (Meteor.isClient) {
+  if (Meteor.isClient) {
+  	/*Tracker.autorun(function(){
+  			console.log("autorun")
+    		var game = Games.findOne({_id:this._id})
+			if (game.startGame == true){
+				Router.go("/partida/" + this._id)
+			}	
+		})*/
 	Template.startGame.helpers({
 		'infoGame':function(){
 			return Games.findOne({_id:this._id});
@@ -7,6 +14,7 @@
 			return Games.findOne({_id:this._id}).players;
 		},
 		'ImInTheGame':function(){
+			console.log('hola que hace')
 			var players = Games.findOne({_id:this._id}).players
 			for(i = 0; i < players.length;i++){
 				if(players[i].id == Meteor.userId()){
@@ -16,10 +24,10 @@
 			return false
 		},
 		'ImtheCreator':function(){
-			return Games.findOne({_id:this._id}).creator == Meteor.userId()
+			return (Games.findOne({_id:this._id}).creator == Meteor.userId())
 		},
 		'playersComplete':function(){
-			return Games.findOne({_id:this._id}).players.length == Games.findOne({_id:this._id}).numPlayerHuman
+			return (Games.findOne({_id:this._id}).players.length == Games.findOne({_id:this._id}).numPlayerHuman)
 		},
 		'selectedClass': function(){
 	      	var playerId = this.id;
@@ -213,7 +221,6 @@
     			creator = players[1].id;
     		}
     		for(i = 0; i < players.length;i++){
-    			console.log("dentro del bucle");
 				if(players[i].id != Meteor.userId()){
 					var data = {
 						id:players[i].id,
@@ -232,11 +239,11 @@
     		Meteor.call("startGame", players, gameId, function(err){
     			if(!err){
     				Games.update({_id: gameId}, {$set: {gameStart: true}});
-    				Router.go("/partida/" + gameId);
     			}else{
     				console.log("ERROR: " + err);
     			}
     		});
+    		Router.go("/partida/" + this._id);
     	}
     })
 
