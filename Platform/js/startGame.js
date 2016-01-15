@@ -75,10 +75,15 @@
 				var game = Gamesaux.findOne({gameid:gameId},{fields:{gameStart:1}})
 				if(game.gameStart){
 					//filtar por el id del jugadores
-					console.log("Holaaa")
-					Router.go("/partida/" + Games.findOne({_id:gameId})._id);
-					//tb llamar funcion para pintar canvas
-					//le pasamos el id de la partida
+					var players = Games.findOne({_id:gameId}).players
+					for(i = 0; i < players.length;i++){
+						if (players[i].id == Meteor.userId()){
+						Router.go("/partida/" + Games.findOne({_id:gameId})._id);
+						//tb llamar funcion para pintar canvas
+						//le pasamos el id de la partida
+						}
+					}
+
 				}
 			})
 					
