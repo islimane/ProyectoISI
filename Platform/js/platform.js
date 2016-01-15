@@ -1,5 +1,6 @@
 //Collections
 Games = new Meteor.Collection('games');
+Gamesaux = new Meteor.Collection('gamesaux');
 SuspendedGames = new Meteor.Collection('suspendedGames');
 Messages = new Meteor.Collection('messages');
 MessagesRoom = new Meteor.Collection('messagesRoom');

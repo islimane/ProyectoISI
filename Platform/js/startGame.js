@@ -1,11 +1,5 @@
   if (Meteor.isClient) {
-  	/*Tracker.autorun(function(){
-  			console.log("autorun")
-    		var game = Games.findOne({_id:this._id})
-			if (game.startGame == true){
-				Router.go("/partida/" + this._id)
-			}	
-		})*/
+
 	Template.startGame.helpers({
 		'infoGame':function(){
 			return Games.findOne({_id:this._id});
@@ -14,7 +8,6 @@
 			return Games.findOne({_id:this._id}).players;
 		},
 		'ImInTheGame':function(){
-			console.log('hola que hace')
 			var players = Games.findOne({_id:this._id}).players
 			for(i = 0; i < players.length;i++){
 				if(players[i].id == Meteor.userId()){
@@ -61,7 +54,7 @@
 			Games.update({_id:this._id},{$set:{players:newArr}})
     	},
     	'click .accessGame':function(){
-    		console.log("hola caracola")
+    		var gameId = this._id
     		if(Games.findOne({_id:this._id}).password == ""){
     			var players = Games.findOne({_id:this._id}).players
     			var data = {
@@ -70,10 +63,25 @@
 				}
 				players.push(data)
 				Games.update({_id:this._id},{$set:{players:players}})
+				Gamesaux.insert({gameid:gameId,gameStart:false})
     		}else{
     			$('div .formpass').show();
     		}
-    		
+
+		 	Tracker.autorun(function(){
+			// colección auxiliar donde meta el id y que ha empezado la partida 
+			// haria el if sobre esa colección 
+			// habria que llevarlo a la funcion donde entras en la sala
+				var game = Gamesaux.findOne({gameid:gameId},{fields:{gameStart:1}})
+				if(game.gameStart){
+					//filtar por el id del jugadores
+					console.log("Holaaa")
+					Router.go("/partida/" + Games.findOne({_id:gameId})._id);
+					//tb llamar funcion para pintar canvas
+					//le pasamos el id de la partida
+				}
+			})
+					
     	},
     	'submit form' : function(event){
 			event.preventDefault();
@@ -235,15 +243,18 @@
     	'click .starGame': function(){
   			var gameId = this._id;
   			var players = Games.findOne({_id: gameId}).players;
-
+  			var idaux = Gamesaux.findOne({gameid:gameId})._id
     		Meteor.call("startGame", players, gameId, function(err){
     			if(!err){
     				Games.update({_id: gameId}, {$set: {gameStart: true}});
+    				Gamesaux.update({_id: idaux}, {$set: {gameStart: true}});
     			}else{
     				console.log("ERROR: " + err);
     			}
     		});
-    		Router.go("/partida/" + this._id);
+    		Router.go("/partida/" +gameId);
+    		//pinta canvas con id partida
+
     	}
     })
 
