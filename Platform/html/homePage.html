@@ -92,10 +92,16 @@
 	<h4>{{nameGame}}</h4>
 	<p>Creada por: {{createdBy}}</p>
 	<p>{{numberPlayers}} jugadores.</p>
-	{{#if gameStart}}
-		<input type="button" class="watchGame" value="Ver Partida"/>
+	{{#if suspended}}
+		{{#if isCreator}}
+			<input type="button" class="resumeGame" value="Reanudar Partida"/>
+		{{/if}}
 	{{else}}
-		<input type="button" class="joinGame" value="Visitar Sala"/>
+		{{#if gameStart}}
+			<input type="button" class="watchGame" value="Ver Partida"/>
+		{{else}}
+			<input type="button" class="joinGame" value="Visitar Sala"/>
+		{{/if}}
 	{{/if}}
 	</li></div>
 </template>

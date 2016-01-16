@@ -132,12 +132,16 @@ if(Meteor.isClient){
 	Template.gameTemplate.helpers({
 		'createdBy': function(){
 			var creator = Games.findOne({_id: this._id});
+			if(!creator){
+				creator = SuspendedGames.findOne({_id: this._id});
+			}
 			if(creator){
 				var user = Meteor.users.findOne({_id: creator.creator});
 				if(user){
 					return user.profile.user;
 				}
 			}
+			
 		},
 		'numberPlayers':function(){
 			if(this.numPlayerHuman == ""){
@@ -151,6 +155,10 @@ if(Meteor.isClient){
 				var nIA = parseInt(this.numPlayerIA);
 			}
 			return nHumans + nIA;
+		},
+		'isCreator': function(){
+			//return (this.creator == Meteor.userId())
+			return true
 		}
 	});
 	Template.tournamentsTemplate.helpers({

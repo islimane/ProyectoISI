@@ -31,7 +31,6 @@ endGame = function(scores, gameId){
 
     Games.remove({_id: gameId});
     Router.go("/");
-
 };
 
 suspendGame = function(game){
@@ -46,8 +45,8 @@ suspendGame = function(game){
     game.numPlayerHuman = currentGame.numPlayerHuman;
     game.numPlayerIA = currentGame.numPlayerIA;
     game.suspended = true
+    game.players = currentGame.players
     SuspendedGames.insert(game);
     Games.remove({_id: game.gameId})
     Router.go("/");
-    //Should route or something
 };
