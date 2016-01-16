@@ -248,18 +248,20 @@
     	'click .starGame': function(){
   			var gameId = this._id;
   			var players = Games.findOne({_id: gameId}).players;
-  			var idaux = Gamesaux.findOne({gameid:gameId})._id
+  			if (players.length > 1){
+  				var idaux = Gamesaux.findOne({gameid:gameId})._id
+  			}
     		Meteor.call("startGame", players, gameId, function(err){
     			if(!err){
     				Games.update({_id: gameId}, {$set: {gameStart: true}});
-    				Gamesaux.update({_id: idaux}, {$set: {gameStart: true}});
+    				if (players.length > 1){
+    					Gamesaux.update({_id: idaux}, {$set: {gameStart: true}});
+    				}
     			}else{
     				console.log("ERROR: " + err);
     			}
     		});
-    		Router.go("/partida/" +gameId);
-    		//pinta canvas con id partida
-
+    		Router.go("/partida/" + gameId);
     	}
     })
 
