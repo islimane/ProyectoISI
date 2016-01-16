@@ -85,7 +85,7 @@ if(Meteor.isClient){
                             profileimg: img,
                             email: email,
                             createdAt: new Date(),
-                            maxSore: 0,
+                            maxScore: 0,
                             nWins: 0,
                             friends: []
                         }

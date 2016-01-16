@@ -19,7 +19,7 @@ endGame = function(scores, gameId){
             winner.id = scores[i].id;
         }
         var user = Meteor.users.findOne({_id: scores[i].id});
-        //Check if you can update a nonexisting element
+
         if(user.profile.maxScore < scores[i].score){
             user.profile.maxScore = scores[i].score
             Meteor.users.update({_id: scores[i].id}, {$set: {profile: user.profile}});
