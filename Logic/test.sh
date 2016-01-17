@@ -13,9 +13,8 @@ file[4]=Games.js
 file[5]=Game.js
 file[6]=Dummy.js
 file[7]=Board.js
-file[8]=Msgs.js
-file[9]=PlayersIA.js
-file[10]=pruebas.js
+file[8]=PlayersIA.js
+file[9]=pruebas.js
 
 for f in ${file[*]};
 do
