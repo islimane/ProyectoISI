@@ -38,9 +38,8 @@ suspendGame = function(game){
      *  game is the game object and MUST have this field:
      *      - gameId
      */
-    console.log("Game suspended: " + game.gameId);
     var currentGame = Games.findOne({_id: game.gameId});
-    game.nameGame = currentGame.gameName;
+    game.nameGame = currentGame.nameGame;
     game.creator = currentGame.creator;
     game.numPlayerHuman = currentGame.numPlayerHuman;
     game.numPlayerIA = currentGame.numPlayerIA;

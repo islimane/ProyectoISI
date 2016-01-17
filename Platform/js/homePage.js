@@ -162,9 +162,13 @@ if(Meteor.isClient){
 			}
 			return nHumans + nIA;
 		},
-		'isCreator': function(){
-			//return (this.creator == Meteor.userId())
-			return true
+		'isInGame': function(){
+			for(var i = 0; i < this.players.length; i++){
+				if (this.players[i].id == Meteor.userId()){
+					return true
+				}
+			}
+			return false
 		}
 	});
 	Template.tournamentsTemplate.helpers({
@@ -185,6 +189,9 @@ if(Meteor.isClient){
 		},
 		'click .joinGame': function(){
 			Router.go("/comenzarPartida/" + this._id);
+		},
+		'click .resumeGame': function(){
+			Router.go("/reanudarPartida/" + this._id);
 		}
 	});
 

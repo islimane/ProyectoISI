@@ -93,7 +93,7 @@
 	<p>Creada por: {{createdBy}}</p>
 	<p>{{numberPlayers}} jugadores.</p>
 	{{#if suspended}}
-		{{#if isCreator}}
+		{{#if isInGame}}
 			<input type="button" class="resumeGame" value="Reanudar Partida"/>
 		{{/if}}
 	{{else}}
