@@ -1,6 +1,6 @@
 #!/bin/bash
 
-fileName="/tmp/test-$(date +%Hh%Mm%Ss)-$RANDOM"
+fileName="/tmp/test-$(date +%Hh%Mm%Ss)-$RANDOM.js"
 echo "New file created for testing:" $fileName
 
 touch $fileName
