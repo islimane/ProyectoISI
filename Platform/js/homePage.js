@@ -14,7 +14,6 @@ if(Meteor.isClient){
 			return  SuspendedGames.find().fetch().slice(0,20);
 		},
 		"waitingTournaments": function(){
-			console.log(Tournaments.find({tournamentStart: false}).fetch().slice(0,20));
 			return Tournaments.find({tournamentStart: false}).fetch().slice(0,20);
 		},
 	});
