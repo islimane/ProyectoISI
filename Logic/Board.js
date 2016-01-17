@@ -36,11 +36,11 @@ Board.prototype.insertTile = function(tile, coor){
 // this function returns an array
 // of arrays of cells in which, the given tile,
 // fits, for each rotation
-// allMatchingCells: [[matchingCells for Rot0], 
-//                    [matchingCells for Rot3], 
+// allMatchingCells: [[matchingCells for Rot0],
+//                    [matchingCells for Rot3],
 //                    [matchingCells for Rot2],
 //                    [matchingCells for Rot3]]
-Board.prototype.getAllMatchingCells = function(tile){
+var getAllMatchingCells = function(tile){
     var allMatchingCells = [];
     for(var i=0; i<4; i++){
         var tempTile = new Tile(tile.type, i);
@@ -182,7 +182,7 @@ var itFits = function(board, tile, coor){
 
 
 // this function returns an array containing
-// the cells with which we have to check if 
+// the cells with which we have to check if
 // a tile fits
 // testableCells = [northCell, eastCell, southCell, westCell]
 var getTestableCells = function(board, coor){
@@ -226,6 +226,99 @@ var getZones = function(tile, elem, index){
         break;
     }
     return [zone1, zone2];
+}
+
+/////////////////////////////////////
+// DUMMY POSITIONS SET OF FUNCTIONS//
+/////////////////////////////////////
+
+var getType = function (zone, tile) {
+    switch (zone) {
+        case 'n':
+            var type = tile.positions.n;
+            break;
+        case 'nw':
+            var type = tile.positions.nw;
+            break;
+        case 'w':
+            var type = tile.positions.w;
+            break;
+        case 'sw':
+            var type = tile.positions.sw;
+            break;
+        case 's':
+            var type = tile.positions.s;
+            break;
+        case 'se':
+            var type = tile.positions.se;
+            break;
+        case 'e':
+            var type = tile.positions.e;
+            break;
+        case 'ne':
+            var type = tile.positions.ne;
+            break;
+        default:
+            throw "Tree type not found";
+    }
+    return type;
+}
+
+//Get trees surrounding the given tile in the given coord.
+
+var getAllTrees = function (treesCollection, tile, coord) {
+    var trees = [];
+    var zones = ['n', 'nw', 'w', 'sw', 's', 'se', 'e', 'ne'];
+    for (var zone in zones) {
+        var childCoord, childZone = getCoordAndZoneChild(coord, zone);
+        var treeType = getType(zone, tile);
+        var auxTrees = treesCollection.getTrees([treeType], childCoord);
+        if (auxTrees.length !== 0) trees.push({zone: zone, trees: auxTrees});
+    }
+    return trees;
+}
+
+//Get free trees and their corresponding zones.
+//Where a free tree is one that doesn't have any
+//dummy in it.
+
+var getFreeZones = function (trees) {
+    var freeZones = [];
+    for (var tree in trees) {
+        if (tree.trees.dummies.length === 0) {
+            freeTrees.push(zoneTree.zone);
+        }
+    }
+    return freeZones;
+}
+
+//For every orientation ('group'), it access
+//every possible cell to add the possible dummy locations.
+//Format: [[{cell: Cell1 for Rot0, dummyPos: DummyPos},
+//          {cell: Cell2 for Rot0, dummyPos: DummyPos}, ...],
+//        [{cell: Cell1 for Rot1, dummyPos: DummyPos},
+//          {cell: Cell2 for Rot1, dummyPos: DummyPos}, ...],
+//        [{cell: Cell1 for Rot2, dummyPos: DummyPos},
+//          {cell: Cell2 for Rot2, dummyPos: DummyPos}, ...],
+//        [{cell: Cell1 for Rot3, dummyPos: DummyPos},
+//          {cell: Cell2 for Rot3, dummyPos: DummyPos}, ...]]
+//  Coords will be in format [x, y]
+//  DummyPos will be in format ['n', 'nw', 's', ...]
+
+Board.prototype.getDummyPositions = function (tile) {
+    var cells = getAllMatchingCells(tile);
+    var newArray = [];
+    for (var group in cells) {
+        var newGroup = [];
+        for (var cell in group) {
+            var coord = {x: cell.x, y: cell.y};
+            var trees = getAllTrees(this.treesCollection, tile ,coord);
+            var freeZones = getFreeZones(trees);
+            newGroup.push({cell: cell, dummyPos: freeZones});
+        }
+        newArray.push(newGroup);
+    }
+    return newArray;
 }
 
 
