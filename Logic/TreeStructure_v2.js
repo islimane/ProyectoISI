@@ -72,6 +72,21 @@ Tree.prototype.existsNode = function(coord, area){
 }
 
 
+/*
+ *  Returns the coords that the tree already need to be closed
+ *  format: [{x:50, y:49},{x:49,y:49},...]
+ */
+Tree.prototype.getLeftCoords = function(){
+    if (this.firstNode){
+        var remaining = this.firstNode.remainingCoords();
+        return remaining;
+    } else {
+        return [];
+    }
+}
+
+
+
 // Returns the number of tiles not placed
 // 0 -> Tree completed
 Tree.prototype.getLeftChildren = function(){
