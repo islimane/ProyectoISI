@@ -269,11 +269,11 @@ var getType = function (zone, tile) {
 var getAllTrees = function (treesCollection, tile, coord) {
     var trees = [];
     var zones = ['n', 'nw', 'w', 'sw', 's', 'se', 'e', 'ne'];
-    for (var zone in zones) {
-        var childCoord, childZone = getCoordAndZoneChild(coord, zone);
-        var treeType = getType(zone, tile);
+    for (var i = 0; i < zones.length; i++) {
+        var childCoord, childZone = getCoordAndZoneChild(coord, zones[i]);
+        var treeType = getType(zones[i], tile);
         var auxTrees = treesCollection.getTrees([treeType], childCoord);
-        if (auxTrees.length !== 0) trees.push({zone: zone, trees: auxTrees});
+        if (auxTrees.length !== 0) trees.push({zone: zones[i], trees: auxTrees});
     }
     return trees;
 }
@@ -336,4 +336,4 @@ console.log(b.availableCells);
 t = new Tile(19, 0);
 console.log("\nmatchingCells:");
 
-b.getDummyPositions(t)*/
+b.getDummyPositions(t);*/
