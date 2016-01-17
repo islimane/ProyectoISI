@@ -73,6 +73,7 @@ if(Meteor.isClient){
 				numPlayerHuman : numPlayerHuman,
 				numPlayerIA : numPlayerIA,
 				players : arrPlayers,
+				players_tournament : arrTournament,
 				gameStart : false,
 				password: password
 			})

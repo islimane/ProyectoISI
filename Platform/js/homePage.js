@@ -60,6 +60,13 @@ if(Meteor.isClient){
 		}
 	});
 
+	Template.allCreatedTournaments.helpers({
+		'createdTournaments': function(){
+			return Tournaments.find({tournamentStart: false}).fetch();
+		}
+	});
+
+
 	Template.allSuspendedGames.helpers({
 		'suspendedGames': function(){
 			return SuspendedGames.find().fetch();
@@ -179,6 +186,12 @@ if(Meteor.isClient){
 		},
 		'click .joinGame': function(){
 			Router.go("/comenzarPartida/" + this._id);
+		}
+	});
+
+	Template.tournamentsTemplate.events({
+		'click .joinTournament': function(){
+			Router.go("/pagTournament/" + this._id);
 		}
 	});
 }
