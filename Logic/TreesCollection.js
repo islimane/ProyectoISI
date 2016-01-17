@@ -34,7 +34,8 @@ TreesCollection = function(){
 //     playersPoints: [[Player1_ID, points],[Player2_ID, points],...],
 //     dummies: [dummy1, dummy2,...]
 // }
-TreesCollection.prototype.insertTile = function(tile, coor, dummy){
+TreesCollection.prototype.insertTile = function(tile, coor, 
+    ){
     var data = {
         playersPoints: [],
         dummies: []

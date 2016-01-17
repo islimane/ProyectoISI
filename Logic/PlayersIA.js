@@ -53,3 +53,25 @@ FirstMode.prototype.playTile = function (tile, board) {
 
     board.insertTile(tile.type, tile.orientation, cells[0]);
 }
+
+
+/////////////////////////////////
+//    IA PLAYER SECOND MODE     //
+/////////////////////////////////
+
+/*
+    If has dummies check the longest available zone and inserts the tile with the dummy
+    If has no dummies , inserts the tile to a zone with one of his dummies.
+*/
+
+
+SecondMode = function () {
+    IAplayer.call(this);
+}
+
+SecondMode.prototype = Object.create(IAplayer.prototype);
+SecondMode.prototype.constructor = SecondMode;
+
+SecondMode.prototype.playTile = function (tile, board) {
+    // TODO
+}

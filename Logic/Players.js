@@ -6,7 +6,6 @@ Max_Players = 4 ;
 Max_Dummies = 7 ;
 
 Players = function(ids )  {
-
 	this.players = this.init(ids) ;
 	this.n = 0 ;				 // Current player's index in players[]
 	this.currentPlayer = this.players[0];    // Current player, changes each turn.
@@ -14,14 +13,14 @@ Players = function(ids )  {
 
 Players.prototype.init = function(ids ){
 
-  	var arry = [] ;
+  	var arry = new Array() ; 
  
-    	for ( var i = 0 ; i < ids.length ; i++){
-        	if (ids[i]) {
-        		arry[i] = new Player(ids[i]) ;
-        	}else {
-        		arry[i] = new Player(i) ;
-        	}
+	for ( var i = 0 ; i < ids.length ; i++){
+	    	if (ids[i]) {
+	     		arry.push(new Player(ids[i])) ;
+	     	}else{
+	     		arry.push(new Player(i) ) ;
+	     	}
    	}
   	return arry ;
 }
@@ -29,7 +28,7 @@ Players.prototype.init = function(ids ){
 Players.prototype.names = function() {
 
 	var arry = [] ;
-	for ( i = 0 ; i < Max_Players ; i++ ){
+	for ( var i = 0 ; i < Max_Players ; i++ ){
 		arry[i] = this.currentPlayer.name ;
 		this.next() ;
 	}
@@ -95,15 +94,15 @@ Player.prototype.isIA = function(){
 }
 
 Player.prototype.initDummies = function() {
-	var arry = [] ;
-	for (i= 0; i < Max_Dummies ; i++) {
-		arry[i] = new Dummy(this.id , i);
+	var arry = new Array() ;
+	for ( var i = 0 ; i < Max_Dummies ; i++) {
+		arry.push ( new Dummy(this.id , i) );
 	}
 	return arry ;
 }
 
 Player.prototype.getNewDummy = function () {
-	for ( i = 0 ; i < Max_Dummies ; i++) {
+	for ( var i = 0 ; i < Max_Dummies ; i++) {
 		if ( this.dummies[i].coord == null ){
 			return this.dummies[i] ;
 		}

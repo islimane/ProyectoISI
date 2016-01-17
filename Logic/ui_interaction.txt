@@ -8,34 +8,33 @@ API for UI.
 		 * Returns all the players names in the game 
 		 */
 
-	getPlayer : function (Game)
-		/* 
-		 *	Returns the current Player
-		 *  NEW!! ==> If the player's name is "IA" call get IA and omit the others calls.
-		 */
-	
-
-	getTile : function (Game)
-		/* 
-		 *	Returns the current Tile's id
-		 */
-
 
 	getCoords : function(Game)
 		/* 
-		 *	Returns the coords (arry with 4 entries)
+		 *	Returns the tile's id and the coords (arry with 4 entries)
+		 *		id tile ,
 		 *	 	rot0: [],					array of "info"s
 		 *		rot1: [],
 		 *		rot2: [],
 		 *		rot3: [],
 		 *
 		 *	With "info" set as :
-		 *		· coord 					
+		 *		· coord 					[x , y] 
 		 *		· dummyPos					[ n, nw, w, sw, s, se, e, ne, c ]	
 		 *									all false except the plausible dummy
 		 *								    positions in the tile
 		 */
 
+	setPos : function (Game, x, y, rot , arry) 
+		/* 
+		 *  Set the position where the tile is placed on the board and its rotation
+		 *
+		 *  And also sets the position where dummy is placed in the tile.
+		 *
+		 *		arry = [ n,  nw,   w,  sw,   s,  se,   e,  ne,   c  ] , 
+		 *				all false except the dummy position in the tile if set
+		 *				all false if dummy is not set
+		 */
 
 	getUpdatedInfo : function (Game) 
 		/* 
@@ -45,24 +44,11 @@ API for UI.
 		 */
 
 
-	setPos : function (Game, x, y, rot) 
-		/* 
-		 *  Set the position where the tile is placed on the board and its rotation
-		 */
-
-
-	setDummy : function (Game, arry) 
-		/*
-		 * Sets the position where dummy is placed in the tile.
-		 *		arry = [ n,  nw,   w,  sw,   s,  se,   e,  ne,   c  ] , 
-		 *				all false except the dummy position in the tile if set
-		 *				all false if dummy is not set
-		 */
-
 	getIA : function (Game)  	<===== NEW !!!
 		/*
 		 * Returns the Automatic Player's decision
 		 *		
+		 * 		·idTile
 		 *		·tileCoord
 		 *		·tileRot
 		 *		·dummyPos           		if set, null otherwise
