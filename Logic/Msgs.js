@@ -5,7 +5,7 @@ Meteor.methods({
 
 	// Return the 4 Players names to UI
 	getNames : function (gameId) {
-		game = Games.findOne({_id:gameId});
+		game = findGameByID(gameId) ;
    
 		if(!( Meteor.userId() == game.players.currentPlayer.id )){
 			return null ;
@@ -15,30 +15,23 @@ Meteor.methods({
 		return names ;
 	},
 
-	// Returns the current Player's name to UI.
-	getPlayer : function (gameId) {
-		game = Games.findOne({_id:gameId});
-
-		if(!( Meteor.userId() == game.players.currentPlayer.id )){
-			return null ;
-		}
-		
-		return game.players.currentPlayer.name ;
-	},
-
-	getTile : function (gameId) {
-		game = Games.findOne({_id:gameId});
-
-		if(!( Meteor.userId() == game.players.currentPlayer.id )){
-			return null ;
-		}
-
-		return game.tiles.currentTile.type ;
-	},
-
-	// Returns the arry of the 4 rotations coords 
+	// Returns the current tile's id and the arry of the 4 rotations coords 
 	getCoords : function(gameId){
-		// TODO 
+		game = Games.findOne({_id:gameId});
+
+		if(!( Meteor.userId() == game.players.currentPlayer.id )){
+			return null ;
+		}
+
+		var data = {
+			tileId:  0,
+			coords: []
+		};
+
+		data.tileId = game.tiles.currentTile.type ;
+		data.coords = game.getDummyPositions() ;
+
+		return data ;
 	},
 
 	// Set the positions when the tile is placed on the board and its rotation
