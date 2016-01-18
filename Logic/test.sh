@@ -6,12 +6,12 @@ echo "New file created for testing:" $fileName
 touch $fileName
 
 file[0]=TreeStructure_v2.js
-file[1]=TreesCollection.js
-file[2]=Tiles.js
+file[1]=Tiles.js
+file[2]=Dummy.js
 file[3]=Players.js
 file[4]=Games.js
 file[5]=Game.js
-file[6]=Dummy.js
+file[6]=TreesCollection.js
 file[7]=Board.js
 file[8]=PlayersIA.js
 file[9]=pruebas.js
@@ -29,6 +29,9 @@ done
 
 echo "_____BEGIN______"
 nodejs "$fileName"
+if [ $? != 0 ]; then
+	subl -a $fileName
+fi
 echo "______END_______"
 
 #rm $fileName

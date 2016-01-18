@@ -31,6 +31,7 @@ Board = function(){
 // This function inserts a tile on the
 // given coordinates with a given orientation
 // coor: [xx,yy] --> e.g [4,52]
+// dummy: object or null
 Board.prototype.insertTile = function(tile, coor, dummy){
     var data = null;
     this.cells[coor[0]][coor[1]].tile = tile;
