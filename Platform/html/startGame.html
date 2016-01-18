@@ -7,6 +7,11 @@
 		<p> Numero de jugadores automaticos: {{infoGame.numPlayerIA}}</p>
 		
     <div class = "buttons">
+     
+      {{#if GameTournamentComplete}}
+        <input type="button" class="starGame" value="Comenzar juego">
+      {{/if}}
+
       {{#if  ImtheCreator}}
         <input type="button" class="changeGame" value="Modificar juego">
          <ul><input type="button" class="leaveGame" value="Abandonar partida"></ul>

@@ -14,7 +14,6 @@ if(Meteor.isClient){
 			return  SuspendedGames.find().fetch().slice(0,20);
 		},
 		"waitingTournaments": function(){
-			console.log(Tournaments.find({tournamentStart: false}).fetch().slice(0,20));
 			return Tournaments.find({tournamentStart: false}).fetch().slice(0,20);
 		},
 	});
@@ -59,6 +58,13 @@ if(Meteor.isClient){
 			return Games.find({gameStart: false}).fetch();
 		}
 	});
+
+	Template.allCreatedTournaments.helpers({
+		'createdTournaments': function(){
+			return Tournaments.find({tournamentStart: false}).fetch();
+		}
+	});
+
 
 	Template.allSuspendedGames.helpers({
 		'suspendedGames': function(){
@@ -156,9 +162,13 @@ if(Meteor.isClient){
 			}
 			return nHumans + nIA;
 		},
-		'isCreator': function(){
-			//return (this.creator == Meteor.userId())
-			return true
+		'isInGame': function(){
+			for(var i = 0; i < this.players.length; i++){
+				if (this.players[i].id == Meteor.userId()){
+					return true
+				}
+			}
+			return false
 		}
 	});
 	Template.tournamentsTemplate.helpers({
@@ -179,6 +189,15 @@ if(Meteor.isClient){
 		},
 		'click .joinGame': function(){
 			Router.go("/comenzarPartida/" + this._id);
+		},
+		'click .resumeGame': function(){
+			Router.go("/reanudarPartida/" + this._id);
+		}
+	});
+
+	Template.tournamentsTemplate.events({
+		'click .joinTournament': function(){
+			Router.go("/pagTournament/" + this._id);
 		}
 	});
 }

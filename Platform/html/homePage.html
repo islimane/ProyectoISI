@@ -93,7 +93,7 @@
 	<p>Creada por: {{createdBy}}</p>
 	<p>{{numberPlayers}} jugadores.</p>
 	{{#if suspended}}
-		{{#if isCreator}}
+		{{#if isInGame}}
 			<input type="button" class="resumeGame" value="Reanudar Partida"/>
 		{{/if}}
 	{{else}}
@@ -112,9 +112,8 @@
 	<h4>{{nameTournament}}</h4>
 	<p>Creada por: {{createdBy}}</p>
 	<p>{{numPlayer}} jugadores.</p>
-	{{#if nottournamentStart}}
+
 		<input type="button" class="joinTournament" value="Visitar Sala"/>
-	{{/if}}
 	</li></div>
 </template>
 
@@ -162,7 +161,7 @@
 	<h3>Torneos Creados:</h3>
 	<ul>
 		{{#each createdTournaments}}
-			{{>gameTemplate}}
+			{{>tournamentsTemplate}}
 		{{/each}}
 	</ul>
 </template>

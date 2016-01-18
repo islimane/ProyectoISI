@@ -18,6 +18,10 @@ VERTICAL_MAXSIZE = 100;
 
 Board = function(){
     this.cells = initializeBoard();
+    this.treesCollection = new TreesCollection();
+    // Initialize treesCollection
+    t = new Tile(19, 2);
+    this.treesCollection.insertTile(t, {x:49,y:49}, null);
     // this field is an array of cells
     // in which we may have a posibility
     // to put a tile if it matches
@@ -28,9 +32,15 @@ Board = function(){
 // given coordinates with a given orientation
 // coor: [xx,yy] --> e.g [4,52]
 Board.prototype.insertTile = function(tile, coor, dummy){
+    var data = null;
     this.cells[coor[0]][coor[1]].tile = tile;
     // Update availableCells
     this.availableCells = getAvailableCells(this);
+
+    // Update treesCollection
+    data = this.treesCollection.insertTile(tile, {x:coor[0],y:coor[1]}, dummy);
+
+    return data;
 }
 
 // this function returns an array
@@ -335,5 +345,6 @@ console.log(b.availableCells);
 
 t = new Tile(19, 0);
 console.log("\nmatchingCells:");
+console.log(b._getAllMatchingCells(t));
 
 b.getDummyPositions(t);*/

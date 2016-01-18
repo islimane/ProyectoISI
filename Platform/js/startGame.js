@@ -17,10 +17,20 @@
 			return false
 		},
 		'ImtheCreator':function(){
-			return (Games.findOne({_id:this._id}).creator == Meteor.userId())
+			if (Games.findOne({_id:this._id}).gameTournament == false){
+				return (Games.findOne({_id:this._id}).creator == Meteor.userId())
+			}else{
+				return false
+			}
+				
 		},
 		'playersComplete':function(){
 			return (Games.findOne({_id:this._id}).players.length == Games.findOne({_id:this._id}).numPlayerHuman)
+		},
+		'GameTournamentComplete':function(){
+			if ((Games.findOne({_id:this._id}).gameTournament == true) && (Games.findOne({_id:this._id}).players.length == 4)){	
+				return true
+			}
 		},
 		'selectedClass': function(){
 	      	var playerId = this.id;
@@ -90,6 +100,7 @@
     	},
     	'submit form' : function(event){
 			event.preventDefault();
+			var gameId = this._id
 			var password = event.target.password.value;
 			if(Games.findOne({_id:this._id}).password == password){
 				var players = Games.findOne({_id:this._id}).players
@@ -99,7 +110,30 @@
 				}
 				players.push(data)
 				Games.update({_id:this._id},{$set:{players:players}})
+				Gamesaux.insert({gameid:gameId ,gameStart:false})
 			}
+
+			Tracker.autorun(function(){
+			// colección auxiliar donde meta el id y que ha empezado la partida 
+			// haria el if sobre esa colección 
+			// habria que llevarlo a la funcion donde entras en la sala
+				var game = Gamesaux.findOne({gameid:gameId},{fields:{gameStart:1}})
+				if(game.gameStart){
+					//filtar por el id del jugadores
+					var players = Games.findOne({_id:gameId}).players
+					for(i = 0; i < players.length;i++){
+						if (players[i].id == Meteor.userId()){
+							Router.go("/partida/" + Games.findOne({_id:gameId})._id);
+							//tb llamar funcion para pintar canvas
+							//le pasamos el id de la partida
+						}
+					}
+
+				}
+			})
+
+
+
 		},
 		'click .changeGame':function(){
 			$('div .paramGame').show();

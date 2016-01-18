@@ -12,6 +12,23 @@ if (Meteor.isClient) {
 			}
 			return user
 		},
+
+		'showPassword':function(){
+			var games = Games.find().fetch()
+			if (games == undefined){
+				return false
+			}
+			for ( i = 0;i < games.length;i++) {
+				var id = games[i]._id
+				var players_tournament = games[i].players_tournament
+				for(j = 0; j < players_tournament.length;j++){
+					if(players_tournament[j].id == Meteor.userId()){
+						return Games.findOne({_id:id})
+					}
+				}
+			}
+			return false
+		},
 		'myfriends':function(){
 			var arrfriends = []
 			if (this._id == undefined) return null;////

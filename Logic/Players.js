@@ -27,11 +27,22 @@ Players.prototype.init = function(ids ){
 
 Players.prototype.names = function() {
 
-	var arry = [] ;
+	var arry = new Array() ;
 	for ( var i = 0 ; i < Max_Players ; i++ ){
-		arry[i] = this.currentPlayer.name ;
+		arry.push( this.currentPlayer.name );
 		this.next() ;
 	}
+	return arry ;
+}
+
+Players.prototype.scores = function() {
+	var arry = new Array() ;
+
+	for ( var i = 0 ; i < Max_Players ; i++ ){
+		arry.push( this.currentPlayer.score) ;
+		this.next() ;
+	}
+
 	return arry ;
 }
 
@@ -52,6 +63,7 @@ Players.prototype.getPlayerById = function(id) {
 			return this.players[i] ;
 		}
 	}
+	return null ;
 }
 
 

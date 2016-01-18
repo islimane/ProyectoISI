@@ -10,14 +10,16 @@ TreesCollection = function(){
 	this.trees = {
         fieldTrees: [],
         cityTrees: [],
-        roadTrees: []
+        roadTrees: [],
+        cloisterTrees: []
     };
 
     // Poinst per tile
     this.points = {
         fieldTile: 1,
         cityTile: 2,
-        roadTile: 1
+        roadTile: 1,
+        cloisterTile: 1
     }
 }
 
@@ -45,6 +47,7 @@ TreesCollection.prototype.insertTile = function(tile, coor, dummy){
         this.trees.fieldTrees, 
         this.trees.cityTrees, 
         this.trees.roadTrees,
+        this.trees.cloisterTrees,
         dummy);
     if(checkCompletedTrees(completedTrees)){
         completedTrees = toArrayOfTrees(completedTrees);
@@ -306,7 +309,7 @@ var toArrayOfTrees = function(arrayOfArrays){
 
 // this function returns an array of completed Trees by type of zone
 // completedTrees = [[completed fTrees],[completed ciTrees],[completed rTrees]];
-saveTileInTrees = function(coord, tile, fieldTrees, cityTrees, roadTrees, dummy){
+saveTileInTrees = function(coord, tile, fieldTrees, cityTrees, roadTrees, cloisterTrees, dummy){
     var areasOfAllTypes = getAreasTile(tile.type, tile.orientation); //{f: [['se'],['sw']], r: [['s']], ci: [['n','e','w']] }
     if(debug) console.log(areasOfAllTypes);
     var completedTrees = [];

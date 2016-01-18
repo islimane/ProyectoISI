@@ -22,6 +22,9 @@
 			<p>Imagen de Perfil: <input name="img" placeholder="http://______.jpg">
 			<input type ="submit" class ="userimg" value = "Cambiar"/></p>
 		</form>
+		{{#if showPassword}}
+			Contraseña para la partida del torneo "{{showPassword.nameGame}}": "{{showPassword.password}}"
+		{{/if}}
 		</div>
 	{{/if}}	
 

@@ -16,7 +16,6 @@ if(Meteor.isClient){
 			}
 		},
 		'change #players' : function(){
-			console.log("estoy cambiando");
 			$('#human').show();
 			var value = $('#players').val();
 			$('#humanPlayer').attr('max',value);
@@ -61,11 +60,11 @@ if(Meteor.isClient){
 			var numPlayerIA = event.target.IAPlayer.value;
 			var password = event.target.password.value;
 			var arrPlayers = []
+			var arrTournament=[]
 			var data = {
 					id:Meteor.userId(),
 					name : Meteor.users.findOne({_id:Meteor.userId()}).profile.user
 				}
-			console.log( numPlayerIA);
 			arrPlayers.push(data)
 			var id = Games.insert({
 				creator : creator,
@@ -73,7 +72,9 @@ if(Meteor.isClient){
 				numPlayerHuman : numPlayerHuman,
 				numPlayerIA : numPlayerIA,
 				players : arrPlayers,
+				players_tournament: arrTournament,
 				gameStart : false,
+				gameTournament:false,
 				password: password
 			})
 			Router.go("startGame", {_id: id});

@@ -5,19 +5,26 @@ Meteor.methods({
 
 	// Return the 4 Players names to UI
 	getNames : function (gameId) {
-		game = findGameByID(gameId) ;
-   
-		if(!( Meteor.userId() == game.players.currentPlayer.id )){
+		var game = findGameByID(gameId) ;
+
+		if (!game){
 			return null ;
 		}
 
-		names = game.players.names() ;
+		if (game.turns != 71 ){
+			return null ;
+		}
+
+		var names = game.players.names() ;
 		return names ;
 	},
 
 	// Returns the current tile's id and the arry of the 4 rotations coords 
 	getCoords : function(gameId){
-		game = Games.findOne({_id:gameId});
+		var game = findGameByID(gameId);
+		if (!game){
+			return null ;
+		}
 
 		if(!( Meteor.userId() == game.players.currentPlayer.id )){
 			return null ;
@@ -34,26 +41,88 @@ Meteor.methods({
 		return data ;
 	},
 
-	// Set the positions when the tile is placed on the board and its rotation
-	setPos : function (gameId, x, y, rot) {
-		// TODO 
-	},
+	// Set the tile's position and rotation and the dummy's position in it.
+	// returns the updated info.
+	setTile : function (gameId, x, y, rot, arry) {
+		var game = findGameByID(gameId);
+		if (!game){
+			return null ;
+		}
 
-	// Sets the position when dummy is placed in the tile.
-	setDummy : function (gameId, arry) {
-		// TODO 
-	},
+		if(!( Meteor.userId() == game.players.currentPlayer.id )){
+			return null ;
+		}
 
-	// Returns the updated info for UI, the new players score and the dummies
-	// coords to be removed.
-	getUpdatedInfo : function (gameId) {
-		// TODO 
+		game.tiles.currentTile.orientation = rot ;
+		var coor = [x , y] ;
+
+		// TODO
+		// check if is valid the position for the tile.
+		// add dummy ( in or with the tile?)
+
+
+		// updates the players scores
+		var res = game.board.insertTile(game.tiles.currentTile , coor) ;
+		res.playersPoints.forEach( function(i){
+			var player = game.players.getPlayerById(i[0]) ;
+			if (!player) { 
+				throw new Error("No player for given id") ; 
+				return null ;
+			}
+			player.incScoreBy(i[1]) ;
+		});
+
+		var removedDummies = new Array() ; 
+
+		res.dummies.forEach(function(i) {
+			removedDummies.push(i.coord) ;
+			i.return() ;
+		});
+
+		var data = {
+			remDums: [],
+			scores: []
+		};
+
+		data.remDums = removedDummies ;
+		data.scores = game.players.scores() ;
+
+		game.nextTurn() ;
+		return data ;
 	},
 
 	// Return the Automatic Players movement.
 	getIA : function (gameId) {
-		// TODO 
-		// call currentPlayer.playTile and return its decision.
+		var game = findGameByID(gameId);
+		if (!game){
+			return null ;
+		}
+
+		if(!game.players.currentPlayer.isIA() ){
+			return null ;
+		}
+
+		// TODO call  move = currentPlayer.playTile(game)
+		// insert the tile in the coord and repeat the same as i setTile (above)
+
+		var data = {
+			tileId : 0 ,
+			tileCoord : [] ,
+			tileRot : 0 , 
+			dummyPos : [] ,          		
+			remDums: [] , 		
+			scores : []
+		}
+
+		data.tileId = game.tiles.currentTile.type ;
+		// data.Coord   where the tile is placed
+		data.tileRot = game.tiles.currentTile.orientation ;
+		// data.dummyPos 
+		// data.remDums 
+		data.scores = game.players.scores() ;
+
+		game.nextTurn() ;
+		return data ;
 	}
 });
 
@@ -86,7 +155,15 @@ Meteor.methods({
 	// Checked info for UI
 	updatedInfo = {
 		coord  : []  , 	// removed dummies coords 
-		score : 0 , 	// new score
+		score : [score1, score2, score3, score4] , 	// new scores for the players
 	}
+
+	IA info 
+	·idTile
+	·tileCoord
+	·tileRot
+	·dummyPos           		if set, null otherwise
+	·coord: [[x, y], ...]  		coords of the removed dummies
+	·score: [score1, score2, score3, score4]	the new players score
 }
 */

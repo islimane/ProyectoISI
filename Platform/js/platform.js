@@ -87,6 +87,14 @@ Router.route('/partida/:_id', {
         return Games.findOne({_id: gameId});
     }
 });
+Router.route('/reanudarPartida/:_id', {
+    template: "resumeGame",
+    name: "resumeGame",
+    data: function(){
+        var gameId = this.params._id;
+        return SuspendedGames.findOne({_id: gameId});
+    }
+})
 
 Router.route('pruebaUI', {
 	template: "pruebaUI",
