@@ -294,11 +294,10 @@ var getAllTrees = function (treesCollection, tile, coord) {
 //dummy in it.
 
 var getFreeZones = function (trees) {
-    var freeZones = [];
-    for (var tree in trees) {
-        if (tree.trees.dummies.length === 0) {
-            freeTrees.push(zoneTree.zone);
-        }
+    //                'n'   'nw'    'w'    'sw'   's'   'se'    'e'    'ne'
+    var freeZones = [false, false, false, false, false, false, false, false];
+    for (var i = 0; i < trees.length; i++) {
+        freeZones[i] = (trees[i].trees.dummies.length === 0) ? true:false;
     }
     return freeZones;
 }
@@ -314,14 +313,17 @@ var getFreeZones = function (trees) {
 //        [{cell: Cell1 for Rot3, dummyPos: DummyPos},
 //          {cell: Cell2 for Rot3, dummyPos: DummyPos}, ...]]
 //  Coords will be in format [x, y]
-//  DummyPos will be in format ['n', 'nw', 's', ...]
+//  DummyPos will be in format [true, true, false, ...]
+//  Corresponding to the different dummy possitions.
 
 Board.prototype.getDummyPositions = function (tile) {
     var cells = this._getAllMatchingCells(tile);
     var newArray = [];
-    for (var group in cells) {
+    for (var i = 0; i < cells.length; i++) {
+        var group = cells[i];
         var newGroup = [];
-        for (var cell in group) {
+        for (var i = 0; i < group.length; i++) {
+            var cell = group[i];
             var coord = {x: cell.x, y: cell.y};
             var trees = getAllTrees(this.treesCollection, tile ,coord);
             var freeZones = getFreeZones(trees);
