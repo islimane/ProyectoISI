@@ -36,7 +36,7 @@ Meteor.methods({
 		};
 
 		data.tileId = game.tiles.currentTile.type ;
-		data.coords = game.getDummyPositions() ;
+		data.coords = game.board.getDummyPositions(game.tiles.currentTile) ;
 
 		return data ;
 	},
