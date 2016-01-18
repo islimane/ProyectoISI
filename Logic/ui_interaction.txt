@@ -25,7 +25,7 @@ API for UI.
 		 *								    positions in the tile
 		 */
 
-	setPos : function (Game, x, y, rot , arry) 
+	setTile : function (Game, x, y, rot , arry) 
 		/* 
 		 *  Set the position where the tile is placed on the board and its rotation
 		 *
@@ -34,17 +34,14 @@ API for UI.
 		 *		arry = [ n,  nw,   w,  sw,   s,  se,   e,  ne,   c  ] , 
 		 *				all false except the dummy position in the tile if set
 		 *				all false if dummy is not set
-		 */
-
-	getUpdatedInfo : function (Game) 
-		/* 
-		 *	Returns the updated info for UI: 
-		 * 		·coord: [[x, y], ...]  		coords of the removed dummies
-		 *		·score:  					the new players core
+		 *
+		 * 	Returns the updated info:
+		 *		remDums []  	coordenates of removed dummies
+		 *		scores []		the 4 players score in the same order as names.
 		 */
 
 
-	getIA : function (Game)  	<===== NEW !!!
+	getIA : function (Game)  	
 		/*
 		 * Returns the Automatic Player's decision
 		 *		
@@ -58,7 +55,7 @@ API for UI.
 
 
 
-On any error this methods return null.
+On any error those methods return null.
 				
 				
 
