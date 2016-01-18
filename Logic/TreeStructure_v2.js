@@ -16,8 +16,15 @@ Tree = function(type, coord, area, tileType, dummy){
     this.type = type;
     this.firstNode = undefined;
     this.id = getRandomId(type);
-    if (coord && area)
-        this.placeNode(coord, area, tileType, dummy);
+    if (type == 'cl' && coord){
+        this.firstNode = new Node(coord, null, 'x', [], true, tileType);
+        this._createClTree(coord);
+        if (dummy)
+            this.dummies.push(dummy)
+    } else {
+        if (coord && area)
+            this.placeNode(coord, area, tileType, dummy);
+    }
 }
 
 // coord: {x:1, y:2}
@@ -59,6 +66,17 @@ Tree.prototype.placeNode = function(coord, area, tileType, dummy){
             return -1;
         }
     }
+}
+
+
+// ONLY FOR CLOISTER TREES
+// Place a coord in a tree
+Tree.prototype.placeClTile = function(coord){
+    var nodes = this.findNodes(coord);
+    nodes.forEach(function(node){
+        node.placed = true;
+        node.tileType = -2;
+    });
 }
 
 
@@ -197,7 +215,6 @@ Tree.prototype._getNotPlacedCoords = function(childrenElements){
 
 
 
-
 // For debug issues
 Tree.prototype.printTree = function(){
     if (this.firstNode){
@@ -250,6 +267,12 @@ Tree.prototype._setFirstNode = function(coord, area){
     this.firstNode = firstNode;
 }
 
+
+//childrenElements: [{coord: {x:2, y:4}, zone: 'n'}, {...}, ...]
+Tree.prototype._createClTree = function(coord){
+    childsCl = getChildsCl(coord);
+    this.firstNode.setChildren(childsCl);
+}
 
 
 ///////////////////////////
@@ -477,6 +500,24 @@ var getOriginalZone = function(zone){
         break;
     }
 }
+
+
+// for a coord guiven for cloister
+var getChildsCl = function(coord){
+    if (!coord)
+        return [];
+    arr = new Array();
+    arr.push({coord: {x: coord.x, y: coord.y-1}, zone: 'n'});
+    arr.push({coord: {x: coord.x, y: coord.y+1}, zone: 's'});
+    arr.push({coord: {x: coord.x+1, y: coord.y}, zone: 'e'});
+    arr.push({coord: {x: coord.x-1, y: coord.y}, zone: 'w'});
+    arr.push({coord: {x: coord.x-1, y: coord.y-1}, zone: 'nw'});
+    arr.push({coord: {x: coord.x+1, y: coord.y-1}, zone: 'ne'});
+    arr.push({coord: {x: coord.x-1, y: coord.y+1}, zone: 'sw'});
+    arr.push({coord: {x: coord.x+1, y: coord.y+1}, zone: 'se'});
+    return arr;
+}
+
 
 //////////////////////////
 //    GET COORD CHILD   //
