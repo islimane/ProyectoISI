@@ -494,127 +494,174 @@ getAreasTile = function(typeTile, orientation){
         return {f:  [ [ zone[0+turn], zone[6+turn], zone[3+turn], zone[9+turn] ] ],
                 // no roads, no cities:
                 r:  [],
-                ci: []
+                ci: [],
+                cl: true
                 }
         break;
     case 1:
         return {f:  [ [ zone[(0+turn)%12], zone[(3+turn)%12], zone[(9+turn)%12], zone[(7+turn)%12], zone[(5+turn)%12] ] ],
                 r:  [ [ zone[(6+turn)%12] ] ],
-                ci: [] }
+                ci: [],
+                cl: true
+                }
         break;
     case 2:
         return {f:  [],
                 r:  [],
-                ci: [ [ zone[(0+turn)%12], zone[(3+turn)%12], zone[(6+turn)%12], zone[(9+turn)%12] ] ] }
+                ci: [ [ zone[(0+turn)%12], zone[(3+turn)%12], zone[(6+turn)%12], zone[(9+turn)%12] ] ],
+                cl: false
+                }
         break;
     case 3:
         return {f:  [ [ zone[(6+turn)%12] ] ],
                 r:  [],
-                ci: [ [ zone[(0+turn)%12], zone[(3+turn)%12], zone[(9+turn)%12] ] ] }
+                ci: [ [ zone[(0+turn)%12], zone[(3+turn)%12], zone[(9+turn)%12] ] ],
+                cl: false
+                }
         break;
     case 4://banner
         return {f:  [ [ zone[(6+turn)%12] ] ],
                 r:  [],
-                ci: [ [ zone[(0+turn)%12], zone[(3+turn)%12], zone[(9+turn)%12] ] ] }
+                ci: [ [ zone[(0+turn)%12], zone[(3+turn)%12], zone[(9+turn)%12] ] ],
+                cl: false 
+                }
         break;
     case 5:
         return {f:  [ [ zone[(5+turn)%12] ], [ zone[(7+turn)%12] ] ],
                 r:  [ [ zone[(6+turn)%12] ] ],
-                ci: [ [ zone[(0+turn)%12], zone[(3+turn)%12], zone[(9+turn)%12] ] ] }
+                ci: [ [ zone[(0+turn)%12], zone[(3+turn)%12], zone[(9+turn)%12] ] ],
+                cl: false 
+                }
         break;
     case 6://banner
         return {f:  [ [ zone[(5+turn)%12] ], [ zone[(7+turn)%12] ] ],
                 r:  [ [ zone[(6+turn)%12] ] ],
-                ci: [ [ zone[(0+turn)%12], zone[(3+turn)%12], zone[(9+turn)%12] ] ] }
+                ci: [ [ zone[(0+turn)%12], zone[(3+turn)%12], zone[(9+turn)%12] ] ],
+                cl: false 
+                }
         break;
     case 7:
         return {f:  [ [ zone[(3+turn)%12], zone[(6+turn)%12] ] ],
                 r:  [],
-                ci: [ [ zone[(0+turn)%12], zone[(9+turn)%12] ] ] }
+                ci: [ [ zone[(0+turn)%12], zone[(9+turn)%12] ] ],
+                cl: false 
+                }
         break;
     case 8: //banner
         return {f:  [ [ zone[(3+turn)%12], zone[(6+turn)%12] ] ],
                 r:  [],
-                ci: [ [ zone[(0+turn)%12], zone[(9+turn)%12] ] ] }
+                ci: [ [ zone[(0+turn)%12], zone[(9+turn)%12] ] ],
+                cl: false 
+                }
         break;
     case 9:
         return {f:  [ [ zone[(2+turn)%12], zone[(7+turn)%12] ], [ zone[(4+turn)%12], zone[(5+turn)%12] ] ],
                 r:  [ [ zone[(3+turn)%12], zone[(6+turn)%12] ] ],
-                ci: [ [ zone[(0+turn)%12], zone[(9+turn)%12] ] ] }
+                ci: [ [ zone[(0+turn)%12], zone[(9+turn)%12] ] ],
+                cl: false 
+                }
         break;
     case 10: //banner
         return {f:  [ [ zone[(2+turn)%12], zone[(7+turn)%12] ], [ zone[(4+turn)%12], zone[(5+turn)%12] ] ],
                 r:  [ [ zone[(3+turn)%12], zone[(6+turn)%12] ] ],
-                ci: [ [ zone[(0+turn)%12], zone[(9+turn)%12] ] ] }
+                ci: [ [ zone[(0+turn)%12], zone[(9+turn)%12] ] ],
+                cl: false 
+                }
         break;
     case 11:
         return {f:  [ [ zone[(0+turn)%12] ], [ zone[(6+turn)%12] ] ],
                 r:  [],
-                ci: [ [ zone[(3+turn)%12], zone[(9+turn)%12] ] ] }
+                ci: [ [ zone[(3+turn)%12], zone[(9+turn)%12] ] ],
+                cl: false 
+                }
         break;
     case 12: //banner
         return {f:  [ [ zone[(0+turn)%12] ], [ zone[(6+turn)%12] ] ],
                 r:  [],
-                ci: [ [ zone[(3+turn)%12], zone[(9+turn)%12] ] ] }
+                ci: [ [ zone[(3+turn)%12], zone[(9+turn)%12] ] ],
+                cl: false 
+                }
         break;
     case 13:
         return {f:  [ [ zone[(3+turn)%12], zone[(6+turn)%12] ] ],
                 r:  [],
-                ci: [ [ zone[(0+turn)%12] ], [ zone[(9+turn)%12] ] ] }
+                ci: [ [ zone[(0+turn)%12] ], [ zone[(9+turn)%12] ] ],
+                cl: false 
+                }
         break;
     case 14:
         return {f:  [ [ zone[(3+turn)%12], zone[(9+turn)%12] ] ],
                 r:  [],
-                ci: [ [ zone[(0+turn)%12] ], [ zone[(6+turn)%12] ] ] }
+                ci: [ [ zone[(0+turn)%12] ], [ zone[(6+turn)%12] ] ],
+                cl: false 
+                }
         break;
     case 15:
         return {f:  [ [ zone[(3+turn)%12], zone[(6+turn)%12], zone[(9+turn)%12] ] ],
                 r:  [],
-                ci: [ [ zone[(0+turn)%12] ] ] }
+                ci: [ [ zone[(0+turn)%12] ] ],
+                cl: false 
+                }
         break;
     case 16:
         return {f:  [ [ zone[(3+turn)%12], zone[(5+turn)%12], zone[(10+turn)%12] ], [ zone[(7+turn)%12], zone[(8+turn)%12] ] ],
                 r:  [ [ zone[(6+turn)%12], zone[(9+turn)%12] ] ],
-                ci: [ [ zone[(0+turn)%12] ] ] }
+                ci: [ [ zone[(0+turn)%12] ] ],
+                cl: false 
+                }
         break;
     case 17:
         return {f:  [ [ zone[(2+turn)%12], zone[(7+turn)%12], zone[(9+turn)%12] ], [ zone[(4+turn)%12], zone[(5+turn)%12] ] ],
                 r:  [ [ zone[(3+turn)%12], zone[(6+turn)%12] ] ],
-                ci: [ [ zone[(0+turn)%12] ] ] }
+                ci: [ [ zone[(0+turn)%12] ] ],
+                cl: false 
+                }
         break;
     case 18:
         return {f:  [ [ zone[(2+turn)%12], zone[(10+turn)%12] ], [ zone[(4+turn)%12], zone[(5+turn)%12] ], [ zone[(7+turn)%12], zone[(8+turn)%12] ] ],
                 r:  [ [ zone[(3+turn)%12] ], [ zone[(6+turn)%12] ], [ zone[(9+turn)%12] ] ],
-                ci: [ [ zone[(0+turn)%12] ] ] }
+                ci: [ [ zone[(0+turn)%12] ] ],
+                cl: false 
+                }
         break;
     case 19:
         return {f:  [ [ zone[(4+turn)%12], zone[(6+turn)%12], zone[(8+turn)%12] ], [ zone[(2+turn)%12], zone[(10+turn)%12] ] ],
                 r:  [ [ zone[(3+turn)%12], zone[(9+turn)%12] ] ],
-                ci: [ [ zone[(0+turn)%12] ] ] }
+                ci: [ [ zone[(0+turn)%12] ] ],
+                cl: false 
+                }
         break;
     case 20:
         return {f:  [ [ zone[(1+turn)%12], zone[(3+turn)%12], zone[(5+turn)%12] ], [ zone[(7+turn)%12], zone[(9+turn)%12], zone[(11+turn)%12] ] ],
                 r:  [ [ zone[(0+turn)%12], zone[(6+turn)%12] ] ],
-                ci: [] }
+                ci: [],
+                cl: false 
+                }
         break;
     case 21:
         return {f:  [ [ zone[(0+turn)%12], zone[(3+turn)%12], zone[(5+turn)%12], zone[(10+turn)%12] ], [ zone[(7+turn)%12], zone[(8+turn)%12] ] ],
                 r:  [ [ zone[(6+turn)%12], zone[(9+turn)%12] ] ],
-                ci: [] }
+                ci: [],
+                cl: false 
+                }
         break;
     case 22:
         return {f:  [ [ zone[(0+turn)%12], zone[(2+turn)%12], zone[(10+turn)%12] ], [ zone[(4+turn)%12], zone[(5+turn)%12] ], [ zone[(7+turn)%12], zone[(8+turn)%12] ] ],
                 r:  [ [ zone[(3+turn)%12] ], [ zone[(6+turn)%12] ], [ zone[(9+turn)%12] ] ],
-                ci: [] }
+                ci: [],
+                cl: false 
+                }
         break;
     case 23:
         return {f:  [ [ zone[(1+turn)%12], zone[(2+turn)%12] ], [ zone[(4+turn)%12], zone[(5+turn)%12] ], [ zone[(7+turn)%12], zone[(8+turn)%12] ], [ zone[(10+turn)%12], zone[(11+turn)%12] ] ],
                 r:  [ [ zone[(0+turn)%12] ], [ zone[(3+turn)%12] ], [ zone[(6+turn)%12] ], [ zone[(9+turn)%12] ] ],
-                ci: [] }
+                ci: [],
+                cl: false 
+                }
         break;
     default:
         console.error ("In TreeStructure getAreasTile: It's not a valid type: <" + typeTile + ">");
-        return {f: [], r: [], ci: []}
+        return {f: [], r: [], ci: [], cl: false}
     }
 }
 

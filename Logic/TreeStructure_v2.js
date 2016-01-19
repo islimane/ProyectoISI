@@ -19,8 +19,10 @@ Tree = function(type, coord, area, tileType, dummy){
     if (type == 'cl' && coord){
         this.firstNode = new Node(coord, null, 'x', [], true, tileType);
         this._createClTree(coord);
-        if (dummy)
-            this.dummies.push(dummy)
+        if (dummy){
+            if (dummy.position === 'c')
+                this.dummies.push(dummy)
+        }
     } else {
         if (coord && area)
             this.placeNode(coord, area, tileType, dummy);
