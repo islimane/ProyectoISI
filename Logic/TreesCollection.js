@@ -363,13 +363,17 @@ saveTileInTreesOfAType = function(areas, normalType, treesOfType, coord, type, t
 // type: 'cl'
 // this function returns an array of completed Trees
 saveTileOfSpecialType = function(treesOfType, coord, type){
-    var treesNeed = findTreesNeed(coord, 'c', treesOfType);
+    // For now we just have one specialType -> cloisterTree
     var completedTrees = [];
-    for(i in treesNeed){
-        treesNeed[i].placeClTile(coord);
-        if(treesNeed[i].getLeftChildren()==0){
-            treesNeed[i].printTree();
-            completedTrees.push(treesNeed[i]);
+    // In this case, we dont wark with treesNeed
+    // because the function placeClTile() handle
+    // the exception when a tree does not need the
+    // coord
+    for(i in treesOfType){
+        treesOfType[i].placeClTile(coord);
+        if(treesOfType[i].getLeftChildren()==0){
+            treesOfType[i].printTree();
+            completedTrees.push(treesOfType[i]);
         }
     }
     return completedTrees;
@@ -384,9 +388,12 @@ saveClTree = function(coord, dummy, tileType, coll){
     // in it, around the cloister tile
     var borderingCoords = getBorderingCoords(coord);
     for(var i in borderingCoords){
-        if(coll._isPlacedInColl(borderingCoords[i]))
+        if(coll._isPlacedInColl(borderingCoords[i])){
             tree.placeClTile(borderingCoords[i]);
+            console.log("PLACED: [" + borderingCoords[i].x + ", " + borderingCoords[i].y + "]");
+        }
     }
+    tree.printTree();
     coll.trees.cloisterTrees.push(tree);
     // If the cloister tree is completed we have to notify it
     // by returning the current completed tree
