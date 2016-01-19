@@ -74,11 +74,14 @@ Tree.prototype.placeNode = function(coord, area, tileType, dummy){
 // ONLY FOR CLOISTER TREES
 // Place a coord in a tree
 Tree.prototype.placeClTile = function(coord){
+    var found = false;
     var nodes = this.findNodes(coord);
     nodes.forEach(function(node){
+        found = true;
         node.placed = true;
         node.tileType = -2;
     });
+    return found;
 }
 
 
