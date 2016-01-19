@@ -384,7 +384,7 @@ saveClTree = function(coord, dummy, tileType, coll){
     // in it, around the cloister tile
     var borderingCoords = getBorderingCoords(coord);
     for(var i in borderingCoords){
-        if(cool._isPlacedInColl(borderingCoords[i]))
+        if(coll._isPlacedInColl(borderingCoords[i]))
             tree.placeClTile(borderingCoords[i]);
     }
     coll.trees.cloisterTrees.push(tree);
