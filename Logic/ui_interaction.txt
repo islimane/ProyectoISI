@@ -3,14 +3,14 @@
 API for UI.
 ==================================================================================
 
-	getNames :  function (Game) 
+	getNames :  function (Game)
 		/*
-		 * Returns all the players names in the game 
+		 * Returns all the players names in the game
 		 */
 
 
 	getCoords : function(Game)
-		/* 
+		/*
 		 *	Returns the tile's id and the coords (arry with 4 entries)
 		 *		id tile ,
 		 *	 	rot0: [],					array of "info"s
@@ -19,19 +19,19 @@ API for UI.
 		 *		rot3: [],
 		 *
 		 *	With "info" set as :
-		 *		· coord 					[x , y] 
-		 *		· dummyPos					[ n, nw, w, sw, s, se, e, ne, c ]	
+		 *		· cell 					[x , y]
+		 *		· dummyPos					[ n, nw, w, sw, s, se, e, ne, c ]
 		 *									all false except the plausible dummy
 		 *								    positions in the tile
 		 */
 
-	setTile : function (Game, x, y, rot , arry) 
-		/* 
+	setTile : function (Game, x, y, rot , arry)
+		/*
 		 *  Set the position where the tile is placed on the board and its rotation
 		 *
 		 *  And also sets the position where dummy is placed in the tile.
 		 *
-		 *		arry = [ n,  nw,   w,  sw,   s,  se,   e,  ne,   c  ] , 
+		 *		arry = [ n,  nw,   w,  sw,   s,  se,   e,  ne,   c  ] ,
 		 *				all false except the dummy position in the tile if set
 		 *				all false if dummy is not set
 		 *
@@ -41,23 +41,22 @@ API for UI.
 		 */
 
 
-	getIA : function (Game)  	
+	getIA : function (Game)
 		/*
 		 * Returns the Automatic Player's decision
-		 *		
-		 * 		·idTile
+		 *
+		 * 		·tileId
 		 *		·tileCoord
 		 *		·tileRot
 		 *		·dummyPos           		if set, null otherwise
-		 *		·coord: [[x, y], ...]  		coords of the removed dummies
-		 *		·score:  					the new player's core
-		 */		
-
+		 *		·remDums: [[x, y], ...]  	coords of the removed dummies
+		 *		·scores:  			the new player's core
+		 */
 
 
 On any error those methods return null.
-				
-				
+
+
 
 ====================================================================================
 SOME NOTES TAKEN
@@ -104,4 +103,3 @@ events(playersUpdate)
 		coord: [[x, y], ...]
 		incScore: // lo que sube la puntacion
 	}
-
