@@ -53,21 +53,23 @@ if (Meteor.isClient){
     			$('div .formpass').show();
     		}
     		if (Tournaments.findOne({_id:this._id}).players.length == 16){
-    			console.log(" se esta creando");
     			var array_partida1 = [];
     			var array_partida2 = [];
     			var array_partida3 = [];
     			var array_partida4 = [];
-    			for (i = 0; i < players.length ; i++){
+    			var index = Math.floor(Math.random() * (players.length - 0)) + 0
+				for (i = 0; i < 16; i++){
+					var jugador = players.splice(index,1)
 					if(i < 4 ){
-						array_partida1.push(players[i])
+						array_partida1.push(jugador)
 					}else if( i < 8){
-						array_partida2.push(players[i])
+						array_partida2.push(jugador)
 					}else if(i < 12){
-						array_partida3.push(players[i])
+						array_partida3.push(jugador)
 					}else{
-						array_partida4.push(players[i])
+						array_partida4.push(jugador)
 					}
+					var index = Math.floor(Math.random() * (players.length - 0)) + 0
 				}
     			
     			var id1 = Games.insert({
