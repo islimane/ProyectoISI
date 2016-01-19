@@ -183,6 +183,23 @@ Tree.prototype.isPlaced = function(coord, area){
 }
 
 
+
+// Returns the parent coord of the remaining nodes
+// Return array of coords in the format [{x:49, y:49}, ...]
+Tree.prototype.getLastPlaced = function(){
+    var nodes = this._getRemainingNodes();
+    var coords = new Array();
+    nodes.forEach(function(node){
+        var tmpCoord = node.getParentCoord();
+        if (!coordInArray(tmpCoord, coords))
+            coords.push(tmpCoord);
+    });
+    return coords;
+}
+
+
+
+
 /***********************
 **  USED INTERNALLY   **
 ***********************/
@@ -275,6 +292,15 @@ Tree.prototype._createClTree = function(coord){
 }
 
 
+// Get the remaining Nodes in the tree
+Tree.prototype._getRemainingNodes = function(){
+    if (this.firstNode)
+        return this.firstNode.remainingNodes();
+    else
+        return [];
+}
+
+
 ///////////////////////////
 //      NODE OBJECT      //
 ///////////////////////////
@@ -343,6 +369,31 @@ Node.prototype.remainingCoords = function (coordsNotPlaced){
 }
 
 
+
+//Returns the nodes of all the coordinates not placed
+Node.prototype.remainingNodes = function (nodesNotPlaced){
+    var nodesNotPlaced = nodesNotPlaced || [];
+    if (!this.placed)
+        nodesNotPlaced.push(this)
+
+    this.children.forEach(function(child){
+        nodesNotPlaced = child.remainingNodes(nodesNotPlaced);
+    });
+    return nodesNotPlaced;
+}
+
+
+
+// Returns the parent coord
+Node.prototype.getParentCoord = function(){
+    if (this.parent == null)
+        return null;
+    else
+        return this.parent.coord;
+}
+
+
+
 //Returns the number of all the children placed and the own node
 Node.prototype.placedCoords = function (coordsPlaced){
     var coordsPlaced = coordsPlaced || [];
@@ -387,6 +438,7 @@ Node.prototype.printTree = function(indent){
 }
 
 
+// return if this node or its children has banner and increase coordsBanner
 Node.prototype.nodesBanners = function(coordsBanner){
     var coordsBanner = coordsBanner || [];
     if (hasBanner(this.tileType) && !coordInArray(this.coord, coordsBanner))
@@ -397,6 +449,8 @@ Node.prototype.nodesBanners = function(coordsBanner){
     });
     return coordsBanner;
 }
+
+
 
 ////////////////////////////
 //     OTHER FUNCTIONS    //
