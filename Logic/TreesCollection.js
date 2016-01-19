@@ -43,12 +43,7 @@ TreesCollection.prototype.insertTile = function(tile, coor, dummy){
     };
 
     if(debug) console.log("insertTile({" + tile.type + ", " + tile.orientation + "}, [" + coor.x  + "," + coor.y + "]" + ")");
-    var completedTrees = saveTileInTrees(coor, tile, 
-        this.trees.fieldTrees, 
-        this.trees.cityTrees, 
-        this.trees.roadTrees,
-        this.trees.cloisterTrees,
-        dummy);
+    var completedTrees = saveTileInTrees(coor, tile, this, dummy);
     if(checkCompletedTrees(completedTrees)){
         completedTrees = toArrayOfTrees(completedTrees);
         var playersPoints = computePoints(data, completedTrees);
@@ -95,6 +90,19 @@ TreesCollection.prototype.getTrees = function(types, coor){
     }
 
     return trees;
+}
+
+
+// This function returns true if the give coord is already placed
+// in, at least, one tree
+TreesCollection.prototype._isPlacedInColl = function(coord){
+    for (var prop in this.trees){
+      for(var i in this.trees[prop]){
+        if(this.trees[prop][i].isPlaced(coord))
+            return true;
+      }
+    }
+    return false;
 }
 
 
@@ -309,14 +317,24 @@ var toArrayOfTrees = function(arrayOfArrays){
 
 // this function returns an array of completed Trees by type of zone
 // completedTrees = [[completed fTrees],[completed ciTrees],[completed rTrees]];
-saveTileInTrees = function(coord, tile, fieldTrees, cityTrees, roadTrees, cloisterTrees, dummy){
-    var areasOfAllTypes = getAreasTile(tile.type, tile.orientation); //{f: [['se'],['sw']], r: [['s']], ci: [['n','e','w']] }
+saveTileInTrees = function(coord, tile, coll, dummy){
+
+    var areasOfAllTypes = getAreasTile(tile.type, tile.orientation); //{f: [['se'],['sw']], r: [['s']], ci: [['n','e','w']] , cl: true/false}
     if(debug) console.log(areasOfAllTypes);
     var completedTrees = [];
-    var fTrees = saveTileInTreesOfAType(areasOfAllTypes.f, fieldTrees, coord, 'f', tile.type, dummy);
-    var ciTrees = saveTileInTreesOfAType(areasOfAllTypes.ci, cityTrees, coord, 'ci', tile.type, dummy);
-    var rTrees = saveTileInTreesOfAType(areasOfAllTypes.r, roadTrees, coord, 'r', tile.type, dummy);
-    completedTrees.push(fTrees, ciTrees, rTrees);
+    var fTrees = saveTileInTreesOfAType(areasOfAllTypes.f, true, coll.trees.fieldTrees, coord, 'f', tile.type, dummy);
+    var ciTrees = saveTileInTreesOfAType(areasOfAllTypes.ci, true, coll.trees.cityTrees, coord, 'ci', tile.type, dummy);
+    var rTrees = saveTileInTreesOfAType(areasOfAllTypes.r, true, coll.trees.roadTrees, coord, 'r', tile.type, dummy);
+    var clTrees = saveTileInTreesOfAType(areasOfAllTypes.cl, false, coll.trees.cloisterTrees, coord, 'cl', tile.type, dummy);
+    if(areasOfAllTypes.cl){
+        var clTree = saveClTree(coord, dummy, tile.type, coll);
+        // If clTree!=null is beacause a single tile has completed
+        // the cloister Tree
+        if(clTree)
+            clTrees.push(clTree);
+    }
+    completedTrees.push(fTrees, ciTrees, rTrees, clTrees);
+    
     return completedTrees;
 }
 
@@ -324,8 +342,83 @@ saveTileInTrees = function(coord, tile, fieldTrees, cityTrees, roadTrees, cloist
 // treesOfType: eg. the array of field Trees
 // coord: {x: 0, y: 4}
 // type: 'r', 'f' or 'r'
+// normalType: true/false ---> fieldTree, cityTree, roadTrees
 // this function returns an array of completed Trees
-saveTileInTreesOfAType = function(areas, treesOfType, coord, type, tileType, dummy){
+saveTileInTreesOfAType = function(areas, normalType, treesOfType, coord, type, tileType, dummy){
+    var completedTrees = null;
+    if(normalType){
+        completedTrees = saveTileOfNormalType(areas, treesOfType, coord, type, tileType, dummy);
+    }else{
+        //specialType
+        completedTrees = saveTileOfSpecialType(treesOfType, coord, type);
+    }
+
+    return completedTrees;
+}
+
+// This function checks if a tree of a special type
+// (e.g. "cloisterTree") needs the given coord and, 
+// in that case, inserts the given coord.
+// coord: {x: 0, y: 4}
+// type: 'cl'
+// this function returns an array of completed Trees
+saveTileOfSpecialType = function(treesOfType, coord, type){
+    var treesNeed = findTreesNeed(coord, 'c', treesOfType);
+    var completedTrees = [];
+    for(i in treesNeed){
+        treesNeed[i].placeClTile(coord);
+        if(treesNeed[i].getLeftChildren()==0){
+            treesNeed[i].printTree();
+            completedTrees.push(treesNeed[i]);
+        }
+    }
+    return completedTrees;
+}
+
+
+// This function save a new cloister Tree on cloisterTrees
+saveClTree = function(coord, dummy, tileType, coll){
+    console.log("NEW CLTREE");
+    var tree = new Tree('cl', coord, 'c', tileType, dummy);
+    // Now we have to place each coord, that has a tile
+    // in it, around the cloister tile
+    var borderingCoords = getBorderingCoords(coord);
+    for(var i in borderingCoords){
+        if(cool._isPlacedInColl(borderingCoords[i]))
+            tree.placeClTile(borderingCoords[i]);
+    }
+    coll.trees.cloisterTrees.push(tree);
+    // If the cloister tree is completed we have to notify it
+    // by returning the current completed tree
+    if(tree.getLeftChildren()==0)
+        return tree;
+
+    return null;
+}
+
+// This function, for a given coord, returns all coords
+// (8 coords) arraound it
+getBorderingCoords = function(coord){
+    var borderingCoords = [];
+    for(var x=(coord.x-1); x<(coord.x+2); x++){
+        for(var y=(coord.y-1); y<(coord.y+2); y++){
+            if(coord.x!=x || coord.y!=y){
+                console.log("[" + x + ", " + y + "]");
+                borderingCoords.push({x: x, y: y});
+            }
+        }
+    }
+    return borderingCoords;
+}
+
+
+// This function save a tile of a normal type: fieldTree, cityTree, roadTrees
+// areas: eg. areasOfAllTypes.f
+// treesOfType: eg. the array of field Trees
+// coord: {x: 0, y: 4}
+// type: 'r', 'f' or 'r'
+// this function returns an array of completed Trees
+saveTileOfNormalType = function(areas, treesOfType, coord, type, tileType, dummy){
     var completedTrees = [];
     areas.forEach(function(area){
         var trees = findTreesNeed(coord, area, treesOfType);
@@ -526,13 +619,89 @@ getAreasTile = function(typeTile, orientation){
 }
 
 
-/*c = new TreesCollection();
+c = new TreesCollection();
 
-t = new Tile(19, 0);
+
+t = new Tile(19, 2);
 c.insertTile(t, {x:49, y:49}, null);
 
 
 d = new Dummy(1, 1);
+d.place([50,49], 'w');
+t = new Tile(21, 1);
+c.insertTile(t, {x:50, y:49}, d);
+
+
+//t = new Tile(20, 0);
+//c.insertTile(t, {x:51, y:49}, null);
+
+
+t = new Tile(20, 1);
+c.insertTile(t, {x:48, y:49}, null);
+
+
+//d = new Dummy(2, 1);
+//d.place([51,48], 's');
+//t = new Tile(20, 0);
+//c.insertTile(t, {x:51, y:48}, d);
+
+
+//d = new Dummy(1, 2);
+//d.place([49,50], 'n');
+//t = new Tile(6, 0);
+//c.insertTile(t, {x:49, y:50}, d);
+
+
+d = new Dummy(2, 2);
+d.place([48,48], 'w');
+t = new Tile(8, 0);
+c.insertTile(t, {x:48, y:48}, d);
+
+
+d = new Dummy(1, 3);
+d.place([50,48], 'n');
+t = new Tile(20, 0);
+c.insertTile(t, {x:50, y:48}, d);
+
+
+//d = new Dummy(2, 3);
+//d.place([50,50], 'e');
+//t = new Tile(16, 3);
+//c.insertTile(t, {x:50, y:50}, d);
+
+
+//t = new Tile(21, 1);
+//c.insertTile(t, {x:51, y:50}, null);
+
+
+//t = new Tile(15, 1);
+//c.insertTile(t, {x:48, y:50}, null);
+
+
+//d = new Dummy(1, 4);
+//d.place([47,50], 'c');
+//t = new Tile(0, 0);
+//c.insertTile(t, {x:47, y:50}, d);
+
+
+d = new Dummy(2, 4);
+d.place([49,48], 'c');
+t = new Tile(1, 3);
+c.insertTile(t, {x:49, y:48}, d);
+
+
+//t = new Tile(9, 2);
+//c.insertTile(t, {x:48, y:46}, d);
+
+
+t = new Tile(7, 0);
+c.insertTile(t, {x:49, y:47}, d);
+
+
+t = new Tile(21, 3);
+c.insertTile(t, {x:50, y:47}, d);
+
+/*d = new Dummy(1, 1);
 d.place([50,49], 'n');
 t = new Tile(21, 1);
 c.insertTile(t, {x:50, y:49}, d);
