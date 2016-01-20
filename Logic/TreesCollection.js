@@ -171,6 +171,7 @@ var getPoints = function(completedTree){
         // A tricky way for multiple cases
         case 'f':
         case 'r':
+        case 'cl':
             factor = 1;
             points += numofTiles*factor;
             break;
@@ -382,7 +383,6 @@ saveTileOfSpecialType = function(treesOfType, coord, type){
 
 // This function save a new cloister Tree on cloisterTrees
 saveClTree = function(coord, dummy, tileType, coll){
-    console.log("NEW CLTREE");
     var tree = new Tree('cl', coord, 'c', tileType, dummy);
     // Now we have to place each coord, that has a tile
     // in it, around the cloister tile
@@ -390,10 +390,8 @@ saveClTree = function(coord, dummy, tileType, coll){
     for(var i in borderingCoords){
         if(coll._isPlacedInColl(borderingCoords[i])){
             tree.placeClTile(borderingCoords[i]);
-            console.log("PLACED: [" + borderingCoords[i].x + ", " + borderingCoords[i].y + "]");
         }
     }
-    tree.printTree();
     coll.trees.cloisterTrees.push(tree);
     // If the cloister tree is completed we have to notify it
     // by returning the current completed tree
@@ -410,7 +408,6 @@ getBorderingCoords = function(coord){
     for(var x=(coord.x-1); x<(coord.x+2); x++){
         for(var y=(coord.y-1); y<(coord.y+2); y++){
             if(coord.x!=x || coord.y!=y){
-                console.log("[" + x + ", " + y + "]");
                 borderingCoords.push({x: x, y: y});
             }
         }
@@ -673,7 +670,7 @@ getAreasTile = function(typeTile, orientation){
 }
 
 
-c = new TreesCollection();
+/*c = new TreesCollection();
 
 
 t = new Tile(19, 2);
@@ -681,115 +678,165 @@ c.insertTile(t, {x:49, y:49}, null);
 
 
 d = new Dummy(1, 1);
-d.place([50,49], 'w');
-t = new Tile(21, 1);
-c.insertTile(t, {x:50, y:49}, d);
-
-
-//t = new Tile(20, 0);
-//c.insertTile(t, {x:51, y:49}, null);
-
-
-t = new Tile(20, 1);
-c.insertTile(t, {x:48, y:49}, null);
-
-
-//d = new Dummy(2, 1);
-//d.place([51,48], 's');
-//t = new Tile(20, 0);
-//c.insertTile(t, {x:51, y:48}, d);
-
-
-//d = new Dummy(1, 2);
-//d.place([49,50], 'n');
-//t = new Tile(6, 0);
-//c.insertTile(t, {x:49, y:50}, d);
-
-
-d = new Dummy(2, 2);
-d.place([48,48], 'w');
-t = new Tile(8, 0);
-c.insertTile(t, {x:48, y:48}, d);
-
-
-d = new Dummy(1, 3);
-d.place([50,48], 'n');
-t = new Tile(20, 0);
-c.insertTile(t, {x:50, y:48}, d);
-
-
-//d = new Dummy(2, 3);
-//d.place([50,50], 'e');
-//t = new Tile(16, 3);
-//c.insertTile(t, {x:50, y:50}, d);
-
-
-//t = new Tile(21, 1);
-//c.insertTile(t, {x:51, y:50}, null);
-
-
-//t = new Tile(15, 1);
-//c.insertTile(t, {x:48, y:50}, null);
-
-
-//d = new Dummy(1, 4);
-//d.place([47,50], 'c');
-//t = new Tile(0, 0);
-//c.insertTile(t, {x:47, y:50}, d);
-
-
-d = new Dummy(2, 4);
-d.place([49,48], 'c');
-t = new Tile(1, 3);
-c.insertTile(t, {x:49, y:48}, d);
-
-
-//t = new Tile(9, 2);
-//c.insertTile(t, {x:48, y:46}, d);
-
-
-t = new Tile(7, 0);
-c.insertTile(t, {x:49, y:47}, d);
-
-
-t = new Tile(21, 3);
-c.insertTile(t, {x:50, y:47}, d);
-
-/*d = new Dummy(1, 1);
-d.place([50,49], 'n');
-t = new Tile(21, 1);
-c.insertTile(t, {x:50, y:49}, d);
-
-
-t = new Tile(22, 0);
-c.insertTile(t, {x:48, y:49}, null);
-
-
-d = new Dummy(1, 2);
-d.place([48,48], 'e');
-t = new Tile(15, 1);
-c.insertTile(t, {x:48, y:48}, d);
-
-
-t = new Tile(19, 3);
-c.insertTile(t, {x:50, y:48}, null);
+d.place([49,50], 'n');
+t = new Tile(15, 0);
+c.insertTile(t, {x:49, y:50}, d);
 
 
 d = new Dummy(2, 1);
-d.place([48,47], 'e');
-t = new Tile(1, 3);
-c.insertTile(t, {x:48, y:47}, d);
+d.place([48,49], 'e');
+t = new Tile(20, 1);
+c.insertTile(t, {x:48, y:49}, d);
 
 
 d = new Dummy(2, 2);
-d.place([49,47], 's');
+d.place([48,50], 'w');
+t = new Tile(7, 3);
+c.insertTile(t, {x:48, y:50}, d);
+
+
+d = new Dummy(1, 2);
+d.place([50,49], 'e');
+t = new Tile(6, 1);
+c.insertTile(t, {x:50, y:49}, d);
+
+
+d = new Dummy(1, 3);
+d.place([51,49], 'e');
+t = new Tile(14, 1);
+c.insertTile(t, {x:51, y:49}, d);
+
+
+d = new Dummy(2, 3);
+d.place([47,49], 'ne');
+t = new Tile(20, 1);
+c.insertTile(t, {x:47, y:49}, d);
+
+
+d = new Dummy(1, 4);
+d.place([50,48], 'w');
 t = new Tile(19, 2);
-c.insertTile(t, {x:49, y:47}, d);
+c.insertTile(t, {x:50, y:48}, d);
 
 
-t = new Tile(2, 0);
-c.insertTile(t, {x:49, y:48}, null);
+t = new Tile(20, 1);
+c.insertTile(t, {x:46, y:49}, null);
+
+
+t = new Tile(19, 3);
+c.insertTile(t, {x:52, y:49}, null);
+
+
+t = new Tile(21, 2);
+c.insertTile(t, {x:45, y:49}, null);
+
+
+d = new Dummy(1, 5);
+d.place([52,50], 'e');
+t = new Tile(18, 1);
+c.insertTile(t, {x:52, y:50}, d);
+
+
+t = new Tile(11, 0);
+c.insertTile(t, {x:47, y:50}, null);
+
+
+d = new Dummy(1, 6);
+d.place([53,49], 'c');
+t = new Tile(0, 0);
+c.insertTile(t, {x:53, y:49}, d);
+
+
+t = new Tile(8, 0);
+c.insertTile(t, {x:48, y:51}, null);
 
 
 t = new Tile(21, 0);
-c.insertTile(t, {x:50, y:47}, null);*/
+c.insertTile(t, {x:45, y:48}, null);
+
+
+t = new Tile(23, 0);
+c.insertTile(t, {x:44, y:48}, null);
+
+
+t = new Tile(19, 1);
+c.insertTile(t, {x:54, y:49}, null);
+
+
+d = new Dummy(2, 4);
+d.place([52,48], 's');
+t = new Tile(21, 3);
+c.insertTile(t, {x:52, y:48}, d);
+
+
+d = new Dummy(1, 7);
+d.place([51,50], 'e');
+t = new Tile(21, 3);
+c.insertTile(t, {x:51, y:50}, d);
+
+
+d = new Dummy(2, 5);
+d.place([55,49], 'w');
+t = new Tile(9, 3);
+c.insertTile(t, {x:55, y:49}, d);
+
+
+d = new Dummy(1, 8);
+d.place([54,50], 'e');
+t = new Tile(19, 1);
+c.insertTile(t, {x:54, y:50}, d);
+
+
+d = new Dummy(2, 6);
+d.place([46,48], 'c');
+t = new Tile(0, 0);
+c.insertTile(t, {x:46, y:48}, d);
+
+
+t = new Tile(22, 2);
+c.insertTile(t, {x:51, y:51}, null);
+
+
+t = new Tile(7, 0);
+c.insertTile(t, {x:55, y:50}, null);
+
+
+t = new Tile(3, 0);
+c.insertTile(t, {x:48, y:48}, null);
+
+
+t = new Tile(21, 1);
+c.insertTile(t, {x:46, y:47}, null);
+
+
+t = new Tile(15, 0);
+c.insertTile(t, {x:50, y:50}, null);
+
+
+t = new Tile(14, 1);
+c.insertTile(t, {x:46, y:50}, null);
+
+
+d = new Dummy(1, 9);
+d.place([45,50], 'e');
+t = new Tile(12, 0);
+c.insertTile(t, {x:45, y:50}, d);
+
+
+t = new Tile(17, 1);
+c.insertTile(t, {x:47, y:51}, null);
+
+
+d = new Dummy(1, 10);
+d.place([52,51], 'n');
+t = new Tile(10, 2);
+c.insertTile(t, {x:52, y:51}, d);*/
+
+
+
+
+
+
+
+
+
