@@ -26,9 +26,9 @@ TreesCollection = function(){
 // This function inserts the tile in one
 // or more than one tree, depending on
 // the zones of the tile.
-// Also, this function returns null if 
+// Also, this function returns null if
 // no tree has completed, and returns the
-// players with their additional points if 
+// players with their additional points if
 // some tree has completed with the following
 // coor: {x: 0, y: 4}
 // object returned:
@@ -73,7 +73,7 @@ TreesCollection.prototype.insertTile = function(tile, coor, dummy){
 // types: array of types -> format: 'f', 'ci', 'r', 'cl'
 TreesCollection.prototype.getTrees = function(types, coor){
     var trees = [];
-    console.log('TYPES: ' + types);
+    //console.log('TYPES: ' + types);
     for (i in types){
         switch (types[i]) {
             case 'f':
@@ -220,8 +220,8 @@ var getDummies = function(completedTrees){
 var printDummies = function(dummies){
     console.log("dummies: [");
     for(i in dummies){
-        console.log("\tdummy(playerID: " + dummies[i].playerId + 
-                    ", dummyID: " + dummies[i].dummyId + 
+        console.log("\tdummy(playerID: " + dummies[i].playerId +
+                    ", dummyID: " + dummies[i].dummyId +
                     ", coor: [" + dummies[i].coord + "]" +
                     ", pos: '" + dummies[i].position + "'" +
                     ")");
@@ -335,7 +335,7 @@ saveTileInTrees = function(coord, tile, coll, dummy){
             clTrees.push(clTree);
     }
     completedTrees.push(fTrees, ciTrees, rTrees, clTrees);
-    
+
     return completedTrees;
 }
 
@@ -358,7 +358,7 @@ saveTileInTreesOfAType = function(areas, normalType, treesOfType, coord, type, t
 }
 
 // This function checks if a tree of a special type
-// (e.g. "cloisterTree") needs the given coord and, 
+// (e.g. "cloisterTree") needs the given coord and,
 // in that case, inserts the given coord.
 // coord: {x: 0, y: 4}
 // type: 'cl'
@@ -529,140 +529,140 @@ getAreasTile = function(typeTile, orientation){
         return {f:  [ [ zone[(6+turn)%12] ] ],
                 r:  [],
                 ci: [ [ zone[(0+turn)%12], zone[(3+turn)%12], zone[(9+turn)%12] ] ],
-                cl: false 
+                cl: false
                 }
         break;
     case 5:
         return {f:  [ [ zone[(5+turn)%12] ], [ zone[(7+turn)%12] ] ],
                 r:  [ [ zone[(6+turn)%12] ] ],
                 ci: [ [ zone[(0+turn)%12], zone[(3+turn)%12], zone[(9+turn)%12] ] ],
-                cl: false 
+                cl: false
                 }
         break;
     case 6://banner
         return {f:  [ [ zone[(5+turn)%12] ], [ zone[(7+turn)%12] ] ],
                 r:  [ [ zone[(6+turn)%12] ] ],
                 ci: [ [ zone[(0+turn)%12], zone[(3+turn)%12], zone[(9+turn)%12] ] ],
-                cl: false 
+                cl: false
                 }
         break;
     case 7:
         return {f:  [ [ zone[(3+turn)%12], zone[(6+turn)%12] ] ],
                 r:  [],
                 ci: [ [ zone[(0+turn)%12], zone[(9+turn)%12] ] ],
-                cl: false 
+                cl: false
                 }
         break;
     case 8: //banner
         return {f:  [ [ zone[(3+turn)%12], zone[(6+turn)%12] ] ],
                 r:  [],
                 ci: [ [ zone[(0+turn)%12], zone[(9+turn)%12] ] ],
-                cl: false 
+                cl: false
                 }
         break;
     case 9:
         return {f:  [ [ zone[(2+turn)%12], zone[(7+turn)%12] ], [ zone[(4+turn)%12], zone[(5+turn)%12] ] ],
                 r:  [ [ zone[(3+turn)%12], zone[(6+turn)%12] ] ],
                 ci: [ [ zone[(0+turn)%12], zone[(9+turn)%12] ] ],
-                cl: false 
+                cl: false
                 }
         break;
     case 10: //banner
         return {f:  [ [ zone[(2+turn)%12], zone[(7+turn)%12] ], [ zone[(4+turn)%12], zone[(5+turn)%12] ] ],
                 r:  [ [ zone[(3+turn)%12], zone[(6+turn)%12] ] ],
                 ci: [ [ zone[(0+turn)%12], zone[(9+turn)%12] ] ],
-                cl: false 
+                cl: false
                 }
         break;
     case 11:
         return {f:  [ [ zone[(0+turn)%12] ], [ zone[(6+turn)%12] ] ],
                 r:  [],
                 ci: [ [ zone[(3+turn)%12], zone[(9+turn)%12] ] ],
-                cl: false 
+                cl: false
                 }
         break;
     case 12: //banner
         return {f:  [ [ zone[(0+turn)%12] ], [ zone[(6+turn)%12] ] ],
                 r:  [],
                 ci: [ [ zone[(3+turn)%12], zone[(9+turn)%12] ] ],
-                cl: false 
+                cl: false
                 }
         break;
     case 13:
         return {f:  [ [ zone[(3+turn)%12], zone[(6+turn)%12] ] ],
                 r:  [],
                 ci: [ [ zone[(0+turn)%12] ], [ zone[(9+turn)%12] ] ],
-                cl: false 
+                cl: false
                 }
         break;
     case 14:
         return {f:  [ [ zone[(3+turn)%12], zone[(9+turn)%12] ] ],
                 r:  [],
                 ci: [ [ zone[(0+turn)%12] ], [ zone[(6+turn)%12] ] ],
-                cl: false 
+                cl: false
                 }
         break;
     case 15:
         return {f:  [ [ zone[(3+turn)%12], zone[(6+turn)%12], zone[(9+turn)%12] ] ],
                 r:  [],
                 ci: [ [ zone[(0+turn)%12] ] ],
-                cl: false 
+                cl: false
                 }
         break;
     case 16:
         return {f:  [ [ zone[(3+turn)%12], zone[(5+turn)%12], zone[(10+turn)%12] ], [ zone[(7+turn)%12], zone[(8+turn)%12] ] ],
                 r:  [ [ zone[(6+turn)%12], zone[(9+turn)%12] ] ],
                 ci: [ [ zone[(0+turn)%12] ] ],
-                cl: false 
+                cl: false
                 }
         break;
     case 17:
         return {f:  [ [ zone[(2+turn)%12], zone[(7+turn)%12], zone[(9+turn)%12] ], [ zone[(4+turn)%12], zone[(5+turn)%12] ] ],
                 r:  [ [ zone[(3+turn)%12], zone[(6+turn)%12] ] ],
                 ci: [ [ zone[(0+turn)%12] ] ],
-                cl: false 
+                cl: false
                 }
         break;
     case 18:
         return {f:  [ [ zone[(2+turn)%12], zone[(10+turn)%12] ], [ zone[(4+turn)%12], zone[(5+turn)%12] ], [ zone[(7+turn)%12], zone[(8+turn)%12] ] ],
                 r:  [ [ zone[(3+turn)%12] ], [ zone[(6+turn)%12] ], [ zone[(9+turn)%12] ] ],
                 ci: [ [ zone[(0+turn)%12] ] ],
-                cl: false 
+                cl: false
                 }
         break;
     case 19:
         return {f:  [ [ zone[(4+turn)%12], zone[(6+turn)%12], zone[(8+turn)%12] ], [ zone[(2+turn)%12], zone[(10+turn)%12] ] ],
                 r:  [ [ zone[(3+turn)%12], zone[(9+turn)%12] ] ],
                 ci: [ [ zone[(0+turn)%12] ] ],
-                cl: false 
+                cl: false
                 }
         break;
     case 20:
         return {f:  [ [ zone[(1+turn)%12], zone[(3+turn)%12], zone[(5+turn)%12] ], [ zone[(7+turn)%12], zone[(9+turn)%12], zone[(11+turn)%12] ] ],
                 r:  [ [ zone[(0+turn)%12], zone[(6+turn)%12] ] ],
                 ci: [],
-                cl: false 
+                cl: false
                 }
         break;
     case 21:
         return {f:  [ [ zone[(0+turn)%12], zone[(3+turn)%12], zone[(5+turn)%12], zone[(10+turn)%12] ], [ zone[(7+turn)%12], zone[(8+turn)%12] ] ],
                 r:  [ [ zone[(6+turn)%12], zone[(9+turn)%12] ] ],
                 ci: [],
-                cl: false 
+                cl: false
                 }
         break;
     case 22:
         return {f:  [ [ zone[(0+turn)%12], zone[(2+turn)%12], zone[(10+turn)%12] ], [ zone[(4+turn)%12], zone[(5+turn)%12] ], [ zone[(7+turn)%12], zone[(8+turn)%12] ] ],
                 r:  [ [ zone[(3+turn)%12] ], [ zone[(6+turn)%12] ], [ zone[(9+turn)%12] ] ],
                 ci: [],
-                cl: false 
+                cl: false
                 }
         break;
     case 23:
         return {f:  [ [ zone[(1+turn)%12], zone[(2+turn)%12] ], [ zone[(4+turn)%12], zone[(5+turn)%12] ], [ zone[(7+turn)%12], zone[(8+turn)%12] ], [ zone[(10+turn)%12], zone[(11+turn)%12] ] ],
                 r:  [ [ zone[(0+turn)%12] ], [ zone[(3+turn)%12] ], [ zone[(6+turn)%12] ], [ zone[(9+turn)%12] ] ],
                 ci: [],
-                cl: false 
+                cl: false
                 }
         break;
     default:
@@ -833,9 +833,3 @@ d = new Dummy(1, 10);
 d.place([52,51], 'n');
 t = new Tile(10, 2);
 c.insertTile(t, {x:52, y:51}, d);
-
-
-
-
-
-

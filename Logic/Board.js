@@ -289,15 +289,26 @@ var getAllTrees = function (treesCollection, tile, coord) {
     return trees;
 }
 
+var objectToArray = function (object) {
+    var array = [];
+    for (var key in object) {
+        array.push(object[key]);
+    }
+    return array;
+}
+
 //Get free trees and their corresponding zones.
 //Where a free tree is one that doesn't have any
 //dummy in it.
 
-var getFreeZones = function (trees) {
-    //                'n'   'nw'    'w'    'sw'   's'   'se'    'e'    'ne'
-    var freeZones = [false, false, false, false, false, false, false, false];
+var getFreeZones = function (tile, trees) {
+    var freeZones = objectToArray(tile.dummies);
     for (var i = 0; i < trees.length; i++) {
-        freeZones[i] = (trees[i].trees.dummies.length === 0) ? true:false;
+        if (freeZones[i]) {
+            if (trees[i].trees.dummies.length != 0) {
+                freeZones[i] = false;
+            }
+        }
     }
     return freeZones;
 }
@@ -322,11 +333,13 @@ Board.prototype.getDummyPositions = function (tile) {
     for (var i = 0; i < cells.length; i++) {
         var group = cells[i];
         var newGroup = [];
-        for (var i = 0; i < group.length; i++) {
-            var cell = group[i];
+        console.log(i);
+        for (var j = 0; j < group.length; j++) {
+            console.log(j);
+            var cell = group[j];
             var coord = {x: cell.x, y: cell.y};
             var trees = getAllTrees(this.treesCollection, tile ,coord);
-            var freeZones = getFreeZones(trees);
+            var freeZones = getFreeZones(tile, trees);
             newGroup.push({cell: cell, dummyPos: freeZones});
         }
         newArray.push(newGroup);
@@ -338,16 +351,18 @@ Board.prototype.getDummyPositions = function (tile) {
 /*var b = new Board();
 
 t = new Tile(2, 0);
-b.insertTile(t, [49,50]);
+b.insertTile(t, [49,49]);
 
 t = new Tile(14, 0);
-b.insertTile(t, [49,51]);
+b.insertTile(t, [49,50]);
 
 console.log("\navailableCells:");
 console.log(b.availableCells);
 
-t = new Tile(19, 0);
+t = new Tile(19, 3);
 console.log("\nmatchingCells:");
 console.log(b._getAllMatchingCells(t));
 
-b.getDummyPositions(t);*/
+pos = b.getDummyPositions(t);
+console.log(pos[0]);
+console.log(pos[1]);*/
