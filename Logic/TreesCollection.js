@@ -70,7 +70,7 @@ TreesCollection.prototype.insertTile = function(tile, coor, dummy){
 // This function returns all trees in wich
 // a given coordenate exist and is placed.
 // coord: {x:1, y:2}
-// types: array of types -> format: 'f', 'ci', 'r'
+// types: array of types -> format: 'f', 'ci', 'r', 'cl'
 TreesCollection.prototype.getTrees = function(types, coor){
     var trees = [];
     console.log('TYPES: ' + types);
@@ -462,8 +462,10 @@ saveTileOfNormalType = function(areas, treesOfType, coord, type, tileType, dummy
         }
         // If the tree is completed, add it to completedTrees
         if(trees[0]!=undefined && trees[0].getLeftChildren()==0){
-            completedTrees.push(trees[0]);
-            trees[0].printTree();
+            if(type!=='f'){
+                completedTrees.push(trees[0]);
+                trees[0].printTree();
+            }
         }
     });
     return completedTrees;
@@ -670,7 +672,7 @@ getAreasTile = function(typeTile, orientation){
 }
 
 
-/*c = new TreesCollection();
+c = new TreesCollection();
 
 
 t = new Tile(19, 2);
@@ -830,10 +832,7 @@ c.insertTile(t, {x:47, y:51}, null);
 d = new Dummy(1, 10);
 d.place([52,51], 'n');
 t = new Tile(10, 2);
-c.insertTile(t, {x:52, y:51}, d);*/
-
-
-
+c.insertTile(t, {x:52, y:51}, d);
 
 
 
