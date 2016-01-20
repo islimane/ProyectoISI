@@ -333,13 +333,12 @@ Board.prototype.getDummyPositions = function (tile) {
     for (var i = 0; i < cells.length; i++) {
         var group = cells[i];
         var newGroup = [];
-        console.log(i);
+        var auxTile = new Tile(tile.type, i);
         for (var j = 0; j < group.length; j++) {
-            console.log(j);
             var cell = group[j];
             var coord = {x: cell.x, y: cell.y};
-            var trees = getAllTrees(this.treesCollection, tile ,coord);
-            var freeZones = getFreeZones(tile, trees);
+            var trees = getAllTrees(this.treesCollection, auxTile ,coord);
+            var freeZones = getFreeZones(auxTile, trees);
             newGroup.push({cell: cell, dummyPos: freeZones});
         }
         newArray.push(newGroup);
@@ -365,4 +364,6 @@ console.log(b._getAllMatchingCells(t));
 
 pos = b.getDummyPositions(t);
 console.log(pos[0]);
-console.log(pos[1]);*/
+console.log(pos[1]);
+console.log(pos[2]);
+console.log(pos[3]);*/
