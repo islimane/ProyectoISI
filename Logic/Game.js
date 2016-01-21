@@ -13,6 +13,10 @@ Game = function(playerIds, id){
     this.board = new Board();
 }
 
+Game.prototype.suspend = function () {
+    removeGame(this.id);
+}
+
 Game.prototype.getStatus = function () {
     return {
         player: this.players.currentPlayer,

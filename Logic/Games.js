@@ -11,7 +11,7 @@ storeGame = function (game) {
     gameList.push(game);
 };
 
-deleteGame = function (id) {
+removeGame = function (id) {
     for (var i = 0; i < gameList.length; i++) {
         if (gameList[i].id === id) {
             return gameList.splice(i,1)[0];

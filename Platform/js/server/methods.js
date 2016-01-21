@@ -14,8 +14,8 @@ Meteor.methods({
     'resumeGame': function(game){
         console.log("game has been resumed");
 
-        // ADD LOGIC FUNCIONALITY
-
+        //The game is stored again in the 'active games' array
+        //storeGame(game);
         return "";
     },
     'addFriend': function(friendId){

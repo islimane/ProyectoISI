@@ -1,9 +1,9 @@
 /*
- * Out of server/methods.js only for debug. When logic is ready this mustbe placed 
+ * Out of server/methods.js only for debug. When logic is ready this mustbe placed
  * again inside methods and this file deleted.
  */
 endGame = function(scores, gameId){
-    /* 
+    /*
      * scores is an array of objects with 2 fields:
      *   - id: the player id
      *   - score: the score of this player
@@ -43,7 +43,7 @@ suspendGame = function(game){
     game.creator = currentGame.creator;
     game.numPlayerHuman = currentGame.numPlayerHuman;
     game.numPlayerIA = currentGame.numPlayerIA;
-    game.suspended = true
+    game.suspend();
     game.players = currentGame.players
     SuspendedGames.insert(game);
     Games.remove({_id: game.gameId})
