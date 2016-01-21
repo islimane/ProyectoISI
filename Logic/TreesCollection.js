@@ -7,7 +7,7 @@ debug = false;
 
 // TreesCollection constructor
 TreesCollection = function(){
-	this.trees = {
+    this.trees = {
         fieldTrees: [],
         cityTrees: [],
         roadTrees: [],
@@ -26,9 +26,9 @@ TreesCollection = function(){
 // This function inserts the tile in one
 // or more than one tree, depending on
 // the zones of the tile.
-// Also, this function returns null if
+// Also, this function returns null if 
 // no tree has completed, and returns the
-// players with their additional points if
+// players with their additional points if 
 // some tree has completed with the following
 // coor: {x: 0, y: 4}
 // object returned:
@@ -74,7 +74,7 @@ TreesCollection.prototype.insertTile = function(tile, coor, dummy){
 TreesCollection.prototype.getTrees = function(types, coor){
     var trees = [];
     //console.log('TYPES: ' + types);
-    for (i in types){
+    for(var i in types){
         switch (types[i]) {
             case 'f':
                 addFieldTrees(this, trees, coor);
@@ -96,7 +96,7 @@ TreesCollection.prototype.getTrees = function(types, coor){
 // This function returns true if the give coord is already placed
 // in, at least, one tree
 TreesCollection.prototype._isPlacedInColl = function(coord){
-    for (var prop in this.trees){
+    for(var prop in this.trees){
       for(var i in this.trees[prop]){
         if(this.trees[prop][i].isPlaced(coord))
             return true;
@@ -111,7 +111,7 @@ TreesCollection.prototype._isPlacedInColl = function(coord){
 ///////////////////////////////
 var computePoints = function(data, completedTrees){
     var playersPoints = [];
-    for(i in completedTrees){
+    for(var i in completedTrees){
         var points = getPoints(completedTrees[i]);
         if(completedTrees[i].dummies!=undefined && completedTrees[i].dummies.length>0){
             // These are the players that are going
@@ -129,14 +129,14 @@ var computePoints = function(data, completedTrees){
 // For debug issues
 var printPlayersPoints = function(playersPoints){
     console.log("playersPoints: ");
-    for(i in playersPoints){
+    for(var i in playersPoints){
         console.log("\t[playerID: " + playersPoints[i][0] + ", points: " + playersPoints[i][1] + "]");
     }
 }
 
 var addPoints = function(playersPoints, playersId, points){
-    for(i in playersId){
-        for(j in playersPoints){
+    for(var i in playersId){
+        for(var j in playersPoints){
             if(playersPoints[j][0]==playersId[i])
                 playersPoints[j][1] += points;
         }
@@ -148,15 +148,16 @@ var addPoints = function(playersPoints, playersId, points){
 // array
 var addPlayers = function(playersPoints, playersId){
     var playerAlreadyIn = false;
-    for(i in playersId){
-        for(j in playersPoints){
+    for(var i in playersId){
+        for(var j in playersPoints){
             if(playersPoints[j][0] == playersId[i]){
                 playerAlreadyIn = true;
                 break;
             }
         }
-        if(!playerAlreadyIn)
+        if(!playerAlreadyIn){
             playersPoints.push([playersId[i],0]);
+        }
     }
 }
 
@@ -190,25 +191,67 @@ var getPoints = function(completedTree){
 // on the given dummies array
 var getPlayersId = function(dummies){
     var playersId = [];
-    for(i in dummies){
-        var playerAlreadyIn = contains.call(playersId, dummies[i].playerId);
-        // If the player is not already in the array add it
-        if(!playerAlreadyIn)
-            playersId.push(dummies[i].playerId);
+    if(dummies.length>1){
+        playersId = getWinners(dummies);
+    }else if(dummies.length===1){
+        playersId.push(dummies[0].playerId);
     }
     return playersId;
+}
+
+
+// This function returns true if on the given
+// dummies array there are more than one dummy
+// that belongs to more than one player
+var moreThanOnePlayer = function(dummies){
+    if(dummies.length>0){
+        var tmpPlayer = dummies[0].playerId;
+    }
+    for(var i in dummies){
+        if(dummies[i].playerId!==tmpPlayer)
+            return true;
+        else
+            tmpPlayer = dummies[i].playerId;
+    }
+    return false;
+}
+
+
+// This functino returns an array with the players Ids
+// that must increase their points
+var getWinners = function(dummies){
+    // format: [n_dummies1, n_dummies2,...]
+    var playersDummies = [];
+    // format: [playerId1, playerId2,...]
+    var playersIds = [];
+    for(var i in dummies){
+        var playerAlreadyIn = contains.call(playersIds, dummies[i].playerId);
+        if(playerAlreadyIn){
+            var index = playersIds.indexOf(dummies[i].playerId);
+            playersDummies[index]++;
+        }else{
+            playersIds.push(dummies[i].playerId);
+            playersDummies.push(1);
+        }
+    }
+    // Now we get the largest value in playerDummies
+    var largest = Math.max.apply(Math, playersDummies);
+    var winners = [];
+    for(var i in playersDummies){
+        if(playersDummies[i]===largest)
+            winners.push(playersIds[i]);        
+    }
+    
+    return winners;
 }
 
 // This function returns all the dummies
 // contained in the completedTrees
 var getDummies = function(completedTrees){
     var dummies = [];
-    for(i in completedTrees){
-        for(j in completedTrees[i].dummies){
+    for(var i in completedTrees){
+        for(var j in completedTrees[i].dummies){
             if(!dummyAlreadyIn(dummies, completedTrees[i].dummies[j])){
-                /*console.log("--------------------------------");
-                completedTrees[i].printTree();
-                console.log("********************************");*/
                 dummies.push(completedTrees[i].dummies[j]);
             }
         }
@@ -219,9 +262,9 @@ var getDummies = function(completedTrees){
 // For debug issues
 var printDummies = function(dummies){
     console.log("dummies: [");
-    for(i in dummies){
-        console.log("\tdummy(playerID: " + dummies[i].playerId +
-                    ", dummyID: " + dummies[i].dummyId +
+    for(var i in dummies){
+        console.log("\tdummy(playerID: " + dummies[i].playerId + 
+                    ", dummyID: " + dummies[i].dummyId + 
                     ", coor: [" + dummies[i].coord + "]" +
                     ", pos: '" + dummies[i].position + "'" +
                     ")");
@@ -230,7 +273,7 @@ var printDummies = function(dummies){
 }
 
 var dummyAlreadyIn = function(dummies, dummy){
-    for(i in dummies){
+    for(var i in dummies){
         if(dummy.dummyId===dummies[i].dummyId && dummy.playerId===dummies[i].playerId)
             return true;
     }
@@ -276,7 +319,7 @@ var addFieldTrees = function(collection, trees, coor){
 
 var addCityTrees = function(collection, trees, coor){
     var currentTree = null;
-    for (i in collection.trees.cityTrees){
+    for(var i in collection.trees.cityTrees){
         currentTree = collection.trees.cityTrees[i];
         if(currentTree.isPlaced(coor))
             trees.push(currentTree);
@@ -285,7 +328,7 @@ var addCityTrees = function(collection, trees, coor){
 
 var addRoadTrees = function(collection, trees, coor){
     var currentTree = null;
-    for (i in collection.trees.roadTrees){
+    for(var i in collection.trees.roadTrees){
         currentTree = collection.trees.roadTrees[i];
         if(currentTree.isPlaced(coor))
             trees.push(currentTree);
@@ -295,7 +338,7 @@ var addRoadTrees = function(collection, trees, coor){
 // this function check if there is at least
 // a completed Tree in the completedTrees array
 var checkCompletedTrees = function(completedTrees){
-    for(i in completedTrees){
+    for(var i in completedTrees){
         if(completedTrees[i].length>0)
             return true;
     }
@@ -306,7 +349,7 @@ var checkCompletedTrees = function(completedTrees){
 // into an array of trees, and it returns it
 var toArrayOfTrees = function(arrayOfArrays){
     var arrayOfTrees = [];
-    for(i in arrayOfArrays){
+    for(var i in arrayOfArrays){
         if(arrayOfArrays[i].length>0){
             for(n in arrayOfArrays[i]){
                 arrayOfTrees.push(arrayOfArrays[i][n]);
@@ -335,7 +378,7 @@ saveTileInTrees = function(coord, tile, coll, dummy){
             clTrees.push(clTree);
     }
     completedTrees.push(fTrees, ciTrees, rTrees, clTrees);
-
+    
     return completedTrees;
 }
 
@@ -358,7 +401,7 @@ saveTileInTreesOfAType = function(areas, normalType, treesOfType, coord, type, t
 }
 
 // This function checks if a tree of a special type
-// (e.g. "cloisterTree") needs the given coord and,
+// (e.g. "cloisterTree") needs the given coord and, 
 // in that case, inserts the given coord.
 // coord: {x: 0, y: 4}
 // type: 'cl'
@@ -529,140 +572,140 @@ getAreasTile = function(typeTile, orientation){
         return {f:  [ [ zone[(6+turn)%12] ] ],
                 r:  [],
                 ci: [ [ zone[(0+turn)%12], zone[(3+turn)%12], zone[(9+turn)%12] ] ],
-                cl: false
+                cl: false 
                 }
         break;
     case 5:
         return {f:  [ [ zone[(5+turn)%12] ], [ zone[(7+turn)%12] ] ],
                 r:  [ [ zone[(6+turn)%12] ] ],
                 ci: [ [ zone[(0+turn)%12], zone[(3+turn)%12], zone[(9+turn)%12] ] ],
-                cl: false
+                cl: false 
                 }
         break;
     case 6://banner
         return {f:  [ [ zone[(5+turn)%12] ], [ zone[(7+turn)%12] ] ],
                 r:  [ [ zone[(6+turn)%12] ] ],
                 ci: [ [ zone[(0+turn)%12], zone[(3+turn)%12], zone[(9+turn)%12] ] ],
-                cl: false
+                cl: false 
                 }
         break;
     case 7:
         return {f:  [ [ zone[(3+turn)%12], zone[(6+turn)%12] ] ],
                 r:  [],
                 ci: [ [ zone[(0+turn)%12], zone[(9+turn)%12] ] ],
-                cl: false
+                cl: false 
                 }
         break;
     case 8: //banner
         return {f:  [ [ zone[(3+turn)%12], zone[(6+turn)%12] ] ],
                 r:  [],
                 ci: [ [ zone[(0+turn)%12], zone[(9+turn)%12] ] ],
-                cl: false
+                cl: false 
                 }
         break;
     case 9:
         return {f:  [ [ zone[(2+turn)%12], zone[(7+turn)%12] ], [ zone[(4+turn)%12], zone[(5+turn)%12] ] ],
                 r:  [ [ zone[(3+turn)%12], zone[(6+turn)%12] ] ],
                 ci: [ [ zone[(0+turn)%12], zone[(9+turn)%12] ] ],
-                cl: false
+                cl: false 
                 }
         break;
     case 10: //banner
         return {f:  [ [ zone[(2+turn)%12], zone[(7+turn)%12] ], [ zone[(4+turn)%12], zone[(5+turn)%12] ] ],
                 r:  [ [ zone[(3+turn)%12], zone[(6+turn)%12] ] ],
                 ci: [ [ zone[(0+turn)%12], zone[(9+turn)%12] ] ],
-                cl: false
+                cl: false 
                 }
         break;
     case 11:
         return {f:  [ [ zone[(0+turn)%12] ], [ zone[(6+turn)%12] ] ],
                 r:  [],
                 ci: [ [ zone[(3+turn)%12], zone[(9+turn)%12] ] ],
-                cl: false
+                cl: false 
                 }
         break;
     case 12: //banner
         return {f:  [ [ zone[(0+turn)%12] ], [ zone[(6+turn)%12] ] ],
                 r:  [],
                 ci: [ [ zone[(3+turn)%12], zone[(9+turn)%12] ] ],
-                cl: false
+                cl: false 
                 }
         break;
     case 13:
         return {f:  [ [ zone[(3+turn)%12], zone[(6+turn)%12] ] ],
                 r:  [],
                 ci: [ [ zone[(0+turn)%12] ], [ zone[(9+turn)%12] ] ],
-                cl: false
+                cl: false 
                 }
         break;
     case 14:
         return {f:  [ [ zone[(3+turn)%12], zone[(9+turn)%12] ] ],
                 r:  [],
                 ci: [ [ zone[(0+turn)%12] ], [ zone[(6+turn)%12] ] ],
-                cl: false
+                cl: false 
                 }
         break;
     case 15:
         return {f:  [ [ zone[(3+turn)%12], zone[(6+turn)%12], zone[(9+turn)%12] ] ],
                 r:  [],
                 ci: [ [ zone[(0+turn)%12] ] ],
-                cl: false
+                cl: false 
                 }
         break;
     case 16:
         return {f:  [ [ zone[(3+turn)%12], zone[(5+turn)%12], zone[(10+turn)%12] ], [ zone[(7+turn)%12], zone[(8+turn)%12] ] ],
                 r:  [ [ zone[(6+turn)%12], zone[(9+turn)%12] ] ],
                 ci: [ [ zone[(0+turn)%12] ] ],
-                cl: false
+                cl: false 
                 }
         break;
     case 17:
         return {f:  [ [ zone[(2+turn)%12], zone[(7+turn)%12], zone[(9+turn)%12] ], [ zone[(4+turn)%12], zone[(5+turn)%12] ] ],
                 r:  [ [ zone[(3+turn)%12], zone[(6+turn)%12] ] ],
                 ci: [ [ zone[(0+turn)%12] ] ],
-                cl: false
+                cl: false 
                 }
         break;
     case 18:
         return {f:  [ [ zone[(2+turn)%12], zone[(10+turn)%12] ], [ zone[(4+turn)%12], zone[(5+turn)%12] ], [ zone[(7+turn)%12], zone[(8+turn)%12] ] ],
                 r:  [ [ zone[(3+turn)%12] ], [ zone[(6+turn)%12] ], [ zone[(9+turn)%12] ] ],
                 ci: [ [ zone[(0+turn)%12] ] ],
-                cl: false
+                cl: false 
                 }
         break;
     case 19:
         return {f:  [ [ zone[(4+turn)%12], zone[(6+turn)%12], zone[(8+turn)%12] ], [ zone[(2+turn)%12], zone[(10+turn)%12] ] ],
                 r:  [ [ zone[(3+turn)%12], zone[(9+turn)%12] ] ],
                 ci: [ [ zone[(0+turn)%12] ] ],
-                cl: false
+                cl: false 
                 }
         break;
     case 20:
         return {f:  [ [ zone[(1+turn)%12], zone[(3+turn)%12], zone[(5+turn)%12] ], [ zone[(7+turn)%12], zone[(9+turn)%12], zone[(11+turn)%12] ] ],
                 r:  [ [ zone[(0+turn)%12], zone[(6+turn)%12] ] ],
                 ci: [],
-                cl: false
+                cl: false 
                 }
         break;
     case 21:
         return {f:  [ [ zone[(0+turn)%12], zone[(3+turn)%12], zone[(5+turn)%12], zone[(10+turn)%12] ], [ zone[(7+turn)%12], zone[(8+turn)%12] ] ],
                 r:  [ [ zone[(6+turn)%12], zone[(9+turn)%12] ] ],
                 ci: [],
-                cl: false
+                cl: false 
                 }
         break;
     case 22:
         return {f:  [ [ zone[(0+turn)%12], zone[(2+turn)%12], zone[(10+turn)%12] ], [ zone[(4+turn)%12], zone[(5+turn)%12] ], [ zone[(7+turn)%12], zone[(8+turn)%12] ] ],
                 r:  [ [ zone[(3+turn)%12] ], [ zone[(6+turn)%12] ], [ zone[(9+turn)%12] ] ],
                 ci: [],
-                cl: false
+                cl: false 
                 }
         break;
     case 23:
         return {f:  [ [ zone[(1+turn)%12], zone[(2+turn)%12] ], [ zone[(4+turn)%12], zone[(5+turn)%12] ], [ zone[(7+turn)%12], zone[(8+turn)%12] ], [ zone[(10+turn)%12], zone[(11+turn)%12] ] ],
                 r:  [ [ zone[(0+turn)%12] ], [ zone[(3+turn)%12] ], [ zone[(6+turn)%12] ], [ zone[(9+turn)%12] ] ],
                 ci: [],
-                cl: false
+                cl: false 
                 }
         break;
     default:
@@ -675,161 +718,50 @@ getAreasTile = function(typeTile, orientation){
 c = new TreesCollection();
 
 
-t = new Tile(19, 2);
+/*t = new Tile(19, 0);
 c.insertTile(t, {x:49, y:49}, null);
 
 
-d = new Dummy(1, 1);
-d.place([49,50], 'n');
-t = new Tile(15, 0);
-c.insertTile(t, {x:49, y:50}, d);
-
-
 d = new Dummy(2, 1);
-d.place([48,49], 'e');
-t = new Tile(20, 1);
+d.place([48,49], 'n');
+t = new Tile(19, 0);
 c.insertTile(t, {x:48, y:49}, d);
 
 
 d = new Dummy(2, 2);
-d.place([48,50], 'w');
-t = new Tile(7, 3);
-c.insertTile(t, {x:48, y:50}, d);
-
-
-d = new Dummy(1, 2);
-d.place([50,49], 'e');
-t = new Tile(6, 1);
+d.place([50,49], 'n');
+t = new Tile(19, 0);
 c.insertTile(t, {x:50, y:49}, d);
 
 
-d = new Dummy(1, 3);
-d.place([51,49], 'e');
-t = new Tile(14, 1);
-c.insertTile(t, {x:51, y:49}, d);
+d = new Dummy(1, 100);
+d.place([49,48], 's');
+t = new Tile(2, 0);
+c.insertTile(t, {x:49, y:48}, d);
 
 
-d = new Dummy(2, 3);
-d.place([47,49], 'ne');
-t = new Tile(20, 1);
-c.insertTile(t, {x:47, y:49}, d);
-
-
-d = new Dummy(1, 4);
-d.place([50,48], 'w');
-t = new Tile(19, 2);
-c.insertTile(t, {x:50, y:48}, d);
-
-
-t = new Tile(20, 1);
-c.insertTile(t, {x:46, y:49}, null);
-
-
-t = new Tile(19, 3);
-c.insertTile(t, {x:52, y:49}, null);
-
-
-t = new Tile(21, 2);
-c.insertTile(t, {x:45, y:49}, null);
-
-
-d = new Dummy(1, 5);
-d.place([52,50], 'e');
-t = new Tile(18, 1);
-c.insertTile(t, {x:52, y:50}, d);
-
-
-t = new Tile(11, 0);
-c.insertTile(t, {x:47, y:50}, null);
-
-
-d = new Dummy(1, 6);
-d.place([53,49], 'c');
-t = new Tile(0, 0);
-c.insertTile(t, {x:53, y:49}, d);
-
-
-t = new Tile(8, 0);
-c.insertTile(t, {x:48, y:51}, null);
-
-
-t = new Tile(21, 0);
-c.insertTile(t, {x:45, y:48}, null);
-
-
-t = new Tile(23, 0);
-c.insertTile(t, {x:44, y:48}, null);
-
-
-t = new Tile(19, 1);
-c.insertTile(t, {x:54, y:49}, null);
-
-
-d = new Dummy(2, 4);
-d.place([52,48], 's');
-t = new Tile(21, 3);
-c.insertTile(t, {x:52, y:48}, d);
-
-
-d = new Dummy(1, 7);
-d.place([51,50], 'e');
-t = new Tile(21, 3);
-c.insertTile(t, {x:51, y:50}, d);
-
-
-d = new Dummy(2, 5);
-d.place([55,49], 'w');
-t = new Tile(9, 3);
-c.insertTile(t, {x:55, y:49}, d);
-
-
-d = new Dummy(1, 8);
-d.place([54,50], 'e');
-t = new Tile(19, 1);
-c.insertTile(t, {x:54, y:50}, d);
-
-
-d = new Dummy(2, 6);
-d.place([46,48], 'c');
-t = new Tile(0, 0);
-c.insertTile(t, {x:46, y:48}, d);
-
-
-t = new Tile(22, 2);
-c.insertTile(t, {x:51, y:51}, null);
-
-
-t = new Tile(7, 0);
-c.insertTile(t, {x:55, y:50}, null);
-
-
-t = new Tile(3, 0);
+t = new Tile(7, 2);
 c.insertTile(t, {x:48, y:48}, null);
 
 
-t = new Tile(21, 1);
-c.insertTile(t, {x:46, y:47}, null);
+t = new Tile(7, 3);
+c.insertTile(t, {x:50, y:48}, null);
 
 
-t = new Tile(15, 0);
-c.insertTile(t, {x:50, y:50}, null);
+t = new Tile(15, 2);
+c.insertTile(t, {x:49, y:47}, null);*/
 
 
-t = new Tile(14, 1);
-c.insertTile(t, {x:46, y:50}, null);
 
 
-d = new Dummy(1, 9);
-d.place([45,50], 'e');
-t = new Tile(12, 0);
-c.insertTile(t, {x:45, y:50}, d);
 
 
-t = new Tile(17, 1);
-c.insertTile(t, {x:47, y:51}, null);
 
 
-d = new Dummy(1, 10);
-d.place([52,51], 'n');
-t = new Tile(10, 2);
-c.insertTile(t, {x:52, y:51}, d);
+
+
+
+
+
+
+
