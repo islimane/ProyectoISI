@@ -18,6 +18,7 @@ Tree = function(type, coord, area, tileType, dummy){
     this.id = getRandomId(type);
     if (type == 'cl' && coord){
         this.firstNode = new Node(coord, null, 'x', [], true, tileType);
+        this.type = type;
         this._createClTree(coord);
         if (dummy){
             if (dummy.position === 'c')
@@ -245,6 +246,7 @@ Tree.prototype.printTree = function(){
         case 'ci': treeType = 'city'; break;
         case 'r': treeType = 'road'; break;
         case 'f': treeType = 'field'; break;
+        case 'cl': treeType = 'cloister'; break;
         default: treeType = 'Unknow';
         }
         console.log(" ------ " + treeType + " tree ------ ");
