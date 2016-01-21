@@ -15,7 +15,8 @@ Meteor.methods({
         console.log("game has been resumed");
 
         //The game is stored again in the 'active games' array
-        //storeGame(game);
+        game.suspended = false;
+        storeGame(game);
         return "";
     },
     'addFriend': function(friendId){

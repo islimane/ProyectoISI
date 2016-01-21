@@ -8,12 +8,14 @@ var turns = 72;
 Game = function(playerIds, id){
     this.id = id;
     this.turns = turns - 1;
+    this.suspended = false;
     this.players = new Players (playerIds);
     this.tiles = new Tiles();
     this.board = new Board();
 }
 
 Game.prototype.suspend = function () {
+    this.suspended = true;
     removeGame(this.id);
 }
 
@@ -25,16 +27,18 @@ Game.prototype.getStatus = function () {
 };
 
 Game.prototype.nextTurn = function() {
-    if (this.turns > 0) {
-        try {
-            this.tiles.popTile();
-            this.players.next();
-            --this.turns;
-        }catch (err) {
-            return "Abort: " + err;
+    if (!this.suspended) {
+        if (this.turns > 0) {
+            try {
+                this.tiles.popTile();
+                this.players.next();
+                --this.turns;
+            }catch (err) {
+                return "Abort: " + err;
+            }
+            return "";
+        } else {
+            return "Game finished";
         }
-        return "";
-    } else {
-        return "Game finished";
     }
 };
