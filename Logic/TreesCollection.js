@@ -28,7 +28,8 @@ TreesCollection = function(){
 // or more than one tree, depending on
 // the zones of the tile.
 // Also, this function returns null if 
-// no tree has completed, and returns the
+// no tree with dummies on it has completed, 
+// and returns the
 // players with their additional points if 
 // some tree has completed with the following
 // coor: {x: 0, y: 4}
@@ -70,33 +71,52 @@ TreesCollection.prototype.insertTile = function(tile, coor, dummy){
 // object returned:
 // {
 //     playersPoints: [[Player1_ID, points],[Player2_ID, points],...],
-//     dummies: [dummy1, dummy2,...]
 // }
 TreesCollection.prototype.getFinalCount = function(){
     var incompTrees = getIncompTrees(this);
 
+    // Insert all incompleted trees in a single array
     var trees = [];
-
     for(var treesType in incompTrees){
         for(var i=0; i<incompTrees[treesType].length; i++){
             trees.push(incompTrees[treesType][i]);
         }
     }
 
-    console.log("trees.length: " + trees.length);
-
-
+    // This points came from incompleted
+    // cities, roads and cloisters
     var playersPoints = computePoints(trees);
-
-
-    console.log("playersPoints.length: " + playersPoints.length);
 
     for(var i=0; i<playersPoints.length; i++){
         console.log("--------------------------------------------------");
         console.log("[" + playersPoints[i][0] + "," + playersPoints[i][1] +  "]");
     }
+
+
+    // Now we have to get the points from cities that touch
+    // fields
+    var fieldTrees = getFieldTrees(this);
+
+    for(var i=0; i<fieldTrees.length; i++){
+        fieldTrees[i].printTree();
+    }
 }
 
+
+// This function returns all field trees
+// that have at least one dummy on it
+// with the following format:
+// fieldTrees = [tree1, tree2, ...]
+var getFieldTrees = function(coll){
+    var fieldTrees = [];
+    var collFieldTrees = coll.trees.fieldTrees;
+    for(var i=0; i<collFieldTrees.length; i++){
+        if(collFieldTrees[i].dummies.length>0){
+            fieldTrees.push(collFieldTrees[i]);
+        }
+    }
+    return fieldTrees;
+}
 
 // This function return all incompleted trees
 // on the board, that have at least a dummy
@@ -899,7 +919,7 @@ getAreasTile = function(typeTile, orientation){
 
 
 //     d = new Dummy(2, 5);
-//     d.place([50,47], 'ne');
+//     d.place([50,47], 'n');
 //     t = new Tile(15, 2);
 //     c.insertTile(t, {x:50, y:47}, d);
 
@@ -915,6 +935,7 @@ getAreasTile = function(typeTile, orientation){
 
 
 //     c.getFinalCount();
+
 // }
 
 // main();
