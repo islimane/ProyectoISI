@@ -63,8 +63,6 @@ TreesCollection.prototype.insertTile = function(tile, coor, dummy){
         if(debug) console.log("There is no completed tree");
         return null;
     }
-
-
 }
 
 // This function must be called at the end of the game
@@ -75,9 +73,68 @@ TreesCollection.prototype.insertTile = function(tile, coor, dummy){
 //     dummies: [dummy1, dummy2,...]
 // }
 TreesCollection.prototype.getFinalCount = function(){
-
+    var incompTrees = getIncompTrees(this);
 }
 
+
+// This function return all incompleted trees
+// on the board, that have at least a dummy
+// on it, with the following format:
+// returned object{
+//      cityT: [],
+//      roadT: [],
+//      cloisterT: []    
+// }
+var getIncompTrees = function(coll){
+    var incompTrees = {
+        cityT: getIncompCityT(coll),
+        roadT: getIncompRoadT(coll),
+        cloisterT: getIncompCloistT(coll)
+    }
+
+    return incompTrees;
+}
+
+
+var getIncompCityT = function(coll){
+    var incompCityT = [];
+    var cityTrees = coll.trees.cityTrees;
+    for(var i=0; i<cityTrees.length; i++){
+        if(cityTrees[i].getLeftChildren()>0 && cityTrees[i].dummies.length>0){
+            incompCityT.push(cityTrees[i]);
+            cityTrees[i].printTree();
+            console.log("############################################");
+        }
+    }
+
+    return incompCityT;
+}
+
+var getIncompRoadT = function(coll){
+    var incompRoadT = [];
+    var roadTrees = coll.trees.roadTrees;
+    for(var i=0; i<roadTrees.length; i++){
+        if(roadTrees[i].getLeftChildren()>0 && roadTrees[i].dummies.length>0){
+            incompRoadT.push(roadTrees[i]);
+            console.log("############################################");
+        }
+    }
+
+    return incompRoadT;
+}
+
+var getIncompCloistT = function(coll){
+    var incompCloisT = [];
+    var cloisterTrees = coll.trees.cloisterTrees;
+    for(var i=0; i<cloisterTrees.length; i++){
+        if(cloisterTrees[i].getLeftChildren()>0 && cloisterTrees[i].dummies.length>0){
+            incompCloisT.push(cloisterTrees[i]);
+            console.log("############################################");
+        }
+    }
+
+    return incompCloisT;
+}
 
 // This function returns all trees in wich
 // a given coordenate exist and is placed.
@@ -747,44 +804,54 @@ getAreasTile = function(typeTile, orientation){
 }
 
 
-c = new TreesCollection();
+var main = function(){
+    var c = new TreesCollection();
 
 
-t = new Tile(19, 0);
-c.insertTile(t, {x:49, y:49}, null);
+    var t = new Tile(19, 0);
+    c.insertTile(t, {x:49, y:49}, null);
 
 
-d = new Dummy(2, 1);
-d.place([48,49], 'n');
-t = new Tile(19, 0);
-c.insertTile(t, {x:48, y:49}, d);
+    var d = new Dummy(2, 1);
+    d.place([49,48], 'e');
+    t = new Tile(14, 1);
+    c.insertTile(t, {x:49, y:48}, d);
 
 
-d = new Dummy(2, 2);
-d.place([50,49], 'n');
-t = new Tile(19, 0);
-c.insertTile(t, {x:50, y:49}, d);
+    d = new Dummy(1, 1);
+    d.place([49,50], 'n');
+    t = new Tile(5, 3);
+    c.insertTile(t, {x:49, y:50}, d);
 
 
-d = new Dummy(1, 100);
-d.place([49,48], 's');
-t = new Tile(2, 0);
-c.insertTile(t, {x:49, y:48}, d);
+    d = new Dummy(2, 2);
+    d.place([48,48], 'e');
+    t = new Tile(16, 1);
+    c.insertTile(t, {x:48, y:48}, d);
 
 
-t = new Tile(7, 2);
-c.insertTile(t, {x:48, y:48}, null);
+    t = new Tile(15, 1);
+    c.insertTile(t, {x:48, y:50}, null);
 
 
-t = new Tile(7, 3);
-c.insertTile(t, {x:50, y:48}, null);
+    t = new Tile(15, 0);
+    c.insertTile(t, {x:49, y:51}, null);
+
+    console.log("*********************************");
+    console.log("*********************************");
+    console.log("*********************************");
+    console.log("*********************************");
+    console.log("*********************************");
+    console.log("*********************************");
+    console.log("*********************************");
+    console.log("*********************************");
+    console.log("*********************************");
 
 
-t = new Tile(15, 2);
-c.insertTile(t, {x:49, y:47}, null);
+    c.getFinalCount();
+}
 
-
-
+main();
 
 
 
