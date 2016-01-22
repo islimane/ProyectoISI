@@ -47,7 +47,7 @@ TreesCollection.prototype.insertTile = function(tile, coor, dummy){
     var completedTrees = saveTileInTrees(coor, tile, this, dummy);
     if(checkCompletedTrees(completedTrees)){
         completedTrees = toArrayOfTrees(completedTrees);
-        var playersPoints = computePoints(data, completedTrees);
+        var playersPoints = computePoints(completedTrees);
         var dummies = getDummies(completedTrees);
         if(dummies.length>0){
             data.playersPoints = playersPoints;
@@ -74,6 +74,27 @@ TreesCollection.prototype.insertTile = function(tile, coor, dummy){
 // }
 TreesCollection.prototype.getFinalCount = function(){
     var incompTrees = getIncompTrees(this);
+
+    var trees = [];
+
+    for(var treesType in incompTrees){
+        for(var i=0; i<incompTrees[treesType].length; i++){
+            trees.push(incompTrees[treesType][i]);
+        }
+    }
+
+    console.log("trees.length: " + trees.length);
+
+
+    var playersPoints = computePoints(trees);
+
+
+    console.log("playersPoints.length: " + playersPoints.length);
+
+    for(var i=0; i<playersPoints.length; i++){
+        console.log("--------------------------------------------------");
+        console.log("[" + playersPoints[i][0] + "," + playersPoints[i][1] +  "]");
+    }
 }
 
 
@@ -116,6 +137,7 @@ var getIncompRoadT = function(coll){
     for(var i=0; i<roadTrees.length; i++){
         if(roadTrees[i].getLeftChildren()>0 && roadTrees[i].dummies.length>0){
             incompRoadT.push(roadTrees[i]);
+            roadTrees[i].printTree();
             console.log("############################################");
         }
     }
@@ -178,19 +200,17 @@ TreesCollection.prototype._isPlacedInColl = function(coord){
 ///////////////////////////////
 //    FOR MANAGING TREES     //
 ///////////////////////////////
-var computePoints = function(data, completedTrees){
+var computePoints = function(trees){
     var playersPoints = [];
-    for(var i in completedTrees){
-        var points = getPoints(completedTrees[i]);
-        if(completedTrees[i].dummies!=undefined && completedTrees[i].dummies.length>0){
+    for(var i=0; i<trees.length; i++){
+        var points = getPoints(trees[i]);
+        if(trees[i].dummies!=undefined && trees[i].dummies.length>0){
             // These are the players that are going
             // to increase their points
-            var playersId = getPlayersId(completedTrees[i].dummies);
-            //console.log("playersId: " + playersId);
+            var playersId = getPlayersId(trees[i].dummies);
             addPlayers(playersPoints, playersId);
             addPoints(playersPoints, playersId, points);
         }
-        //console.log("Points: " + (points*10));
     }
     return playersPoints;
 }
@@ -804,54 +824,100 @@ getAreasTile = function(typeTile, orientation){
 }
 
 
-var main = function(){
-    var c = new TreesCollection();
+// var main = function(){
+//     var c = new TreesCollection();
 
 
-    var t = new Tile(19, 0);
-    c.insertTile(t, {x:49, y:49}, null);
+//     var t = new Tile(19, 2);
+//     c.insertTile(t, {x:49, y:49}, null);
 
 
-    var d = new Dummy(2, 1);
-    d.place([49,48], 'e');
-    t = new Tile(14, 1);
-    c.insertTile(t, {x:49, y:48}, d);
+//     var d = new Dummy(2, 1);
+//     d.place([49,48], 'e');
+//     t = new Tile(14, 1);
+//     c.insertTile(t, {x:49, y:48}, d);
 
 
-    d = new Dummy(1, 1);
-    d.place([49,50], 'n');
-    t = new Tile(5, 3);
-    c.insertTile(t, {x:49, y:50}, d);
+//     d = new Dummy(1, 1);
+//     d.place([49,50], 'n');
+//     t = new Tile(5, 3);
+//     c.insertTile(t, {x:49, y:50}, d);
 
 
-    d = new Dummy(2, 2);
-    d.place([48,48], 'e');
-    t = new Tile(16, 1);
-    c.insertTile(t, {x:48, y:48}, d);
+//     d = new Dummy(2, 2);
+//     d.place([48,48], 'e');
+//     t = new Tile(16, 1);
+//     c.insertTile(t, {x:48, y:48}, d);
 
 
-    t = new Tile(15, 1);
-    c.insertTile(t, {x:48, y:50}, null);
+//     d = new Dummy(1, 2);
+//     d.place([50,49], 'w');
+//     t = new Tile(21, 0);
+//     c.insertTile(t, {x:50, y:49}, d);
 
 
-    t = new Tile(15, 0);
-    c.insertTile(t, {x:49, y:51}, null);
-
-    console.log("*********************************");
-    console.log("*********************************");
-    console.log("*********************************");
-    console.log("*********************************");
-    console.log("*********************************");
-    console.log("*********************************");
-    console.log("*********************************");
-    console.log("*********************************");
-    console.log("*********************************");
+//     t = new Tile(9, 0);
+//     c.insertTile(t, {x:50, y:48}, null);
 
 
-    c.getFinalCount();
-}
+//     d = new Dummy(1, 3);
+//     d.place([48,50], 'n');
+//     t = new Tile(18, 1);
+//     c.insertTile(t, {x:48, y:50}, d);
 
-main();
+
+//     d = new Dummy(1, 3);
+//     d.place([48,49], 'ne');
+//     t = new Tile(16, 3);
+//     c.insertTile(t, {x:48, y:49}, d);
+
+
+//     t = new Tile(3, 0);
+//     c.insertTile(t, {x:49, y:51}, null);
+
+
+//     d = new Dummy(2, 3);
+//     d.place([47,49], 'e');
+//     t = new Tile(3, 1);
+//     c.insertTile(t, {x:47, y:49}, d);
+
+
+//     d = new Dummy(1, 4);
+//     d.place([50,50], 's');
+//     t = new Tile(22, 1);
+//     c.insertTile(t, {x:50, y:50}, d);
+
+
+//     d = new Dummy(2, 4);
+//     d.place([48,47], 's');
+//     t = new Tile(21, 0);
+//     c.insertTile(t, {x:48, y:47}, d);
+
+
+//     t = new Tile(21, 3);
+//     c.insertTile(t, {x:51, y:49}, null);
+
+
+//     d = new Dummy(2, 5);
+//     d.place([50,47], 'ne');
+//     t = new Tile(15, 2);
+//     c.insertTile(t, {x:50, y:47}, d);
+
+//     console.log("*********************************");
+//     console.log("*********************************");
+//     console.log("*********************************");
+//     console.log("*********************************");
+//     console.log("*********************************");
+//     console.log("*********************************");
+//     console.log("*********************************");
+//     console.log("*********************************");
+//     console.log("*********************************");
+
+
+//     c.getFinalCount();
+// }
+
+// main();
 
 
 
