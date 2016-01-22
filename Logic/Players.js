@@ -95,7 +95,7 @@ Player = function(id)  {
 		this.name =  "IA" ;
 	}
 	this.score = 0 ;
-	dummies = this.initDummies() ;
+	this.dummies = this.initDummies() ;
 }
 
 Player.prototype.isIA = function(){
