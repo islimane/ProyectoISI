@@ -23,6 +23,7 @@ TreesCollection = function(){
     }
 }
 
+
 // This function inserts the tile in one
 // or more than one tree, depending on
 // the zones of the tile.
@@ -63,6 +64,17 @@ TreesCollection.prototype.insertTile = function(tile, coor, dummy){
         return null;
     }
 
+
+}
+
+// This function must be called at the end of the game
+// and returns the final count with the following format:
+// object returned:
+// {
+//     playersPoints: [[Player1_ID, points],[Player2_ID, points],...],
+//     dummies: [dummy1, dummy2,...]
+// }
+TreesCollection.prototype.getFinalCount = function(){
 
 }
 
@@ -163,25 +175,45 @@ var addPlayers = function(playersPoints, playersId){
 
 // This function returns the points
 // for each type of tree (zone type)
-var getPoints = function(completedTree){
-    var numofTiles = completedTree.getNumOfTiles();
-    var treeType = completedTree.type;
+var getPoints = function(tree){
+    var numofTiles = tree.getNumOfTiles();
+    var treeType = tree.type;
     var factor = 0;
     var points = 0;
     switch (treeType) {
-        // A tricky way for multiple cases
-        case 'f':
-        case 'r':
+       case 'r':
+            var roadPoints = getPointsTypes().roadTile;
+            points += numofTiles*roadPoints;
+            break;
         case 'cl':
-            factor = 1;
-            points += numofTiles*factor;
+            var cloisterPoints = getPointsTypes().cloisterTile;
+            points += numofTiles*cloisterPoints;
             break;
         // default -> 'ci'
         default:
-            var numOfBanners = completedTree.getNumOfBanners();
-            factor = 2;
-            points = (numofTiles*factor) + (2*numOfBanners);
+            if(tree.getLeftChildren()==0){
+                var cityPoints = getPointsTypes().cityTile;
+                var bannerPoints = getPointsTypes().banner;
+            }else{
+                var cityPoints = getPointsTypes().incompletedCT;
+                var bannerPoints = getPointsTypes().incompletedBanner;
+            }
+            var numOfBanners = tree.getNumOfBanners();
+            points = (numofTiles*cityPoints) + (bannerPoints*numOfBanners);
             break;
+    }
+    return points;
+}
+
+
+var getPointsTypes = function(){
+    var points = {
+        cityTile: 2,
+        incompletedCT: 1,
+        banner: 2,
+        incompletedBanner: 1,
+        roadTile: 1,
+        cloisterTile: 1
     }
     return points;
 }
@@ -207,7 +239,7 @@ var moreThanOnePlayer = function(dummies){
     if(dummies.length>0){
         var tmpPlayer = dummies[0].playerId;
     }
-    for(var i in dummies){
+    for(var i=0; i<dummies.length; i++){
         if(dummies[i].playerId!==tmpPlayer)
             return true;
         else
@@ -224,7 +256,7 @@ var getWinners = function(dummies){
     var playersDummies = [];
     // format: [playerId1, playerId2,...]
     var playersIds = [];
-    for(var i in dummies){
+    for(var i=0; i<dummies.length; i++){
         var playerAlreadyIn = contains.call(playersIds, dummies[i].playerId);
         if(playerAlreadyIn){
             var index = playersIds.indexOf(dummies[i].playerId);
@@ -237,7 +269,7 @@ var getWinners = function(dummies){
     // Now we get the largest value in playerDummies
     var largest = Math.max.apply(Math, playersDummies);
     var winners = [];
-    for(var i in playersDummies){
+    for(var i=0; i<playersDummies.length; i++){
         if(playersDummies[i]===largest)
             winners.push(playersIds[i]);        
     }
@@ -249,8 +281,8 @@ var getWinners = function(dummies){
 // contained in the completedTrees
 var getDummies = function(completedTrees){
     var dummies = [];
-    for(var i in completedTrees){
-        for(var j in completedTrees[i].dummies){
+    for(var i=0; i<completedTrees.length; i++){
+        for(var j=0; j<completedTrees[i].dummies.length; j++){
             if(!dummyAlreadyIn(dummies, completedTrees[i].dummies[j])){
                 dummies.push(completedTrees[i].dummies[j]);
             }
@@ -262,7 +294,7 @@ var getDummies = function(completedTrees){
 // For debug issues
 var printDummies = function(dummies){
     console.log("dummies: [");
-    for(var i in dummies){
+    for(var i=0; i<dummies.length; i++){
         console.log("\tdummy(playerID: " + dummies[i].playerId + 
                     ", dummyID: " + dummies[i].dummyId + 
                     ", coor: [" + dummies[i].coord + "]" +
@@ -273,7 +305,7 @@ var printDummies = function(dummies){
 }
 
 var dummyAlreadyIn = function(dummies, dummy){
-    for(var i in dummies){
+    for(var i=0; i<dummies.length; i++){
         if(dummy.dummyId===dummies[i].dummyId && dummy.playerId===dummies[i].playerId)
             return true;
     }
@@ -310,7 +342,7 @@ var contains = function(needle) {
 
 var addFieldTrees = function(collection, trees, coor){
     var currentTree = null;
-    for (i in collection.trees.fieldTrees){
+    for (var i=0; i<collection.trees.fieldTrees.length; i++){
         currentTree = collection.trees.fieldTrees[i];
         if(currentTree.isPlaced(coor))
             trees.push(currentTree);
@@ -319,7 +351,7 @@ var addFieldTrees = function(collection, trees, coor){
 
 var addCityTrees = function(collection, trees, coor){
     var currentTree = null;
-    for(var i in collection.trees.cityTrees){
+    for(var i=0; i<collection.trees.cityTrees.length; i++){
         currentTree = collection.trees.cityTrees[i];
         if(currentTree.isPlaced(coor))
             trees.push(currentTree);
@@ -328,7 +360,7 @@ var addCityTrees = function(collection, trees, coor){
 
 var addRoadTrees = function(collection, trees, coor){
     var currentTree = null;
-    for(var i in collection.trees.roadTrees){
+    for(var i=0; i<collection.trees.roadTrees.length; i++){
         currentTree = collection.trees.roadTrees[i];
         if(currentTree.isPlaced(coor))
             trees.push(currentTree);
@@ -338,7 +370,7 @@ var addRoadTrees = function(collection, trees, coor){
 // this function check if there is at least
 // a completed Tree in the completedTrees array
 var checkCompletedTrees = function(completedTrees){
-    for(var i in completedTrees){
+    for(var i=0; i<completedTrees.length; i++){
         if(completedTrees[i].length>0)
             return true;
     }
@@ -349,9 +381,9 @@ var checkCompletedTrees = function(completedTrees){
 // into an array of trees, and it returns it
 var toArrayOfTrees = function(arrayOfArrays){
     var arrayOfTrees = [];
-    for(var i in arrayOfArrays){
+    for(var i=0; i<arrayOfArrays.length; i++){
         if(arrayOfArrays[i].length>0){
-            for(n in arrayOfArrays[i]){
+            for(var n=0; n<arrayOfArrays[i].length; n++){
                 arrayOfTrees.push(arrayOfArrays[i][n]);
             }
         }
@@ -413,7 +445,7 @@ saveTileOfSpecialType = function(treesOfType, coord, type){
     // because the function placeClTile() handle
     // the exception when a tree does not need the
     // coord
-    for(i in treesOfType){
+    for(var i=0; i<treesOfType.length; i++){
         treesOfType[i].placeClTile(coord);
         if(treesOfType[i].getLeftChildren()==0){
             treesOfType[i].printTree();
@@ -430,7 +462,7 @@ saveClTree = function(coord, dummy, tileType, coll){
     // Now we have to place each coord, that has a tile
     // in it, around the cloister tile
     var borderingCoords = getBorderingCoords(coord);
-    for(var i in borderingCoords){
+    for(var i=0; i<borderingCoords.length; i++){
         if(coll._isPlacedInColl(borderingCoords[i])){
             tree.placeClTile(borderingCoords[i]);
         }
@@ -718,7 +750,7 @@ getAreasTile = function(typeTile, orientation){
 c = new TreesCollection();
 
 
-/*t = new Tile(19, 0);
+t = new Tile(19, 0);
 c.insertTile(t, {x:49, y:49}, null);
 
 
@@ -749,12 +781,7 @@ c.insertTile(t, {x:50, y:48}, null);
 
 
 t = new Tile(15, 2);
-c.insertTile(t, {x:49, y:47}, null);*/
-
-
-
-
-
+c.insertTile(t, {x:49, y:47}, null);
 
 
 
