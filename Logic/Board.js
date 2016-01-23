@@ -220,16 +220,16 @@ var getZones = function(tile, elem, index){
     // ...
     switch (index) {
       case 0:
-        var zone1 = tile.positions.s;
-        var zone2 = elem.tile.positions.n;
+        var zone1 = tile.positions.n;
+        var zone2 = elem.tile.positions.s;
         break;
       case 1:
         var zone1 = tile.positions.e;
         var zone2 = elem.tile.positions.w;
         break;
       case 2:
-        var zone1 = tile.positions.n;
-        var zone2 = elem.tile.positions.s;
+        var zone1 = tile.positions.s;
+        var zone2 = elem.tile.positions.n;
         break;
       default:
         var zone1 = tile.positions.w;
@@ -354,12 +354,12 @@ Board.prototype.getDummyPositions = function (tile) {
 /*var b = new Board();
 
 t = new Tile(2, 0);
-b.insertTile(t, [49,48]);
+b.insertTile(t, [49,50]);
 
 t = new Tile(14, 0);
 dummy = new Dummy(1, 2);
-dummy.place([49,47], 's');
-b.insertTile(t, [49,47], dummy);
+dummy.place([49,51], 'e');
+b.insertTile(t, [49,51], dummy);
 
 console.log("\navailableCells:");
 console.log(b.availableCells);
