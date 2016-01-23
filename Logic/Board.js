@@ -220,16 +220,16 @@ var getZones = function(tile, elem, index){
     // ...
     switch (index) {
       case 0:
-        var zone1 = tile.positions.n;
-        var zone2 = elem.tile.positions.s;
+        var zone1 = tile.positions.s;
+        var zone2 = elem.tile.positions.n;
         break;
       case 1:
         var zone1 = tile.positions.e;
         var zone2 = elem.tile.positions.w;
         break;
       case 2:
-        var zone1 = tile.positions.s;
-        var zone2 = elem.tile.positions.n;
+        var zone1 = tile.positions.n;
+        var zone2 = elem.tile.positions.s;
         break;
       default:
         var zone1 = tile.positions.w;
@@ -281,7 +281,8 @@ var getAllTrees = function (treesCollection, tile, coord) {
     var trees = [];
     var zones = ['n', 'nw', 'w', 'sw', 's', 'se', 'e', 'ne'];
     for (var i = 0; i < zones.length; i++) {
-        var childCoord, childZone = getCoordAndZoneChild(coord, zones[i]);
+        var childData = getCoordAndZoneChild(coord, zones[i]);
+        var childCoord = childData.coord;
         var treeType = getType(zones[i], tile);
         var auxTrees = treesCollection.getTrees([treeType], childCoord);
         if (auxTrees.length !== 0) trees.push({zone: zones[i], trees: auxTrees});
@@ -305,8 +306,11 @@ var getFreeZones = function (tile, trees) {
     var freeZones = objectToArray(tile.dummies);
     for (var i = 0; i < trees.length; i++) {
         if (freeZones[i]) {
-            if (trees[i].trees.dummies.length != 0) {
-                freeZones[i] = false;
+            for (var j = 0; j < trees[i].trees.length; j++) {
+                if (trees[i].trees[j].dummies.length != 0) {
+                    freeZones[i] = false;
+                    break;
+                }
             }
         }
     }
@@ -350,15 +354,17 @@ Board.prototype.getDummyPositions = function (tile) {
 /*var b = new Board();
 
 t = new Tile(2, 0);
-b.insertTile(t, [49,49]);
+b.insertTile(t, [49,48]);
 
 t = new Tile(14, 0);
-b.insertTile(t, [49,50]);
+dummy = new Dummy(1, 2);
+dummy.place([49,47], 's');
+b.insertTile(t, [49,47], dummy);
 
 console.log("\navailableCells:");
 console.log(b.availableCells);
 
-t = new Tile(19, 3);
+t = new Tile(19, 0);
 console.log("\nmatchingCells:");
 console.log(b._getAllMatchingCells(t));
 
