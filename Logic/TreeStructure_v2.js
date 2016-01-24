@@ -180,7 +180,6 @@ Tree.prototype.getNumOfBanners = function(){
 // area: ['n', 'se' ...] -----> YOU CAN SKYP THIS ARGUMENT
 // Returns if a coord is in the tree and is placed (true or false)
 Tree.prototype.isPlaced = function(coord, area){
-    console.log(coord);
     var area = area || ['n','s','e','w','nw','sw','wn','ws','ne','se','en','es','x'];
     var output = false;
     if (this.firstNode == undefined){

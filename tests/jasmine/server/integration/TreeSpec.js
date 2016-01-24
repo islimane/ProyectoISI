@@ -39,7 +39,7 @@ describe('Tree specific', function(){
         t1 = new Tree('ci');
         for (var i = 0; i < NUM; i++){
             var areas = getAreasTile(tileTypes[i], rots[i]);
-            t1.placeNode(coords[i], areas.ci[0], tileTypes[i]);
+            t1.placeNode(coords[i], areas.ci[0], new Tile(tileTypes[i], rots[i]));
         }
     });
 
