@@ -173,13 +173,13 @@ var itFits = function(board, tile, coor){
     // console.log(testableCells);
     // Now we walk the array checking if the tile
     // fits or not
-    testableCells.forEach(function(elem, index){
+    for (var i = 0; i< testableCells.length; i++){
         // the elem is a cell object
-        if(elem.tile){
+        if(testableCells[i].tile){
             // this array contains the two zones we have to compare
             // zones[0] -> zone of the current tile
             // zone[1] -> zone of the board tile
-            var zones = getZones(tile, elem, index);
+            var zones = getZones(tile, testableCells[i], i);
             if(zones[0]==zones[1]){
                 fits = true;
             }else{
@@ -187,7 +187,7 @@ var itFits = function(board, tile, coor){
                 return false;
             }
         }
-    });
+    }
     return fits;
 }
 
