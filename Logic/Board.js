@@ -279,6 +279,65 @@ var getType = function (zone, tile) {
     return type;
 }
 
+//Returns the area in which a given concrete tile zone is included.
+
+var arrayContains = function (array, element) {
+   for (var i = 0; i < array.length; i++) {
+       if (array[i] == element) return true;
+   }
+   return false;
+}
+
+var convert = function (zone) {
+    switch (zone) {
+        case 'wn':
+        case 'nw':
+            return ['nw', 'wn'];
+        case 'en':
+        case 'ne':
+            return ['ne', 'en'];
+        case 'es':
+        case 'se':
+            return ['se','es'];
+        case 'ws':
+        case 'sw':
+            return ['ws', 'sw'];
+        default:
+            return [zone];
+    }
+}
+
+var getZoneArea = function (areas, zone) {
+    for (var type in areas) {
+        for (var i = 0; i < areas[type].length; i++) {
+            var newZone = convert(zone);
+            for (var j = 0; j < zone.length; j++) {
+                console.log("(" + newZone[j] + ")");
+                if (arrayContains(areas[type][i], newZone[j])) {
+                    console.log("BINGO: " + areas[type][i] + "(" + newZone[j] + ")");
+                    return areas[type][i];
+                }
+            }
+        }
+    }
+    return null;
+}
+
+//Returns only trees corresponding to neighbor areas
+
+var getNeighborTrees = function (tile, coord, zone, trees) {
+    if (tile != null) {
+        var areas = getAreasTile(tile.type, tile.orientation);
+        console.log("Total areas: Field-" + areas.f[0] + "/" + areas.f[1] + "\nRoad-" + areas.r + "\nCity-"
+                    + areas.ci);
+        var zoneArea = getZoneArea(areas, zone);
+        console.log("Zona sobre la que busco: " + zoneArea);
+        return findTreesNeed(coord, zoneArea, trees);
+    } else {
+        return [[]];
+    }
+}
+
 //Get trees surrounding the given tile in the given coord.
 //Adapted corner zones to the TreeStructure_v2.js format:
 //      Example:    nw ==> [nw, wn]
@@ -296,9 +355,23 @@ var getAllTrees = function (treesCollection, tile, coord) {
             var childData = getCoordAndZoneChild(coord, subzones[j]);
             var childCoord = childData.coord;
             var treeType = getType(subzones[j], tile);
-            auxTrees.push(treesCollection.getTrees([treeType], childCoord));
+            var allTrees = treesCollection.getTrees([treeType], childCoord);
+            console.log(coord);
+            console.log("Child: " + childCoord.x + "," + childCoord.y);
+            console.log("ROTATION: " + tile.orientation);
+            console.log("ZONE: " + subzones[j]);
+            console.log("ALL=============================");
+            for (var k = 0; k < allTrees.length; k++) {
+                allTrees[k].printTree();
+            }
+            var finalTrees = getNeighborTrees(tile, coord, subzones[j], allTrees);
+            console.log("FINAL=============================");
+            for (var k = 0; k < finalTrees.length; k++) {
+                finalTrees[k].printTree();
+            }
+            console.log("\n");
         }
-        trees.push({zone: zones[0], trees: auxTrees});
+        trees.push({zone: zones[i], trees: finalTrees});
     }
     return trees;
 }
@@ -319,10 +392,8 @@ var getFreeSubZones = function (trees) {
     for (var j = 0; j < trees.length; j++) {
         if (trees[j].length !== 0) {
             var subtrees = trees[j];
-            for (var i = 0; i < subtrees.length; i++) {
-                if (subtrees[i].dummies.length != 0) {
-                    return false;
-                }
+            if (subtrees.dummies.length != 0) {
+                return false;
             }
         }
     }
@@ -331,8 +402,10 @@ var getFreeSubZones = function (trees) {
 
 var getFreeZones = function (tile, zoneTrees) {
     var freeZones = objectToArray(tile.dummies);
+    //console.log(zoneTrees);
     for (var i = 0; i < zoneTrees.length; i++) {
         if (freeZones[i]) {
+            //console.log(zoneTrees[i]);
             freeZones[i] = getFreeSubZones(zoneTrees[i].trees);
         }
     }
@@ -373,20 +446,21 @@ Board.prototype.getDummyPositions = function (tile) {
 }
 
 
-/*var b = new Board();
+var b = new Board();
 
-t = new Tile(2, 0);
-b.insertTile(t, [49,50]);
-
-t = new Tile(14, 0);
+t = new Tile(20, 1);
 dummy = new Dummy(1, 2);
-dummy.place([49,51], 'e');
-b.insertTile(t, [49,51], dummy);
+dummy.place([49,48], 'n');
+b.insertTile(t, [49,48], dummy);
+
+t = new Tile(21, 0);
+
+//b.insertTile(t, [49,51], dummy);
 
 console.log("\navailableCells:");
 console.log(b.availableCells);
 
-t = new Tile(19, 0);
+//t = new Tile(19, 0);
 console.log("\nmatchingCells:");
 console.log(b._getAllMatchingCells(t));
 
@@ -394,4 +468,6 @@ pos = b.getDummyPositions(t);
 console.log(pos[0]);
 console.log(pos[1]);
 console.log(pos[2]);
-console.log(pos[3]);*/
+console.log(pos[3]);
+console.log("\n\n");
+console.log(getAreasTile(21,1));
