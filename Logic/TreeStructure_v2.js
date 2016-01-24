@@ -8,16 +8,16 @@
 // Allow create a tree with a node
 // Coord: {x:1, y:2}
 // area: ['se','sw']
-// tileType: eg. 19
+// tile object
 // dummy: Dummy object
-// Coord, area, tileType and dummy aren't required
-Tree = function(type, coord, area, tileType, dummy){
+// Coord, area, tile and dummy aren't required
+Tree = function(type, coord, area, tile, dummy){
     this.dummies = [];
     this.type = type;
     this.firstNode = undefined;
     this.id = getRandomId(type);
     if (type == 'cl' && coord){
-        this.firstNode = new Node(coord, null, 'x', [], true, tileType);
+        this.firstNode = new Node(coord, null, 'x', [], true, tile);
         this.type = type;
         this._createClTree(coord);
         if (dummy){
@@ -26,24 +26,24 @@ Tree = function(type, coord, area, tileType, dummy){
         }
     } else {
         if (coord && area)
-            this.placeNode(coord, area, tileType, dummy);
+            this.placeNode(coord, area, tile, dummy);
     }
 }
 
 // coord: {x:1, y:2}
 // area: ['se','sw']
-// tileType: eg. 19
+// tile object
 // dummy: Dummy object
 // ---Check first if exists the node in the tree---.
 // If exists, call this function to indicate that is placed
 // Return 0 is everything was ok
 // Return -1 is something was wrong, msg in the console.
-Tree.prototype.placeNode = function(coord, area, tileType, dummy){
-    if (tileType === undefined)
-        console.warn("Tree " + this.id + ": You aren't telling the tile type");
+Tree.prototype.placeNode = function(coord, area, tile, dummy){
+    if (tile === undefined)
+        console.warn("Tree " + this.id + ": You aren't placing a tile");
     var childrenElements = getChildrenElements(coord, area);
     if (this.firstNode == undefined){
-        this.firstNode = new Node(coord, null, 'x', childrenElements, true, tileType);
+        this.firstNode = new Node(coord, null, 'x', childrenElements, true, tile);
         if (dummy){
             var coorDummy = {x:dummy.coord[0], y:dummy.coord[1]};
             if (sameCoord(coorDummy, coord) && posInArea2(dummy.position, area))
@@ -56,7 +56,8 @@ Tree.prototype.placeNode = function(coord, area, tileType, dummy){
             nodes.forEach(function(node){
                 node.placed = true;
                 node.setChildren(childrenElements);
-                node.tileType = (tileType===undefined) ? -1 : tileType;
+                node.tileType = (tile===undefined) ? -1 : tile.type;
+                node.tile = tile;
             });
             if (dummy){
                 var coorDummy = {x:dummy.coord[0], y:dummy.coord[1]};
@@ -81,6 +82,7 @@ Tree.prototype.placeClTile = function(coord){
         found = true;
         node.placed = true;
         node.tileType = -2;
+        node.tile = undefined;
     });
     return found;
 }
@@ -178,6 +180,7 @@ Tree.prototype.getNumOfBanners = function(){
 // area: ['n', 'se' ...] -----> YOU CAN SKYP THIS ARGUMENT
 // Returns if a coord is in the tree and is placed (true or false)
 Tree.prototype.isPlaced = function(coord, area){
+    console.log(coord);
     var area = area || ['n','s','e','w','nw','sw','wn','ws','ne','se','en','es','x'];
     var output = false;
     if (this.firstNode == undefined){
@@ -214,7 +217,7 @@ Tree.prototype.getLastPlaced = function(){
 // coord: {x:1, y:2}
 // area: ['n', 'se' ...]
 // coord is obligatory. If area is not passed by argument
-// it find only the nodes with that coord
+// it will find only the nodes with that coord
 Tree.prototype.findNodes = function(coord, area){
     var area = area || ['n','s','e','w','nw','sw','wn','ws','ne','se','en','es','x'];
     var nodes = [];
@@ -318,14 +321,15 @@ Tree.prototype._getRemainingNodes = function(){
 // parent: Node
 // pos: 'n' ... or 'x' when is the first node
 // placed: true or false
-// tileType
-Node = function(coord, parent, pos, childrenElements, placed, tileType){
+// tile
+Node = function(coord, parent, pos, childrenElements, placed, tile){
     var childrenElements = childrenElements || [];
     this.pos = pos || 'x';
     this.coord = coord;
     this.placed = placed || false;
     this.parent = parent || null;
-    this.tileType = (tileType===undefined) ? -1 : tileType;
+    this.tileType = (tile===undefined) ? -1 : tile.type;
+    this.tile = tile;
     this.children = [];
     this.setChildren(childrenElements);
 }
@@ -458,6 +462,31 @@ Node.prototype.nodesBanners = function(coordsBanner){
 }
 
 
+/*
+ * Return:
+ *   true  -> If some of the nodes is near the tree
+ *   false -> Otherwise
+ */
+Node.prototype.someNodeNear = function(tree){
+    var together = false;
+    var thisNode = this;
+    var j = 0;
+    if (this.placed){
+        var nodes = tree.findNodes(this.coord);
+        for (var i in nodes){
+            if (nodes[i].placed && sameZoneFieldCity(nodes[i], thisNode)){
+                together = true;
+                break;
+            }
+        }
+    }
+    while (!together && j<this.children.length){
+        together = this.children[j].someNodeNear(tree);
+        j++;
+    }
+    return together;
+}
+
 
 ////////////////////////////
 //     OTHER FUNCTIONS    //
@@ -578,6 +607,94 @@ var getChildsCl = function(coord){
     arr.push({coord: {x: coord.x+1, y: coord.y+1}, zone: 'se'});
     return arr;
 }
+
+
+
+
+/*
+ * Arguments:
+ *   ftree -> Field tree object
+ *   ctree -> Country tree object
+ * Return:
+ *   true  -> If the two trees are together
+ *   false -> If aren't together
+ */
+areTogether = function(ftree, ctree){
+    if (!ftree || !ctree)
+        return false;
+    if (!ftree.firstNode || !ctree.firstNode)
+        return false;
+    return ftree.firstNode.someNodeNear(ctree);
+}
+
+
+/*
+ * Must be the two nodes from the same typetile
+ * Arguments:
+ *   nodes are Node objects and must be from city or field trees   
+ * Return:
+ *   true  -> If the field and the city are together
+ *   false -> The oposite
+ */
+var sameZoneFieldCity = function(node1, node2){
+    var pos1 = getPosFromTree(node1);
+    var pos2 = getPosFromTree(node2);
+    switch(node1.tileType){
+    case 9:
+        var area = getrotPos(['n', 'w', 'sw','en'], node1.tile.orientation);
+        return (posInArea(pos1, area) && posInArea(pos2, area));
+    case 10:
+        var area = getrotPos(['n', 'w', 'sw','en'], node1.tile.orientation);
+        return (posInArea(pos1, area) && posInArea(pos2, area));
+    case 16:
+        var area = getrotPos(['n', 'wn', 'e', 'se'], node1.tile.orientation);
+        return (posInArea(pos1, area) && posInArea(pos2, area));
+    case 17:
+        var area = getrotPos(['n', 'en', 'w', 'sw'], node1.tile.orientation);
+        return (posInArea(pos1, area) && posInArea(pos2, area));
+    case 18:
+        var area = getrotPos(['n', 'en', 'wn'], node1.tile.orientation);
+        return (posInArea(pos1, area) && posInArea(pos2, area));
+    case 19:
+        var area = getrotPos(['n', 'en', 'wn'], node1.tile.orientation);
+        return (posInArea(pos1, area) && posInArea(pos2, area));
+    default:
+        return true;
+    }
+}
+
+
+// Rotate an array of positions
+var getrotPos = function(posArr, rot){
+    var staticPos = ['n','ne','en','e','es','se','s','sw','ws','w','wn','nw'];
+    var output = new Array();
+    posArr.forEach(function(pos){
+        var newPos = (staticPos.indexOf(pos) + 3*rot)%12;
+        output.push(staticPos[newPos]);
+    });
+    return output;
+}
+
+
+/*
+ * Is useful if the node.pos is 'x', what means 
+ * that is the first node placed in the tree
+ */
+var getPosFromTree = function(node){
+    if (node.pos !== 'x'){
+        return node.pos;
+    }else if (node.children.length > 0){
+        var tmpCoordZone = getCoordAndZoneChild(node.children[0].coord, node.children[0].pos)
+        return tmpCoordZone.zone;
+    }else if (node.parent){
+        var tmpCoordZone = getCoordAndZoneChild(node.parent.coord, node.parent.pos)
+        return tmpCoordZone.zone;
+    }else{
+        console.log("Error getting zone");
+        return 'ERRORZONE';
+    }
+}
+
 
 
 //////////////////////////
