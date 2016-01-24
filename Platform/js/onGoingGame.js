@@ -21,7 +21,7 @@ if(Meteor.isClient){
 						name : Meteor.users.findOne({_id:id_Ganador}).profile.user
 					}
 					players.push(data)
-					Games.update({_id:this._id},{$set:{players_tournamen:players}})
+					Games.update({_id:this._id},{$set:{players_tournament:players}})
 				}else{	
 
 				console.log("primer  jugador en acabar")
