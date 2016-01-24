@@ -312,9 +312,7 @@ var getZoneArea = function (areas, zone) {
         for (var i = 0; i < areas[type].length; i++) {
             var newZone = convert(zone);
             for (var j = 0; j < zone.length; j++) {
-                console.log("(" + newZone[j] + ")");
                 if (arrayContains(areas[type][i], newZone[j])) {
-                    console.log("BINGO: " + areas[type][i] + "(" + newZone[j] + ")");
                     return areas[type][i];
                 }
             }
@@ -328,10 +326,7 @@ var getZoneArea = function (areas, zone) {
 var getNeighborTrees = function (tile, coord, zone, trees) {
     if (tile != null) {
         var areas = getAreasTile(tile.type, tile.orientation);
-        console.log("Total areas: Field-" + areas.f[0] + "/" + areas.f[1] + "\nRoad-" + areas.r + "\nCity-"
-                    + areas.ci);
         var zoneArea = getZoneArea(areas, zone);
-        console.log("Zona sobre la que busco: " + zoneArea);
         return findTreesNeed(coord, zoneArea, trees);
     } else {
         return [[]];
@@ -356,20 +351,7 @@ var getAllTrees = function (treesCollection, tile, coord) {
             var childCoord = childData.coord;
             var treeType = getType(subzones[j], tile);
             var allTrees = treesCollection.getTrees([treeType], childCoord);
-            console.log(coord);
-            console.log("Child: " + childCoord.x + "," + childCoord.y);
-            console.log("ROTATION: " + tile.orientation);
-            console.log("ZONE: " + subzones[j]);
-            console.log("ALL=============================");
-            for (var k = 0; k < allTrees.length; k++) {
-                allTrees[k].printTree();
-            }
             var finalTrees = getNeighborTrees(tile, coord, subzones[j], allTrees);
-            console.log("FINAL=============================");
-            for (var k = 0; k < finalTrees.length; k++) {
-                finalTrees[k].printTree();
-            }
-            console.log("\n");
         }
         trees.push({zone: zones[i], trees: finalTrees});
     }
@@ -446,7 +428,7 @@ Board.prototype.getDummyPositions = function (tile) {
 }
 
 
-var b = new Board();
+/*var b = new Board();
 
 t = new Tile(20, 1);
 dummy = new Dummy(1, 2);
@@ -470,4 +452,4 @@ console.log(pos[1]);
 console.log(pos[2]);
 console.log(pos[3]);
 console.log("\n\n");
-console.log(getAreasTile(21,1));
+console.log(getAreasTile(21,1));*/
