@@ -248,24 +248,28 @@ var getType = function (zone, tile) {
         case 'n':
             var type = tile.positions.n;
             break;
+        case 'wn':
         case 'nw':
             var type = tile.positions.nw;
             break;
         case 'w':
             var type = tile.positions.w;
             break;
+        case 'ws':
         case 'sw':
             var type = tile.positions.sw;
             break;
         case 's':
             var type = tile.positions.s;
             break;
+        case 'es':
         case 'se':
             var type = tile.positions.se;
             break;
         case 'e':
             var type = tile.positions.e;
             break;
+        case 'en':
         case 'ne':
             var type = tile.positions.ne;
             break;
@@ -276,16 +280,25 @@ var getType = function (zone, tile) {
 }
 
 //Get trees surrounding the given tile in the given coord.
+//Adapted corner zones to the TreeStructure_v2.js format:
+//      Example:    nw ==> [nw, wn]
+//This adaptation is made to totally comprehend the complete
+//puntuation zone for a dummy.
 
 var getAllTrees = function (treesCollection, tile, coord) {
     var trees = [];
-    var zones = ['n', 'nw', 'w', 'sw', 's', 'se', 'e', 'ne'];
+    var zones = [['n'], ['nw', 'wn'], ['w'], ['sw', 'ws'], ['s'],
+                ['se', 'es'], ['e'], ['ne', 'en']];
     for (var i = 0; i < zones.length; i++) {
-        var childData = getCoordAndZoneChild(coord, zones[i]);
-        var childCoord = childData.coord;
-        var treeType = getType(zones[i], tile);
-        var auxTrees = treesCollection.getTrees([treeType], childCoord);
-        if (auxTrees.length !== 0) trees.push({zone: zones[i], trees: auxTrees});
+        var subzones = zones[i];
+        var auxTrees = [];
+        for (var j = 0; j < subzones.length; j++) {
+            var childData = getCoordAndZoneChild(coord, subzones[j]);
+            var childCoord = childData.coord;
+            var treeType = getType(subzones[j], tile);
+            auxTrees.push(treesCollection.getTrees([treeType], childCoord));
+        }
+        trees.push({zone: zones[0], trees: auxTrees});
     }
     return trees;
 }
@@ -302,16 +315,25 @@ var objectToArray = function (object) {
 //Where a free tree is one that doesn't have any
 //dummy in it.
 
-var getFreeZones = function (tile, trees) {
-    var freeZones = objectToArray(tile.dummies);
-    for (var i = 0; i < trees.length; i++) {
-        if (freeZones[i]) {
-            for (var j = 0; j < trees[i].trees.length; j++) {
-                if (trees[i].trees[j].dummies.length != 0) {
-                    freeZones[i] = false;
-                    break;
+var getFreeSubZones = function (trees) {
+    for (var j = 0; j < trees.length; j++) {
+        if (trees[j].length !== 0) {
+            var subtrees = trees[j];
+            for (var i = 0; i < subtrees.length; i++) {
+                if (subtrees[i].dummies.length != 0) {
+                    return false;
                 }
             }
+        }
+    }
+    return true;
+}
+
+var getFreeZones = function (tile, zoneTrees) {
+    var freeZones = objectToArray(tile.dummies);
+    for (var i = 0; i < zoneTrees.length; i++) {
+        if (freeZones[i]) {
+            freeZones[i] = getFreeSubZones(zoneTrees[i].trees);
         }
     }
     return freeZones;
@@ -341,8 +363,8 @@ Board.prototype.getDummyPositions = function (tile) {
         for (var j = 0; j < group.length; j++) {
             var cell = group[j];
             var coord = {x: cell.x, y: cell.y};
-            var trees = getAllTrees(this.treesCollection, auxTile ,coord);
-            var freeZones = getFreeZones(auxTile, trees);
+            var zoneTrees = getAllTrees(this.treesCollection, auxTile ,coord);
+            var freeZones = getFreeZones(auxTile, zoneTrees);
             newGroup.push({cell: cell, dummyPos: freeZones});
         }
         newArray.push(newGroup);
