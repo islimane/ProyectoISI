@@ -13,7 +13,7 @@ if(Meteor.isClient){
 			var creator = Meteor.userId();
 			var nameTournament = event.target.nameTournament.value;
 			var password = event.target.password.value;
-			var arrayPlayers = []
+			var arrayPlayers = [] 
 			var data = {
 					id:Meteor.userId(),
 					name : Meteor.users.findOne({_id:Meteor.userId()}).profile.user
@@ -27,7 +27,7 @@ if(Meteor.isClient){
 				players : arrayPlayers,
 				tournamentStart : false,
 				password: password,
-		
+				idGames:[]
 			})
 			Router.go("startTournament", {_id: id});
 		}

@@ -40,7 +40,7 @@ if (Meteor.isClient){
 			Tournaments.update({_id:this._id},{$set:{players:newArr}})
     	},
     	'click .accessTournament':function(){
-
+    		var id_tournament = this._id
     		if(Tournaments.findOne({_id:this._id}).password == ""){
     			var players = Tournaments.findOne({_id:this._id}).players
     			var data = {
@@ -57,67 +57,81 @@ if (Meteor.isClient){
     			var array_partida2 = [];
     			var array_partida3 = [];
     			var array_partida4 = [];
+    			var idGames = []
     			var index = Math.floor(Math.random() * (players.length - 0)) + 0
 				for (i = 0; i < 16; i++){
 					var jugador = players.splice(index,1)
+					var data = {
+						id:jugador[0].id,
+						name : Meteor.users.findOne({_id:jugador[0].id}).profile.user
+					}
 					if(i < 4 ){
-						array_partida1.push(jugador)
+						array_partida1.push(data)
 					}else if( i < 8){
-						array_partida2.push(jugador)
+						array_partida2.push(data)
 					}else if(i < 12){
-						array_partida3.push(jugador)
+						array_partida3.push(data)
 					}else{
-						array_partida4.push(jugador)
+						array_partida4.push(data)
 					}
 					var index = Math.floor(Math.random() * (players.length - 0)) + 0
 				}
     			
     			var id1 = Games.insert({
 					creator : "torneo",
-					nameGame : "Partida 1",
+					nameGame : "Torneo ~ Partida 1",
 					numPlayerHuman : 4,
 					numPlayerIA : 0,
 					players : [],
 					players_tournament : array_partida1,
 					gameStart : false,
 					gameTournament:true,
+					id_tournament:id_tournament,
 					password: Math.floor(Math.random() * (100000 - 10000)) + 10000
 				});
 				var id2 = Games.insert({
 					creator : "torneo",
-					nameGame : "Partida 2",
+					nameGame : "Torneo ~ Partida 2",
 					numPlayerHuman : 4,
 					numPlayerIA : 0,
 					players : [],
 					players_tournament : array_partida2,
 					gameStart : false,
 					gameTournament:true,
+					id_tournament:id_tournament,
 					password: Math.floor(Math.random() * (100000 - 10000)) + 10000
 				});
 				var id3 = Games.insert({
 					creator : "torneo",
-					nameGame : "Partida 3",
+					nameGame : "Torneo ~ Partida 3",
 					numPlayerHuman : 4,
 					numPlayerIA : 0,
 					players : [],
 					players_tournament : array_partida3,
 					gameStart : false,
 					gameTournament:true,
+					id_tournament:id_tournament,
 					password: Math.floor(Math.random() * (100000 - 10000)) + 10000
 				});
 				var id4 = Games.insert({
 					creator : "torneo",
-					nameGame : "Partida 4",
+					nameGame : "Torneo ~ Partida  4",
 					numPlayerHuman : 4,
 					numPlayerIA : 0,
 					players : [],
 					players_tournament : array_partida4,
 					gameStart : false,
 					gameTournament:true,
+					id_tournament:id_tournament,
 					password: Math.floor(Math.random() * (100000 - 10000)) + 10000
 				})
+				idGames.push(id1)
+				idGames.push(id2)
+				idGames.push(id3)
+				idGames.push(id4)
 
 				Tournaments.update({_id:this._id},{$set:{startTournament:true}})
+				Tournaments.update({_id:this._id},{$set:{idGames:idGames}})
 				Router.go("/");
 
     		}

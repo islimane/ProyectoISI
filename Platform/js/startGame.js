@@ -76,6 +76,7 @@
 				Gamesaux.insert({gameid:gameId,gameStart:false})
     		}else{
     			$('div .formpass').show();
+    			return
     		}
 
 		 	Tracker.autorun(function(){
@@ -111,7 +112,11 @@
 				players.push(data)
 				Games.update({_id:this._id},{$set:{players:players}})
 				Gamesaux.insert({gameid:gameId ,gameStart:false})
+			}else{
+				alert("contraseña incorrecta");
+				return
 			}
+
 
 			Tracker.autorun(function(){
 			// colección auxiliar donde meta el id y que ha empezado la partida 

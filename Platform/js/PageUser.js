@@ -18,7 +18,7 @@ if (Meteor.isClient) {
 			if (games == undefined){
 				return false
 			}
-			for ( i = 0;i < games.length;i++) {
+			for ( i = 0;i < games.length; i++) {
 				var id = games[i]._id
 				var players_tournament = games[i].players_tournament
 				for(j = 0; j < players_tournament.length;j++){
@@ -91,7 +91,6 @@ if (Meteor.isClient) {
     		Meteor.call('deleteFriend', this._id);
     	},
     	'click .deleteCount':function(event){
-    		console.log("hola caracola")
     		event.preventDefault();
     		Meteor.call('deleteUser', Meteor.userId());
     		Router.go("/");

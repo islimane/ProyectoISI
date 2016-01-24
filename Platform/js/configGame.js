@@ -75,6 +75,7 @@ if(Meteor.isClient){
 				players_tournament: arrTournament,
 				gameStart : false,
 				gameTournament:false,
+				id_tournament:"",
 				password: password
 			})
 			Router.go("startGame", {_id: id});

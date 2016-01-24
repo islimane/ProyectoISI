@@ -23,7 +23,8 @@
 			<input type ="submit" class ="userimg" value = "Cambiar"/></p>
 		</form>
 		{{#if showPassword}}
-			Contraseña para la partida del torneo "{{showPassword.nameGame}}": "{{showPassword.password}}"
+			Contraseña para la partida del torneo <a href="/comenzarPartida/{{showPassword._id}}">{{showPassword.nameGame}}</a> "{{showPassword.password}}"
+
 		{{/if}}
 		</div>
 	{{/if}}	
