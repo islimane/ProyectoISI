@@ -42,6 +42,7 @@ if (Meteor.isClient){
     	'click .accessTournament':function(){
     		var id_tournament = this._id
     		if(Tournaments.findOne({_id:this._id}).password == ""){
+    			console.log("holiiiiiiii")
     			var players = Tournaments.findOne({_id:this._id}).players
     			var data = {
 					id:Meteor.userId(),
@@ -50,7 +51,8 @@ if (Meteor.isClient){
 				players.push(data)
 				Tournaments.update({_id:this._id},{$set:{players:players}})
     		}else{
-    			$('div .formpass').show();
+    			$('#passwordT').show();
+    			return
     		}
     		if (Tournaments.findOne({_id:this._id}).players.length == 16){
     			var array_partida1 = [];
@@ -139,7 +141,9 @@ if (Meteor.isClient){
     	},
     	'submit form' : function(event){
 			event.preventDefault();
+			console.log("submit")
 			var password = event.target.password.value;
+
 			if(Tournaments.findOne({_id:this._id}).password == password){
 				var players = Tournaments.findOne({_id:this._id}).players
     			var data = {
@@ -148,7 +152,10 @@ if (Meteor.isClient){
 				}
 				players.push(data)
 				Tournaments.update({_id:this._id},{$set:{players:players}})
+			}else{
+				alert("contraseña incorrecta");
+				return
 			}
-		},
+		}
     })
 }
