@@ -312,12 +312,14 @@ var convert = function (zone) {
     }
 }
 
+//Returns a concrete area between a group of them
+//where a given zone is contained.
+
 var getZoneArea = function (areas, zone) {
     for (var type in areas) {
         for (var i = 0; i < areas[type].length; i++) {
-            var newZone = convert(zone);
             for (var j = 0; j < zone.length; j++) {
-                if (arrayContains(areas[type][i], newZone[j])) {
+                if (arrayContains(areas[type][i], zone[j])) {
                     return areas[type][i];
                 }
             }
@@ -331,7 +333,8 @@ var getZoneArea = function (areas, zone) {
 var getNeighborTrees = function (tile, coord, zone, trees) {
     if (tile != null) {
         var areas = getAreasTile(tile.type, tile.orientation);
-        var zoneArea = getZoneArea(areas, zone);
+        var newZone = convert(zone);
+        var zoneArea = getZoneArea(areas, newZone);
         return findTreesNeed(coord, zoneArea, trees);
     } else {
         return [[]];
@@ -387,13 +390,27 @@ var getFreeSubZones = function (trees) {
     return true;
 }
 
+//Blocks a group of zones that conform a given area
+
+var blockArea = function (zones, zoneTrees, area) {
+    for (var j = 0; j < zoneTrees.length; j++) {
+        for (var k = 0; k < zoneTrees[j].zone.length; k++) {
+            if (arrayContains(area, zoneTrees[j].zone[k])) {
+                zones[j] = false;
+            }
+        }
+    }
+}
+
 var getFreeZones = function (tile, zoneTrees) {
     var freeZones = objectToArray(tile.dummies);
-    //console.log(zoneTrees);
+    var allAreas = getAreasTile(tile.type, tile.orientation);
     for (var i = 0; i < zoneTrees.length; i++) {
         if (freeZones[i]) {
-            //console.log(zoneTrees[i]);
-            freeZones[i] = getFreeSubZones(zoneTrees[i].trees);
+            if (!getFreeSubZones(zoneTrees[i].trees)) {
+                var area = getZoneArea(allAreas, zoneTrees[i].zone);
+                blockArea(freeZones, zoneTrees, area);
+            }
         }
     }
     return freeZones;
@@ -436,13 +453,23 @@ Board.prototype.getDummyPositions = function (tile) {
 var main = function(){
     var b = new Board();
 
+    /*var d = new Dummy(1, 1);
+    d.place([49,48], 'n');
+    var t = new Tile(20, 1);
+    b.insertTile(t, [49,48], d);
 
-    var d = new Dummy(1, 1);
+    var t = new Tile(21, 0);
+    var pos = b.getDummyPositions(t);
+    console.log(pos[0]);
+    console.log(pos[1]);
+    console.log(pos[2]);
+    console.log(pos[3]);*/
+    /*var d = new Dummy(1, 1);
     d.place([49,49], 'n');
     var t = new Tile(13, 2);
     b.insertTile(t, [49,49], d);
 
-    
+
     var d = new Dummy(2, 1);
     d.place([49,50], 'w');
     var t = new Tile(14, 0);
@@ -468,7 +495,7 @@ var main = function(){
     d.place([50,49], 's');
     var t = new Tile(7, 0);
     b.insertTile(t, [50,49], d);
-    
+
 
     console.log("*********************************");
     console.log("*********************************");
@@ -486,9 +513,9 @@ var main = function(){
 
     for(var i=0; i<data.playersPoints.length; i++){
         console.log("Player: " + data.playersPoints[i][0] + "\t" + "Points: " + data.playersPoints[i][1]);
-    }
+    }*/
 }
 
 
 
-// main();
+main();
