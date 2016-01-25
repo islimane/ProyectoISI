@@ -57,6 +57,7 @@ TreesCollection.prototype.insertTile = function(tile, coor, dummy){
             printPlayersPoints(data.playersPoints);
             printDummies(data.dummies);
             console.log("****************************");
+            return data;
         }else{
             return null;
         }
@@ -582,7 +583,7 @@ saveTileInTrees = function(coord, tile, coll, dummy){
     var rTrees = saveTileInTreesOfAType(areasOfAllTypes.r, true, coll.trees.roadTrees, coord, 'r', tile, dummy);
     var clTrees = saveTileInTreesOfAType(null, false, coll.trees.cloisterTrees, coord, 'cl', null, null);
     if(areasOfAllTypes.cl){
-        var clTree = saveClTree(coord, dummy, tile.type, coll);
+        var clTree = saveClTree(coord, dummy, tile, coll);
         // If clTree!=null is beacause a single tile has completed
         // the cloister Tree
         if(clTree)
@@ -636,7 +637,7 @@ saveTileOfSpecialType = function(treesOfType, coord, type){
 
 
 // This function save a new cloister Tree on cloisterTrees
-saveClTree = function(coord, dummy, tileType, coll){
+saveClTree = function(coord, dummy, tile, coll){
     var tree = new Tree('cl', coord, 'c', tileType, dummy);
     // Now we have to place each coord, that has a tile
     // in it, around the cloister tile
