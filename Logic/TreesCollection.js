@@ -57,6 +57,7 @@ TreesCollection.prototype.insertTile = function(tile, coor, dummy){
             printPlayersPoints(data.playersPoints);
             printDummies(data.dummies);
             console.log("****************************");
+            return data;
         }else{
             return null;
         }
