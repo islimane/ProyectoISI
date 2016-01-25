@@ -289,7 +289,7 @@ var longestTree = function(trees){
 
 //returns the free trees ( with no dummy) for given zones ( city or road, field
 // and cloister are not given )
-var getFreeTrees = function ( , zones) {
+var getFreeTrees = function (game, zones) {
     var trees = game.board.treesCollection.trees ;
     var outTrees = new Array() ;
     for ( var i = 0 ; i < zone.length ; i ++){
