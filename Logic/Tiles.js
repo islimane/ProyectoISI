@@ -238,15 +238,18 @@ Tile.prototype.turnTile = function(){
 //    TILES OBJECT     //
 /////////////////////////
 
-var initTiles = function (queue) {
+var initTiles = function (stack) {
+    var turns = 72;
+    var initialTileType = 19;
     var startingTiles = JSON.parse(JSON.stringify(predefTiles));
-    while(queue.length < 72){
+    --startingTiles[initialTileType].total;
+    while(stack.length < turns-1){
         var remainingTiles = startingTiles.filter(filterByTotal);
         var Type = getRandomArbitrary(remainingTiles.length,0);
         if(remainingTiles[Type].total !== 0){
             --remainingTiles[Type].total;
             var tile = new Tile(remainingTiles[Type].type, 0);
-            queue.push(tile);
+            stack.push(tile);
         }else {
             throw "No more units of the picked tile"
         }
@@ -254,8 +257,8 @@ var initTiles = function (queue) {
 }
 
 Tiles = function() {
-    this.queue = [];
-    initTiles(this.queue);
+    this.stack = [];
+    initTiles(this.stack);
     this.currentTile = this.popTile();
 }
 
@@ -276,8 +279,8 @@ var filterByTotal = function (obj) {
 }
 
 Tiles.prototype.popTile = function() {
-    if(this.queue.length > 0){
-        this.currentTile = this.queue.pop();
+    if(this.stack.length > 0){
+        this.currentTile = this.stack.pop();
         if(this.currentTile == null){
             throw "Popped null tile"
         }

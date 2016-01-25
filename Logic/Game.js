@@ -33,7 +33,7 @@ Game.prototype.nextTurn = function() {
                 this.tiles.popTile();
                 while (!canBePlaced(this.tiles.currentTile, this.board)){
                     console.warn ("Replacing the next tile (Couldn't be placed)");
-                    this.tiles.queue.unshift(this.tiles.currentTile);
+                    this.tiles.stack.unshift(this.tiles.currentTile);
                     this.tiles.popTile();
                 }
                 this.players.next();
@@ -48,9 +48,6 @@ Game.prototype.nextTurn = function() {
     }
 };
 
-
-
-
 /*
  * Check if a tile can be placed in a board
  */
@@ -63,5 +60,3 @@ var canBePlaced = function(tile, board){
     });
     return can;
 }
-
-

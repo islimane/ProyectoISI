@@ -15,7 +15,7 @@ Players.prototype.init = function(ids ){
 
   	var arry = new Array() ; 
  
-	for ( var i = 0 ; i < ids.length ; i++){
+	for ( var i = 0 ; i < Max_Players ; i++){
 	    	if (ids[i]) {
 	     		arry.push(new Player(ids[i])) ;
 	     	}else{
@@ -29,8 +29,7 @@ Players.prototype.names = function() {
 
 	var arry = new Array() ;
 	for ( var i = 0 ; i < Max_Players ; i++ ){
-		arry.push( this.currentPlayer.name );
-		this.next() ;
+		arry.push( this.players[i].name );
 	}
 	return arry ;
 }
@@ -39,8 +38,7 @@ Players.prototype.scores = function() {
 	var arry = new Array() ;
 
 	for ( var i = 0 ; i < Max_Players ; i++ ){
-		arry.push( this.currentPlayer.score) ;
-		this.next() ;
+		arry.push( this.players[i].score) ;
 	}
 
 	return arry ;
