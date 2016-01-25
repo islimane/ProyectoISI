@@ -52,15 +52,17 @@ FirstMode.prototype.constructor = FirstMode;
 // it tries with a new orientation of the tile)
 FirstMode.prototype.playTile = function (game) {
     var cells = game.board.getDummyPositions(game.tiles.currentTile , game.players.currentPlayer.getDummy());
+    var coor ;
     for ( var i = 0 ; i < cells.length ; i++) {
         if (cells[i].length != 0) {
-            game.board.insertTile(game.tiles.currentTile , cells[i][0].cell);
+            coor = cells[i][0].cell ;
+            break ;
         }
         game.board.tiles.currentTile.turnTile() ;
     }
 
     var data = {
-        coord : cells[i][0].cell,
+        coord : coor,
         dummy : null
     }
 
@@ -93,44 +95,146 @@ SecondMode.prototype.constructor = SecondMode;
 SecondMode.prototype.playTile = function (game) {
 
     var me = game.players.currentPlayer ;
+    var move = null ;
+    var dummy = me.getDummy ;
+    var tile = game.tiles.currentTile ;
 
-    if ( me.getDummy() ){
-        playWithDummy(game) ;
-    }else {
-        playWithoutDummy() ;
+    if ( dummy )
+        move = playWithDummy(game) ;
+    
+    if ( !move )
+        move =  playWithoutDummy(game) ;
+    
+    if ( !move )
+        move = placeAnywhere(game) ;
+
+
+    tile.orientation = move.rot ;
+
+    if ( move.dummyPos != null ){
+        dummy.coord = move.coord ;
+        dummy.position = move.dummyPos ;
+    }else{
+        dummy = null ;
     }
 
+    var tmp = {
+        coord : move.coord ,
+        dummy : dummy 
+    }
+
+    return tmp ;
 
 }
 
+
+// Finds a tree where is placed one of my dummies and adds the tile.
 var playWithoutDummy = function(game) {
         var zones = zoneTypes(game.tiles.currentTile) ;
-        var trees = getMyTrees(zones) ;
+        var trees = getMyTrees(game , zones) ;
+
+        if (trees.length == 0)
+            return null ;
+
         var allCoords = game.board.getDummyPositions(game.tiles.currentTile) ;
 
+        while( trees.length > 0 ){
+            var tree = trees.splice(0,1)[0] ;
+            var treeCoords = tree.getLeftCoords() ;
 
+            for ( var i = 0 ; i < treeCoords.length ; i++ ){
+                var coord = Object.keys(treeCoords[i]).map(function (key) {return treeCoords[i][key]});
+                                
+                var tmpMove = { 
+                        coord: null ,
+                        dummyPos: [false, false, false, false, false, false, false, false, false ] ,
+                        rot: null  } ;
 
+                tmpMove.rot = validMove(tmpMove , allCoords) ;
+                if ( tmpMove.rot){
+                    tmpMove.coord = coord ;
+                    return tmpMove ;
+                }
+            }
+        }
+
+        return null ;
 }
 
-
+// Finds the longest available free tree and the places a dummy there.
 var playWithDummy = function(game) {
 
     var zones = zoneTypes(game.tiles.currentTile) ;
-    var trees = getFreeTrees(zones) ;
+    var trees = getFreeTrees(game , zones) ;
     var allCoords = game.board.getDummyPositions(game.tiles.currentTile) ;
 
-    while(1){
+    while(trees.length > 0 ){
             var treeIndex = longestTree(trees);
             var tree = trees.splice(treeIndex,1)[0] ;   // Pops from the array treeIndex
-
             var treeCoords = tree.getLeftCoords() ;     // Coordenadas como objetos.
 
             for ( var i = 0 ; i < treeCoords.length ; i++){
                     var coord = Object.keys(treeCoords[i]).map(function (key) {return treeCoords[i][key]});
-                    // Buscar la posicion del dummy
-                    // validMove hay que retocarla para pasarle una pos del dummy
+
+                    var tmpMove = { 
+                            coord: null ,
+                            dummyPos: [false, false, false, false, false, false, false, false, false ],
+                            rot: null  } ;
+
+
+                    tmpMove.coord = coord ;
+                    tmpMove.rot = validMove(tmpMove , allCoords) ;
+                    if (tmpMove.rot){
+                            tmpMove.dummyPos = getDummyPos(coord , tree , null) ;
+                            return tmpMove ;
+                    }
             }
     }
+    for ( var i = 0 ; i < allCoords.length ; i++){
+            for ( var j = 0 ; j < allCoords[i].length ; j++) {
+                    var coord = Object.keys(allCoords[i][j]).map(function (key) {return allCoords[i][j][key]})
+
+                    var tmpMove = { 
+                            coord: null ,
+                            dummyPos: null ,
+                            rot: null  } ;
+
+
+                    tmpMove.coord = coord ;
+                    tmpMove.rot = validMove(tmpMove , allCoords) ;
+
+                    if (tmpMove.rot){
+                            var tile = game.tiles.currentTile ;
+                            tile.orientation = tmpMove.rot ;
+                            tmpMove.dummyPos = getDummyPos(coord , null , tile ) ;
+                            return tmpMove ;
+                    }
+            }
+    }
+
+    return null ;
+}
+
+var placeAnywhere = function(game){
+    var cells = game.board.getDummyPositions(game.tiles.currentTile , game.players.currentPlayer.getDummy());
+    var r = 0 ;
+    var coor ;
+    for ( var i = 0 ; i < cells.length ; i++) {
+        if (cells[i].length != 0) {
+            coor = cells[i][0].cell ;
+            r = i ;
+            break ;
+        }
+        game.board.tiles.currentTile.turnTile() ;
+    }
+
+    var data = {
+        coord : [coor.x, coor.y],
+        dummy : null,
+        rot : r 
+    }
+
+    return data ;
 }
 
 // return the type of zones in a tile.
@@ -166,10 +270,15 @@ var zoneTypes = function(tile) {
 
 // Returns the index in the array of the longest tree in given array of trees.
 var longestTree = function(trees){
+    if ( trees.length == 0 ){
+        return null ;
+    }
+
     var maxLength = 0 ;
     var tree = 0 ;
+
     for ( var i = 0 ; i < trees.length ; i++ ) {
-        var l = trees.getNumOfTiles()
+        var l = trees[i].getNumOfTiles()
         if ( l > maxLength){
             maxLength = l ;
             tree = i ;
@@ -180,20 +289,21 @@ var longestTree = function(trees){
 
 //returns the free trees ( with no dummy) for given zones ( city or road, field
 // and cloister are not given )
-var getFreeTrees = function (game, zones) {
+var getFreeTrees = function ( , zones) {
     var trees = game.board.treesCollection.trees ;
     var outTrees = new Array() ;
     for ( var i = 0 ; i < zone.length ; i ++){
         if ( zones[i] === "r"){
-            outTrees.concat(trees.roadTrees) ;
+            outTrees = outTrees.concat(trees.roadTrees) ;
             continue ;
         }
         if ( zones[i] === "ci"){
-            outTrees.concat(trees.cityTrees) ;
+            outTrees = outTrees.concat(trees.cityTrees) ;
             continue ;
         }
     }
 
+    // Removes the trees with dummies
     for ( var i = 0 ; i < outTrees.length ; i++) {
         if (outTrees[i].dummies.length != 0) {
             outTrees.splice(i,1) ;
@@ -222,7 +332,7 @@ var getMyTrees = function(game , zones) {
 }
 
 // Returns the trees wich contains the given dummy
- var treesWithDum = function(trees, dum){
+var treesWithDum = function(trees, dum){
 
          for ( var i = 0 ; i < trees.length ; i++){
                  for ( var j = 0 ; j < trees.dummies.length ; j++ ) {
@@ -235,11 +345,11 @@ var getMyTrees = function(game , zones) {
 
 
 /*
-        check if move is in plausibles, returns true or false
+        check if move is in plausibles, returns the tile's rotation
 
          move = {
                 coord: [x,y]
-                dummyPoss = [8 true or false]coord
+                dummyPoss = [8 true or false]coord }
         plausibles =
                         [[{coord: Cell1 for Rot0, dummyPos: DummyPos},
                           {coord: Cell2 for Rot0, dummyPos: DummyPos}, ...],
@@ -250,17 +360,22 @@ var getMyTrees = function(game , zones) {
                         [{coord: Cell1 for Rot3, dummyPos: DummyPos},
                           {coord: Cell2 for Rot3, dummyPos: DummyPos}, ...]]
  */
-var validMove = function(move, pluasibles) {
+var validMove = function(move, plausibles) {
         for (var i = 0 ; i < plausibles.length; i++){
                 for(var j = 0 ; j < plausibles[i].length ; j++){
-                        if( equalsMoves(move , plausibles[i][j]) )
-                                return true ;
+                        var auxCoor = { coord: [plausibles[i][j].cell.x, plausibles[i][j].cell.y] ,
+                                        dummyPos : plausibles[i][j].dummyPos 
+                                    }
+                        if( equalsMoves(move , auxCoor) )
+                                return i ;
                 }
         }
-        return false ;
+        return null ;
 }
 
-/*        move = {
+/* 
+Move1 must be compatible with Move2. 
+       move = {
                coord: [x,y]
                dummyPoss = [8 true or false]coord
        } */
@@ -304,7 +419,7 @@ var equalsMoves = function ( move1, move2){
 
 
         for (var i = 0 ; i < dum1.length ; i++){
-                if ( dum1[i] != dum2[i]){
+                if ( dum1[i] == true && dum2[i] == false){
                         return false ;
                 }
         }
@@ -312,18 +427,106 @@ var equalsMoves = function ( move1, move2){
 }
 
 
+// Finds the dummy pos in a tile, given tree and the coord in which i want to place the tile.
+// If tree is not given, looks for a zone of road or city.
+// Return the array of dummy pos [ false, false ....] with true in the dummy poss.
+var getDummyPos = function(coord , tree , tile){
+    var zones = [ "n",    "nw",   "w",   "sw",   "s",  "se",   "e",   "ne",   "c"  ]
+
+    if (!tree){
+        var tileZones = predefTiles[tile.type].positions ;
+
+        for ( var i = 0 ; i < tileZones.length - 1 ; i++ ){
+
+            if (tileZones[i] == "ci"){
+                return zones[(i+tile.orientation*2) % 8]  ;
+            }
+
+            if (tileZones[i] == "r"){
+                return zones[(i+tile.orientation*2) % 8] 
+            }
+
+        }
+
+        return null ;
+    }
+
+    var lastPlaced = tree.getLastPlaced() ;     // Coords as objects, not arrays
+
+    for( var i = 0 ; i < lastPlaced.length ; i++) {
+        var auxCoord = [lastPlaced[i].x , lastPlaced[i].y ] ;
+        var pos = relativePos(coord , auxCoord) ;
+
+        if (!pos)
+            continue ;
+
+        console.log(pos) ;
+
+        switch(pos){
+            case "above":
+                return "s" ;
+            case "under":
+                return "n"
+            case "left":
+                return "r"
+            case "right":
+                return "l"
+            default:
+                ;
+        }
+
+    }
+
+    return null ;
+}
+
+// Gives the coord1 position in realtion to coord2.
+// coord [x , y]  ( arrays, not objects).
+// If its not next to, returns null.
+var relativePos = function (coord1 , coord2 ) {
+
+    if( coord1[0] == coord2[0] ){
+        if ( coord1[1] == coord2[1] - 1 ) {
+            return "above" 
+        }
+        if ( coord1[1] == coord2[1] + 1 ) {
+            return "under"
+        }
+    }
+
+    if ( coord1[1] == coord2[1] ){
+        if ( coord1[0] == coord2[0] + 1 ) {
+            return "right" 
+        }
+        if ( coord1[0] == coord2[0] - 1 ) {
+            return "left"
+        }
+    }
+    return null ;
+}
+
+
+/////////////////////////////////////
+//    Tests for local functions    //
+/////////////////////////////////////
+
 /*
 var move11 = { coord: [1,1] , dum : [ true, false, false, false, true, true, false, false, false, true]}
 var move22 = { coord: [1,1] , dum : [ true, false, false, false, true, true, false, false, false, true]}
 var move33 = { coord: [1,1] , dum : [ true, false, true, false, true, true, false, false, false, true]}
 var move44 = { coord: [2,1] , dum : [ true, false, false, false, true, true, false, false, false, true]}
-
+var move55 = { coord: [2,8] , dum : [ true, false, false, false, true, true, false, false, false, true]}
+var move66 = { coord: [2,2] , dum : [ true, false, false, false, true, true, false, false, false, true]}
 
 if (equalsMoves(move11 , move22)){
-        console.log("11 y 22 son iguales") ;
+        console.log("11 fits in 22 ") ;
 }
 
-if (!equalsMoves(move22 , move33)){
-        console.log("22 y 33 NO son iguales") ;
+if (!equalsMoves(move33 , move22)){
+        console.log("33 doesnt fit in 22") ;
 }
+
+console.log(relativePos(move33.coord , move44.coord)) ;         // left
+console.log(relativePos(move44.coord , move33.coord)) ;         // right
+console.log(relativePos(move44.coord , move66.coord)) ;         // above
 */
