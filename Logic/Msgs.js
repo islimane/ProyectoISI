@@ -58,8 +58,52 @@ Meteor.methods({
 
 		// TODO
 		// check if is valid the position for the tile.
-		// add dummy ( in or with the tile?)
 
+		var player = game.players.currentPlayer ;
+		
+		var pos ;
+		for ( var i = 0 ; i < arry.length ; i++){
+			if ( arry[i] == true ){
+				switch(i){
+					case 0 :
+						pos = "n" ;
+						break ;
+					case 1 :
+						pos = "nw" ;
+						break ;
+					case 3 :
+						pos = "w" ;
+						break ;
+					case 4 :
+						pos = "sw" ;
+						break ;
+					case 5 :
+						pos = "s" ;
+						break ;
+					case 6 : 
+						pos = "se" ;
+						break ;
+					case 7 :
+						pos = "e" ;
+						break ;
+					case 8 :
+						pos = "ne" ;
+						break ;
+					case 9 :
+						pos = "c" ;
+						break ;
+					default :
+						pos = null ;
+
+				}
+			}
+		}
+
+		var dum = null ;
+		if ( !pos ) {
+			dum = player.getNewDummy() ;
+			dum.place(coor , pos ) ,
+		}
 
 		// updates the players scores
 		var res = game.board.insertTile(game.tiles.currentTile , coor) ;
