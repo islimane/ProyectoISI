@@ -1,5 +1,5 @@
 <template name = "startTournament">
-
+  <div id="content">
 	<h1> Sala Torneo </h1>
 
 
@@ -15,11 +15,12 @@
         </div>
     {{/if}}
 
-	 <p> Jugadores</p>
+	 <h2> Jugadores</h2>
 		<ul>
 			{{#each players}}
         <li class="player {{selectedClass}}" id ="{{this.id}}">{{this.name}}</li>
   		{{/each}}
 
 		</ul>
+  </div>
 </template>

@@ -13,7 +13,7 @@
       {{/if}}
 
       {{#if  ImtheCreator}}
-        <input type="button" class="changeGame" value="Modificar juego">
+        <ul><input type="button" class="changeGame" value="Modificar juego"></ul>
          <ul><input type="button" class="leaveGame" value="Abandonar partida"></ul>
           <ul><input type ="button" class ="deleteplayer" value = "Borrar usuario"/></ul>
         {{#if playersComplete}}
@@ -49,7 +49,7 @@
         {{/if}}
     </div>
 
-    <p> Jugadores</p>
+    <h2> Jugadores</h2>
 		<ul>
 			{{#each players}}
         <li class="player {{selectedClass}}" id ="{{this.id}}">{{this.name}}</li>

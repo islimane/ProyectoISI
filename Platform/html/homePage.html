@@ -3,7 +3,7 @@
 
 	<div id="content">
 
-		<h2>Página Principal</h2>
+		<h1>Página Principal</h1>
 	<div class="listOtherPlayers">
 		<h4>Jugadores:</h4>
 		<ul>
@@ -89,7 +89,7 @@
 <template name="gameTemplate">
 	<div class="game">
 	<li name="{{nameGame}}" creator="{{createdBy}}" players="{{numberPlayers}}">
-	<h4>{{nameGame}}</h4>
+	<h5>{{nameGame}}</h5>
 	<p>Creada por: {{createdBy}}</p>
 	<p>{{numberPlayers}} jugadores.</p>
 	{{#if suspended}}
@@ -109,7 +109,7 @@
 <template name="tournamentsTemplate">
 	<div class="tournament">
 	<li name="{{nameTournament}}" creator="{{createdBy}}" players="{{numPlayer}}">
-	<h4>{{nameTournament}}</h4>
+	<h5>{{nameTournament}}</h5>
 	<p>Creada por: {{createdBy}}</p>
 	<p>{{numPlayer}} jugadores.</p>
 
