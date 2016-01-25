@@ -73,6 +73,10 @@ TreesCollection.prototype.insertTile = function(tile, coor, dummy){
 //     playersPoints: [[Player1_ID, points],[Player2_ID, points],...],
 // }
 TreesCollection.prototype.getFinalCount = function(){
+
+    var data = {
+        playersPoints: []
+    }
     var incompTrees = getIncompTrees(this);
 
     // Insert all incompleted trees in a single array
@@ -87,12 +91,6 @@ TreesCollection.prototype.getFinalCount = function(){
     // cities, roads and cloisters
     var playersPoints = computePoints(trees);
 
-    for(var i=0; i<playersPoints.length; i++){
-        console.log("--------------------------------------------------");
-        console.log("[" + playersPoints[i][0] + "," + playersPoints[i][1] +  "]");
-    }
-
-
     // Now we have to get the points from cities that touch
     // fields
     var fieldTrees = getFieldTrees(this);
@@ -100,6 +98,83 @@ TreesCollection.prototype.getFinalCount = function(){
     for(var i=0; i<fieldTrees.length; i++){
         fieldTrees[i].printTree();
     }
+
+    var compCityTrees = getCompletedCities(this.trees.cityTrees);
+
+    procFinalFieldPoints(playersPoints, fieldTrees, compCityTrees);
+
+    // Update data object
+    data.playersPoints = playersPoints;
+
+    return data;
+}
+
+
+// This function adds the points, that
+// each player has to increase, derived from
+// they farmers (field dummies)
+var procFinalFieldPoints = function(playersPoints, fieldTrees, compCityTrees){
+    for(var i=0; i<fieldTrees.length; i++){
+        var playersIds = getWinners(fieldTrees[i].dummies);
+        var numOfCities = getTouchingCities(compCityTrees, fieldTrees[i]);
+        var points = numOfCities * 3;
+        processFieldPoints(playersPoints, playersIds, points);
+    }
+}
+
+// This function assign the given points to a playerID and
+// if the playerID is not yet in the player Points array
+// it creates it and pushes it.
+var processFieldPoints = function(playersPoints, playersIds, points){
+    for(var i=0; i<playersIds.length; i++){
+        var index = playerIdAlreadyIn(playersPoints, playersIds[i]);
+        if(index>-1){
+            playersPoints[index][1] += points;
+        }else{
+            playersPoints.push([playersIds[i], points]);
+        }
+    }
+}
+
+
+// This function returns the index of the player points
+// if the player ID is alerady in playersPoints,
+// otherwise returns -1
+var playerIdAlreadyIn = function(playersPoints, playerId){
+    var playersIds = [];
+    for(var i=0; i<playersPoints.length; i++){
+        playersIds.push(playersPoints[i][0])
+    }
+
+    return playersIds.indexOf(playerId);
+}
+
+
+// This function returns all completed city trees
+// contained in the give city trees array
+var getCompletedCities = function(cityTrees){
+    var compCityTrees = [];
+    for(var i=0; i<cityTrees.length; i++){
+        if(cityTrees[i].getLeftChildren()==0){
+            compCityTrees.push(cityTrees[i]);
+        }
+    }
+
+    return compCityTrees;
+}
+
+// This function returns the num of completed
+// cities wich are touching the given field
+// tree
+var getTouchingCities = function(compCityTrees, fTree){
+    var count = 0;
+    for(var i=0; i<compCityTrees.length; i++){
+        if(areTogether(fTree, compCityTrees[i])){
+            count++;
+        }
+    }
+
+    return count;
 }
 
 
@@ -243,11 +318,16 @@ var printPlayersPoints = function(playersPoints){
     }
 }
 
+
+// This function adds points to each playerID
+// on a playerPoints array in wich the player
+// is already in
 var addPoints = function(playersPoints, playersId, points){
-    for(var i in playersId){
-        for(var j in playersPoints){
-            if(playersPoints[j][0]==playersId[i])
+    for(var i=0; i<playersId.length; i++){
+        for(var j=0; j<playersPoints.length; j++){
+            if(playersPoints[j][0]==playersId[i]){
                 playersPoints[j][1] += points;
+            }
         }
     }
 }
@@ -347,7 +427,8 @@ var moreThanOnePlayer = function(dummies){
 
 
 // This functino returns an array with the players Ids
-// that must increase their points
+// that must increase their points, based on wich player
+// has the maximum number of dummies.
 var getWinners = function(dummies){
     // format: [n_dummies1, n_dummies2,...]
     var playersDummies = [];
@@ -367,8 +448,9 @@ var getWinners = function(dummies){
     var largest = Math.max.apply(Math, playersDummies);
     var winners = [];
     for(var i=0; i<playersDummies.length; i++){
-        if(playersDummies[i]===largest)
-            winners.push(playersIds[i]);        
+        if(playersDummies[i]===largest){
+            winners.push(playersIds[i]);
+        }        
     }
     
     return winners;
@@ -495,10 +577,10 @@ saveTileInTrees = function(coord, tile, coll, dummy){
     var areasOfAllTypes = getAreasTile(tile.type, tile.orientation); //{f: [['se'],['sw']], r: [['s']], ci: [['n','e','w']] , cl: true/false}
     if(debug) console.log(areasOfAllTypes);
     var completedTrees = [];
-    var fTrees = saveTileInTreesOfAType(areasOfAllTypes.f, true, coll.trees.fieldTrees, coord, 'f', tile.type, dummy);
-    var ciTrees = saveTileInTreesOfAType(areasOfAllTypes.ci, true, coll.trees.cityTrees, coord, 'ci', tile.type, dummy);
-    var rTrees = saveTileInTreesOfAType(areasOfAllTypes.r, true, coll.trees.roadTrees, coord, 'r', tile.type, dummy);
-    var clTrees = saveTileInTreesOfAType(areasOfAllTypes.cl, false, coll.trees.cloisterTrees, coord, 'cl', tile.type, dummy);
+    var fTrees = saveTileInTreesOfAType(areasOfAllTypes.f, true, coll.trees.fieldTrees, coord, 'f', tile, dummy);
+    var ciTrees = saveTileInTreesOfAType(areasOfAllTypes.ci, true, coll.trees.cityTrees, coord, 'ci', tile, dummy);
+    var rTrees = saveTileInTreesOfAType(areasOfAllTypes.r, true, coll.trees.roadTrees, coord, 'r', tile, dummy);
+    var clTrees = saveTileInTreesOfAType(null, false, coll.trees.cloisterTrees, coord, 'cl', null, null);
     if(areasOfAllTypes.cl){
         var clTree = saveClTree(coord, dummy, tile.type, coll);
         // If clTree!=null is beacause a single tile has completed
@@ -517,10 +599,10 @@ saveTileInTrees = function(coord, tile, coll, dummy){
 // type: 'r', 'f' or 'r'
 // normalType: true/false ---> fieldTree, cityTree, roadTrees
 // this function returns an array of completed Trees
-saveTileInTreesOfAType = function(areas, normalType, treesOfType, coord, type, tileType, dummy){
+saveTileInTreesOfAType = function(areas, normalType, treesOfType, coord, type, tile, dummy){
     var completedTrees = null;
     if(normalType){
-        completedTrees = saveTileOfNormalType(areas, treesOfType, coord, type, tileType, dummy);
+        completedTrees = saveTileOfNormalType(areas, treesOfType, coord, type, tile, dummy);
     }else{
         //specialType
         completedTrees = saveTileOfSpecialType(treesOfType, coord, type);
@@ -594,13 +676,13 @@ getBorderingCoords = function(coord){
 // coord: {x: 0, y: 4}
 // type: 'r', 'f' or 'r'
 // this function returns an array of completed Trees
-saveTileOfNormalType = function(areas, treesOfType, coord, type, tileType, dummy){
+saveTileOfNormalType = function(areas, treesOfType, coord, type, tile, dummy){
     var completedTrees = [];
     areas.forEach(function(area){
         var trees = findTreesNeed(coord, area, treesOfType);
         if (trees.length == 0){
             if(debug) console.log("NEW TREE: (" + type + ", [" + coord.x  + "," + coord.y + "],  " + area + ")");
-            var newTree = new Tree(type, coord, area, tileType, dummy);
+            var newTree = new Tree(type, coord, area, tile, dummy);
             treesOfType.push(newTree);
             if(debug){
                 console.log("****************************************************");
@@ -608,9 +690,9 @@ saveTileOfNormalType = function(areas, treesOfType, coord, type, tileType, dummy
                 console.log("****************************************************\n");
             }
         } else if (trees.length == 1){
-            if(debug) console.log("ONE TREE -> tileType: " + tileType);
-            if(debug) console.log("trees[0].placeNode({" + coord.x + "," + coord.y + "}, [" + area + "], " + tileType + ", " + dummy + ")")
-            trees[0].placeNode(coord, area, tileType, dummy);
+            if(debug) console.log("ONE TREE -> tileType: " + tile.type);
+            if(debug) console.log("trees[0].placeNode({" + coord.x + "," + coord.y + "}, [" + area + "], " + tile.type + ", " + dummy + ")")
+            trees[0].placeNode(coord, area, tile, dummy);
             if(debug){
                 console.log("****************************************************");
                 trees[0].printTree();
@@ -625,7 +707,7 @@ saveTileOfNormalType = function(areas, treesOfType, coord, type, tileType, dummy
                 var delTree = treesOfType.indexOf(trees[i]);
                 treesOfType.splice(delTree, 1);
             }
-            trees[0].placeNode(coord, area, tileType, dummy);
+            trees[0].placeNode(coord, area, tile, dummy);
             if(debug){
                 console.log("****************************************************");
                 trees[0].printTree();
@@ -844,99 +926,61 @@ getAreasTile = function(typeTile, orientation){
 }
 
 
-// var main = function(){
-//     var c = new TreesCollection();
+var main = function(){
+    var c = new TreesCollection();
 
 
-//     var t = new Tile(19, 2);
-//     c.insertTile(t, {x:49, y:49}, null);
+    var d = new Dummy(1, 1);
+    d.place([49,49], 'n');
+    var t = new Tile(13, 2);
+    c.insertTile(t, {x:49, y:49}, d);
+
+    
+    var d = new Dummy(2, 1);
+    d.place([49,50], 'w');
+    var t = new Tile(14, 0);
+    c.insertTile(t, {x:49, y:50}, d);
 
 
-//     var d = new Dummy(2, 1);
-//     d.place([49,48], 'e');
-//     t = new Tile(14, 1);
-//     c.insertTile(t, {x:49, y:48}, d);
+    var d = new Dummy(3, 1);
+    d.place([49,51], 's');
+    var t = new Tile(15, 0);
+    c.insertTile(t, {x:49, y:51}, d);
 
 
-//     d = new Dummy(1, 1);
-//     d.place([49,50], 'n');
-//     t = new Tile(5, 3);
-//     c.insertTile(t, {x:49, y:50}, d);
+    var d = new Dummy(2, 2);
+    d.place([50,51], 'e');
+    var t = new Tile(20, 0);
+    c.insertTile(t, {x:50, y:51}, d);
 
 
-//     d = new Dummy(2, 2);
-//     d.place([48,48], 'e');
-//     t = new Tile(16, 1);
-//     c.insertTile(t, {x:48, y:48}, d);
+    var t = new Tile(1, 0);
+    c.insertTile(t, {x:50, y:50}, null);
+
+    var d = new Dummy(3, 2);
+    d.place([50,49], 's');
+    var t = new Tile(7, 0);
+    c.insertTile(t, {x:50, y:49}, d);
+    
+
+    console.log("*********************************");
+    console.log("*********************************");
+    console.log("*********************************");
+    console.log("*********************************");
+    console.log("*********************************");
+    console.log("*********************************");
+    console.log("*********************************");
+    console.log("*********************************");
+    console.log("*********************************");
 
 
-//     d = new Dummy(1, 2);
-//     d.place([50,49], 'w');
-//     t = new Tile(21, 0);
-//     c.insertTile(t, {x:50, y:49}, d);
+    var data = c.getFinalCount();
 
 
-//     t = new Tile(9, 0);
-//     c.insertTile(t, {x:50, y:48}, null);
-
-
-//     d = new Dummy(1, 3);
-//     d.place([48,50], 'n');
-//     t = new Tile(18, 1);
-//     c.insertTile(t, {x:48, y:50}, d);
-
-
-//     d = new Dummy(1, 3);
-//     d.place([48,49], 'ne');
-//     t = new Tile(16, 3);
-//     c.insertTile(t, {x:48, y:49}, d);
-
-
-//     t = new Tile(3, 0);
-//     c.insertTile(t, {x:49, y:51}, null);
-
-
-//     d = new Dummy(2, 3);
-//     d.place([47,49], 'e');
-//     t = new Tile(3, 1);
-//     c.insertTile(t, {x:47, y:49}, d);
-
-
-//     d = new Dummy(1, 4);
-//     d.place([50,50], 's');
-//     t = new Tile(22, 1);
-//     c.insertTile(t, {x:50, y:50}, d);
-
-
-//     d = new Dummy(2, 4);
-//     d.place([48,47], 's');
-//     t = new Tile(21, 0);
-//     c.insertTile(t, {x:48, y:47}, d);
-
-
-//     t = new Tile(21, 3);
-//     c.insertTile(t, {x:51, y:49}, null);
-
-
-//     d = new Dummy(2, 5);
-//     d.place([50,47], 'n');
-//     t = new Tile(15, 2);
-//     c.insertTile(t, {x:50, y:47}, d);
-
-//     console.log("*********************************");
-//     console.log("*********************************");
-//     console.log("*********************************");
-//     console.log("*********************************");
-//     console.log("*********************************");
-//     console.log("*********************************");
-//     console.log("*********************************");
-//     console.log("*********************************");
-//     console.log("*********************************");
-
-
-//     c.getFinalCount();
-
-// }
+    for(var i=0; i<data.playersPoints.length; i++){
+        console.log("Player: " + data.playersPoints[i][0] + "\t" + "Points: " + data.playersPoints[i][1]);
+    }
+}
 
 // main();
 

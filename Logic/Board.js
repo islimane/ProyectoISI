@@ -78,6 +78,11 @@ Board.prototype.getMatchingCells = function(tile){
     return matchingCells;
 }
 
+
+Board.prototype.getFinalCount = function(){
+    return this.treesCollection.getFinalCount();
+}
+
 var isInArray = function(value, array){
   return array.indexOf(value) > -1;
 }
@@ -428,28 +433,62 @@ Board.prototype.getDummyPositions = function (tile) {
 }
 
 
-/*var b = new Board();
+var main = function(){
+    var b = new Board();
 
-t = new Tile(20, 1);
-dummy = new Dummy(1, 2);
-dummy.place([49,48], 'n');
-b.insertTile(t, [49,48], dummy);
 
-t = new Tile(21, 0);
+    var d = new Dummy(1, 1);
+    d.place([49,49], 'n');
+    var t = new Tile(13, 2);
+    b.insertTile(t, [49,49], d);
 
-//b.insertTile(t, [49,51], dummy);
+    
+    var d = new Dummy(2, 1);
+    d.place([49,50], 'w');
+    var t = new Tile(14, 0);
+    b.insertTile(t, [49,50], d);
 
-console.log("\navailableCells:");
-console.log(b.availableCells);
 
-//t = new Tile(19, 0);
-console.log("\nmatchingCells:");
-console.log(b._getAllMatchingCells(t));
+    var d = new Dummy(3, 1);
+    d.place([49,51], 's');
+    var t = new Tile(15, 0);
+    b.insertTile(t, [49,51], d);
 
-pos = b.getDummyPositions(t);
-console.log(pos[0]);
-console.log(pos[1]);
-console.log(pos[2]);
-console.log(pos[3]);
-console.log("\n\n");
-console.log(getAreasTile(21,1));*/
+
+    var d = new Dummy(2, 2);
+    d.place([50,51], 'e');
+    var t = new Tile(20, 0);
+    b.insertTile(t, [50,51], d);
+
+
+    var t = new Tile(1, 0);
+    b.insertTile(t, [50,50], null);
+
+    var d = new Dummy(3, 2);
+    d.place([50,49], 's');
+    var t = new Tile(7, 0);
+    b.insertTile(t, [50,49], d);
+    
+
+    console.log("*********************************");
+    console.log("*********************************");
+    console.log("*********************************");
+    console.log("*********************************");
+    console.log("*********************************");
+    console.log("*********************************");
+    console.log("*********************************");
+    console.log("*********************************");
+    console.log("*********************************");
+
+
+    var data = b.getFinalCount();
+
+
+    for(var i=0; i<data.playersPoints.length; i++){
+        console.log("Player: " + data.playersPoints[i][0] + "\t" + "Points: " + data.playersPoints[i][1]);
+    }
+}
+
+
+
+// main();
