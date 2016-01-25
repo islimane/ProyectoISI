@@ -96,32 +96,35 @@ Meteor.methods({
 						pos = null ;
 
 				}
+			break ;
 			}
 		}
 
 		var dum = null ;
 		if ( !pos ) {
 			dum = player.getNewDummy() ;
-			dum.place(coor , pos ) ,
+			dum.place(coor , pos ) ;
 		}
 
 		// updates the players scores
-		var res = game.board.insertTile(game.tiles.currentTile , coor) ;
-		res.playersPoints.forEach( function(i){
-			var player = game.players.getPlayerById(i[0]) ;
-			if (!player) { 
-				throw new Error("No player for given id") ; 
-				return null ;
-			}
-			player.incScoreBy(i[1]) ;
-		});
+		var res = game.board.insertTile(game.tiles.currentTile , coor , dum) ;
+		var removedDummies = new Array() ;
+		if (res){
+			res.playersPoints.forEach( function(i){
+				var player = game.players.getPlayerById(i[0]) ;
+				if (!player) { 
+					throw new Error("No player for given id") ; 
+					return null ;
+				}
+				player.incScoreBy(i[1]) ;
+			});
 
-		var removedDummies = new Array() ; 
+			res.dummies.forEach(function(i) {
+				removedDummies.push(i.coord) ;
+				i.return() ;
+			});
 
-		res.dummies.forEach(function(i) {
-			removedDummies.push(i.coord) ;
-			i.return() ;
-		});
+		}
 
 		var data = {
 			remDums: [],
