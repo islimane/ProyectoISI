@@ -101,6 +101,12 @@ Router.route('pruebaUI', {
 	name: "pruebaUI"
 });
 
+Router.route('othersGames', {
+    template: "othersGames",
+    name: "othersGames",
+  
+});
+
 
 if (Meteor.isClient) {
 
