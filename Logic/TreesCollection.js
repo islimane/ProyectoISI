@@ -638,7 +638,7 @@ saveTileOfSpecialType = function(treesOfType, coord, type){
 
 // This function save a new cloister Tree on cloisterTrees
 saveClTree = function(coord, dummy, tile, coll){
-    var tree = new Tree('cl', coord, 'c', tileType, dummy);
+    var tree = new Tree('cl', coord, 'c', tile, dummy);
     // Now we have to place each coord, that has a tile
     // in it, around the cloister tile
     var borderingCoords = getBorderingCoords(coord);
