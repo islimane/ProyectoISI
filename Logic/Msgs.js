@@ -71,25 +71,25 @@ Meteor.methods({
 					case 1 :
 						pos = "nw" ;
 						break ;
-					case 3 :
+					case 2 :
 						pos = "w" ;
 						break ;
-					case 4 :
+					case 3 :
 						pos = "sw" ;
 						break ;
-					case 5 :
+					case 4 :
 						pos = "s" ;
 						break ;
-					case 6 : 
+					case 5 : 
 						pos = "se" ;
 						break ;
-					case 7 :
+					case 6 :
 						pos = "e" ;
 						break ;
-					case 8 :
+					case 7 :
 						pos = "ne" ;
 						break ;
-					case 9 :
+					case 8 :
 						pos = "c" ;
 						break ;
 					default :
@@ -101,13 +101,14 @@ Meteor.methods({
 		}
 
 		var dum = null ;
-		if ( !pos ) {
+		if (pos) {
 			dum = player.getNewDummy() ;
 			dum.place(coor , pos ) ;
 		}
 
 		// updates the players scores
 		var res = game.board.insertTile(game.tiles.currentTile , coor , dum) ;
+
 		var removedDummies = new Array() ;
 		if (res){
 			res.playersPoints.forEach( function(i){
