@@ -130,7 +130,7 @@ Player.prototype.getNewDummy = function () {
 
 Player.prototype.remainingDums = function () {
 	var n = 0 ;
-	for (var i = 0 ; i < Max_Dummies ; i++ {
+	for (var i = 0 ; i < Max_Dummies ; i++ ){
 		if ( this.dummies[i].coord == null )
 			n++ ;
 	}
