@@ -752,7 +752,7 @@ getAreasTile = function(typeTile, orientation){
     switch(typeTile){
     case 0:
         //              n             s             e             w
-        return {f:  [ [ zone[0+turn], zone[6+turn], zone[3+turn], zone[9+turn] ] ],
+        return {f:  [ [ zone[(0+turn)%12], zone[(6+turn)%12], zone[(3+turn)%12], zone[(9+turn)%12] ] ],
                 // no roads, no cities:
                 r:  [],
                 ci: [],
