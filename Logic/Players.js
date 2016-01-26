@@ -13,11 +13,11 @@ Players = function(ids )  {
 
 Players.prototype.init = function(ids ){
 
-  	var arry = new Array() ; 
- 
+  	var arry = new Array() ;
+
 	for ( var i = 0 ; i < Max_Players ; i++){
 	    	if (ids[i]) {
-	     		arry.push(new Player(ids[i])) ;
+	     		arry.push(new Player(ids[i].id)) ;
 	     	}else{
 	     		arry.push(new Player(i) ) ;
 	     	}
@@ -29,19 +29,28 @@ Players.prototype.names = function() {
 
 	var arry = new Array() ;
 	for ( var i = 0 ; i < Max_Players ; i++ ){
-		arry.push( this.players[i].name );
+		arry.push( {name: this.players[i].name , id: this.players[i].id} );
 	}
 	return arry ;
 }
 
 Players.prototype.scores = function() {
-	var arry = new Array() ;
-
+	var arryS = new Array() ;
+	var arryD = new Array() ;
 	for ( var i = 0 ; i < Max_Players ; i++ ){
-		arry.push( this.players[i].score) ;
+		arryS.push( this.players[i].score ) ;
+		arryD.push( this.players[i].remainingDums() ) ;
 	}
 
-	return arry ;
+	var data = {
+		scores : [] ,
+		dums : []
+	}
+
+	data.scores = arryS ;
+	data.dums = arryD ;
+
+	return data ;
 }
 
 Players.prototype.next = function() {
@@ -74,7 +83,6 @@ Players.prototype.getPlayerById = function(id) {
 IAid = function(id){
 	if (id > -1 && id < Max_Players) {
 		return true ;
-
 	} else {
 		return false ;
 	}
@@ -118,6 +126,15 @@ Player.prototype.getNewDummy = function () {
 		}
 	}
 	return null ;
+}
+
+Player.prototype.remainingDums = function () {
+	var n = 0 ;
+	for (var i = 0 ; i < Max_Dummies ; i++ {
+		if ( this.dummies[i].coord == null )
+			n++ ;
+	}
+	return n ;
 }
 
 Player.prototype.incScoreBy = function (n){

@@ -50,8 +50,8 @@ FirstMode.prototype.constructor = FirstMode;
 // just assigns the tile to the first possition it finds
 // (If for a given orientation there are no possible positions
 // it tries with a new orientation of the tile)
-FirstMode.prototype.playTile = function (game) {
-    var cells = game.board.getDummyPositions(game.tiles.currentTile , game.players.currentPlayer.getDummy());
+playTile1 = function (game) {
+    var cells = game.board.getDummyPositions(game.tiles.currentTile);
     var coor ;
     for ( var i = 0 ; i < cells.length ; i++) {
         if (cells[i].length != 0) {
@@ -82,29 +82,19 @@ FirstMode.prototype.playTile = function (game) {
     almost sure you wont recover the dummy placed there.
 */
 
-
-SecondMode = function () {
-    IAplayer.call(this);
-}
-
-SecondMode.prototype = Object.create(IAplayer.prototype);
-SecondMode.prototype.constructor = SecondMode;
-
-// game its the current game.
-// Asumes that he is the current player.
-SecondMode.prototype.playTile = function (game) {
+playTile2 = function (game) {
 
     var me = game.players.currentPlayer ;
     var move = null ;
-    var dummy = me.getDummy ;
+    var dummy = me.getNewDummy() ;
     var tile = game.tiles.currentTile ;
 
     if ( dummy )
         move = playWithDummy(game) ;
-    
+
     if ( !move )
         move =  playWithoutDummy(game) ;
-    
+
     if ( !move )
         move = placeAnywhere(game) ;
 
@@ -120,7 +110,7 @@ SecondMode.prototype.playTile = function (game) {
 
     var tmp = {
         coord : move.coord ,
-        dummy : dummy 
+        dummy : dummy
     }
 
     return tmp ;
@@ -144,8 +134,8 @@ var playWithoutDummy = function(game) {
 
             for ( var i = 0 ; i < treeCoords.length ; i++ ){
                 var coord = Object.keys(treeCoords[i]).map(function (key) {return treeCoords[i][key]});
-                                
-                var tmpMove = { 
+
+                var tmpMove = {
                         coord: null ,
                         dummyPos: [false, false, false, false, false, false, false, false, false ] ,
                         rot: null  } ;
@@ -176,7 +166,7 @@ var playWithDummy = function(game) {
             for ( var i = 0 ; i < treeCoords.length ; i++){
                     var coord = Object.keys(treeCoords[i]).map(function (key) {return treeCoords[i][key]});
 
-                    var tmpMove = { 
+                    var tmpMove = {
                             coord: null ,
                             dummyPos: [false, false, false, false, false, false, false, false, false ],
                             rot: null  } ;
@@ -194,7 +184,7 @@ var playWithDummy = function(game) {
             for ( var j = 0 ; j < allCoords[i].length ; j++) {
                     var coord = Object.keys(allCoords[i][j]).map(function (key) {return allCoords[i][j][key]})
 
-                    var tmpMove = { 
+                    var tmpMove = {
                             coord: null ,
                             dummyPos: null ,
                             rot: null  } ;
@@ -231,7 +221,7 @@ var placeAnywhere = function(game){
     var data = {
         coord : [coor.x, coor.y],
         dummy : null,
-        rot : r 
+        rot : r
     }
 
     return data ;
@@ -364,7 +354,7 @@ var validMove = function(move, plausibles) {
         for (var i = 0 ; i < plausibles.length; i++){
                 for(var j = 0 ; j < plausibles[i].length ; j++){
                         var auxCoor = { coord: [plausibles[i][j].cell.x, plausibles[i][j].cell.y] ,
-                                        dummyPos : plausibles[i][j].dummyPos 
+                                        dummyPos : plausibles[i][j].dummyPos
                                     }
                         if( equalsMoves(move , auxCoor) )
                                 return i ;
@@ -373,8 +363,8 @@ var validMove = function(move, plausibles) {
         return null ;
 }
 
-/* 
-Move1 must be compatible with Move2. 
+/*
+Move1 must be compatible with Move2.
        move = {
                coord: [x,y]
                dummyPoss = [8 true or false]coord
@@ -443,7 +433,7 @@ var getDummyPos = function(coord , tree , tile){
             }
 
             if (tileZones[i] == "r"){
-                return zones[(i+tile.orientation*2) % 8] 
+                return zones[(i+tile.orientation*2) % 8]
             }
 
         }
@@ -487,7 +477,7 @@ var relativePos = function (coord1 , coord2 ) {
 
     if( coord1[0] == coord2[0] ){
         if ( coord1[1] == coord2[1] - 1 ) {
-            return "above" 
+            return "above"
         }
         if ( coord1[1] == coord2[1] + 1 ) {
             return "under"
@@ -496,7 +486,7 @@ var relativePos = function (coord1 , coord2 ) {
 
     if ( coord1[1] == coord2[1] ){
         if ( coord1[0] == coord2[0] + 1 ) {
-            return "right" 
+            return "right"
         }
         if ( coord1[0] == coord2[0] - 1 ) {
             return "left"
