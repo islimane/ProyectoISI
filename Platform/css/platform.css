@@ -1,5 +1,9 @@
 /* CSS declarations go here */
 
+body{/*background-image: url("imagenes/im2.png") */
+    background-color: #ECEF9D }
+
+
 input#message{
 	 width: 90%; 
 	 margin-top:10px;
