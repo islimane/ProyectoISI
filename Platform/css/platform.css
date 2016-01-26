@@ -70,7 +70,7 @@ span{
 
 div.img{
 	float:right; 
-	aling:right; 
+	/*text-aling:right;*/ 
 	position: relative; 
   border-radius: 20px; 
   border-color:#63BAF5;
