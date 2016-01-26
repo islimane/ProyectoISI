@@ -60,7 +60,7 @@ if (Meteor.isClient){
     			var array_partida4 = [];
     			var idGames = []
     			var index = Math.floor(Math.random() * (players.length - 0)) + 0
-				for (i = 0; i < 16; i++){
+				for (var i = 0; i < 16; i++){
 					var jugador = players.splice(index,1)
 					var data = {
 						id:jugador[0].id,

@@ -8,6 +8,8 @@ Meteor.methods({
          console.log("game has been started");
 
          //game = new Game(players, gameId);
+         //StarGame(gameId)
+         //LLAMAR FUNCION DE UI PARA ARRANCAR CANVAS
          //storeGame(game);
          return true
     },

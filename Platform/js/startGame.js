@@ -90,13 +90,23 @@
 					for(i = 0; i < players.length;i++){
 						if (players[i].id == Meteor.userId()){
 							Router.go("/partida/" + Games.findOne({_id:gameId})._id);
-							//tb llamar funcion para pintar canvas
-							//le pasamos el id de la partida
+							Meteor.call("startGame", players, gameId, function(err){
+				    			if(!err){
+				    				Games.update({_id: gameId}, {$set: {gameStart: true}});
+				    				if (players.length > 1){
+				    					Gamesaux.update({_id: idaux}, {$set: {gameStart: true}});
+				    				}
+				    			}else{
+				    				console.log("ERROR: " + err);
+				    			}
+				    		});
+
 						}
 					}
 
 				}
 			})
+
 					
     	},
     	'submit form' : function(event){
@@ -119,18 +129,22 @@
 
 
 			Tracker.autorun(function(){
-			// colección auxiliar donde meta el id y que ha empezado la partida 
-			// haria el if sobre esa colección 
-			// habria que llevarlo a la funcion donde entras en la sala
 				var game = Gamesaux.findOne({gameid:gameId},{fields:{gameStart:1}})
 				if(game.gameStart){
-					//filtar por el id del jugadores
 					var players = Games.findOne({_id:gameId}).players
 					for(i = 0; i < players.length;i++){
 						if (players[i].id == Meteor.userId()){
+							Meteor.call("startGame", players, gameId, function(err){
+				    			if(!err){
+				    				Games.update({_id: gameId}, {$set: {gameStart: true}});
+				    				if (players.length > 1){
+				    					Gamesaux.update({_id: idaux}, {$set: {gameStart: true}});
+				    				}
+				    			}else{
+				    				console.log("ERROR: " + err);
+				    			}
+				    		});
 							Router.go("/partida/" + Games.findOne({_id:gameId})._id);
-							//tb llamar funcion para pintar canvas
-							//le pasamos el id de la partida
 						}
 					}
 
@@ -301,6 +315,7 @@
     			}
     		});
     		Router.go("/partida/" + gameId);
+
     	}
     })
 
