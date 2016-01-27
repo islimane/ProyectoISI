@@ -110,7 +110,8 @@ playTile2 = function (game) {
 
     var tmp = {
         coord : move.coord ,
-        dummy : dummy
+        dummy : dummy ,
+        rot : move.rot 
     }
 
     return tmp ;
@@ -180,33 +181,37 @@ var playWithDummy = function(game) {
                     }
             }
     }
+
     for ( var i = 0 ; i < allCoords.length ; i++){
             for ( var j = 0 ; j < allCoords[i].length ; j++) {
-                    var coord = Object.keys(allCoords[i][j]).map(function (key) {return allCoords[i][j][key]})
+                    var move = allCoords[i][j] ;
 
                     var tmpMove = {
                             coord: null ,
-                            dummyPos: null ,
+                            dummyPos: [false, false, false, false, false, false, false, false, false ] ,
                             rot: null  } ;
 
 
-                    tmpMove.coord = coord ;
+                    tmpMove.coord = [ move.cell.x , move.cell.y ];
                     tmpMove.rot = validMove(tmpMove , allCoords) ;
-
                     if (tmpMove.rot){
                             var tile = game.tiles.currentTile ;
                             tile.orientation = tmpMove.rot ;
                             tmpMove.dummyPos = getDummyPos(coord , null , tile ) ;
+
+                            if (!tmpMove.dummyPos)
+                                continue ;
+
+
                             return tmpMove ;
                     }
             }
     }
-
     return null ;
 }
 
 var placeAnywhere = function(game){
-    var cells = game.board.getDummyPositions(game.tiles.currentTile , game.players.currentPlayer.getDummy());
+    var cells = game.board.getDummyPositions(game.tiles.currentTile);
     var r = 0 ;
     var coor ;
     for ( var i = 0 ; i < cells.length ; i++) {
@@ -312,11 +317,17 @@ var getMyTrees = function(game , zones) {
 
         for (var i = 0 ; i < myDummies.length ; i++){
                 var coord = myDummies[i].coord ;
-                for ( var j = 0 ; j < zones.length ; j++ ){
-                        var allTrees = trees.getTrees(zones[j] , coord) ;
-                        var tree = treesWithDum( allTrees , myDummies[i] )
-                        myTrees.push(tree);
-                }
+
+                if(!coord)
+                    continue ;
+
+                var allTrees = trees.getTrees(zones , coord) ;
+                var tree = treesWithDum( allTrees , myDummies[i] )
+
+                if(!tree) 
+                    continue ;
+
+                myTrees.push(tree);
         }
         return myTrees ;
 }
@@ -331,6 +342,7 @@ var treesWithDum = function(trees, dum){
                         }
                  }
          }
+         return null ;
  }
 
 
@@ -356,8 +368,10 @@ var validMove = function(move, plausibles) {
                         var auxCoor = { coord: [plausibles[i][j].cell.x, plausibles[i][j].cell.y] ,
                                         dummyPos : plausibles[i][j].dummyPos
                                     }
-                        if( equalsMoves(move , auxCoor) )
+                        if( equalsMoves(move , auxCoor) ){
                                 return i ;
+                        }
+                                
                 }
         }
         return null ;
@@ -429,11 +443,11 @@ var getDummyPos = function(coord , tree , tile){
         for ( var i = 0 ; i < tileZones.length - 1 ; i++ ){
 
             if (tileZones[i] == "ci"){
-                return zones[(i+tile.orientation*2) % 8]  ;
+                return zones[(8+i-tile.orientation*2) % 8]  ;
             }
 
             if (tileZones[i] == "r"){
-                return zones[(i+tile.orientation*2) % 8]
+                return zones[(8+i-tile.orientation*2) % 8]
             }
 
         }
@@ -449,8 +463,6 @@ var getDummyPos = function(coord , tree , tile){
 
         if (!pos)
             continue ;
-
-        console.log(pos) ;
 
         switch(pos){
             case "above":

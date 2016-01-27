@@ -14,7 +14,8 @@ file[5]=Game.js
 file[6]=TreesCollection.js
 file[7]=Board.js
 file[8]=PlayersIA.js
-file[9]=pruebas.js
+file[9]=Msgs.js
+file[10]=pruebas.js
 
 for f in ${file[*]};
 do
