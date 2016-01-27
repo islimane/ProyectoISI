@@ -8,6 +8,7 @@
 gameList = [];
 
 storeGame = function (game) {
+    console.log("GUARDAMOS EL GAME" + game.id)
     gameList.push(game);
 };
 

@@ -6,11 +6,13 @@ Meteor.methods({
 	// Return the 4 Players names to UI
 	getNames : function (gameId) {
 		var game = findGameByID(gameId) ;
-
+		console.log("ID gameId   " + gameId)
+		console.log("game list: " + gameList) 
+		console.log("USER ID " + Meteor.userId())
 		if (!game){
 			return null ;
 		}
-
+		console.log("GAME FOUND")
 		if (game.turns != 71 ){
 			return null ;
 		}

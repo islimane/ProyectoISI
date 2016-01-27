@@ -41,7 +41,7 @@ var Game_ = new function() {
       this.setBoard(4,new TouchControls());
     }
 
-    SpriteSheet.load(sprite_data,callback);
+    SpriteSheet_.load_(sprite_data,callback);
   };
   
 
@@ -90,7 +90,7 @@ var Game_ = new function() {
 	for(var i=0,len = boards.length;i<len;i++) {
 	    if(boards[i]) { 
 		boards[i].step(dt);
-		boards[i].draw(Game_.ctx);
+		boards[i].draw_(Game_.ctx);
 	    }
 	}
 
@@ -150,19 +150,19 @@ var Game_ = new function() {
 
 // Objeto singleton SpriteSheet: se guarda una unica instancia del
 // constructor anónimo en el objeto SpriteSheet
-var SpriteSheet = new function() {
+var SpriteSheet_ = new function() {
 
     // Almacena nombre_de_sprite: rectángulo para que sea mas facil
     // gestionar los sprites del fichero images/sprite.png
-    this.map = { }; 
+    this.map_ = { }; 
 
     // Para cargar hoja de sprites. 
     //
     // Parámetros: spriteData: parejas con nombre de sprite, rectángulo
     // callback: para llamarla cuando se haya cargado la hoja de
     // sprites
-    this.load = function(spriteData,callback) { 
-	this.map = spriteData;
+    this.load_ = function(spriteData,callback) { 
+	this.map_ = spriteData;
 	this.image = new Image();
 	this.image.onload = callback;
 	this.image.src = 'images/sprites.png';
@@ -175,15 +175,15 @@ var SpriteSheet = new function() {
     //  en this.map, x e y en las que dibujarlo, y opcionalmente,
     //  frame para seleccionar el frame de un sprite que tenga varios
     //  como la explosion
-    this.draw = function(ctx,sprite,x,y,frame) {
-	var s = this.map[sprite];
+    this.draw_ = function(ctx,sprite_,x,y,frame) {
+	var s_ = this.map_[sprite_];
 	if(!frame) frame = 0;
 	ctx.drawImage(this.image,
-                      s.sx + frame * s.w, 
-                      s.sy, 
-                      s.w, s.h, 
+                      s_.sx + frame * s_.w, 
+                      s_.sy, 
+                      s_.w, s_.h, 
                       Math.floor(x), Math.floor(y),
-                      s.w, s.h);
+                      s_.w, s_.h);
     };
 }
 
@@ -206,7 +206,7 @@ var TitleScreen = function TitleScreen(title,subtitle,callback) {
 	if(up && Game_.keys['fire'] && callback) callback();
     };
 
-    this.draw = function(ctx) {
+    this.draw_ = function(ctx) {
 	ctx.fillStyle = "#FFFFFF";
 	ctx.textAlign = "center";
 
@@ -317,8 +317,8 @@ var GameBoard = function() {
 
     // Cuando Game.loop() llame a draw(), hay que llamar al método
     // draw() de todos los objetos contenidos en el tablero
-    this.draw= function(ctx) {
-	this.iterate('draw',ctx);
+    this.draw_= function(ctx) {
+	this.iterate('draw_',ctx);
     };
 
     // Comprobar si hay intersección entre los rectángulos que
@@ -347,17 +347,17 @@ var GameBoard = function() {
 
 
 // Constructor Sprite 
-var Sprite = function() { }
+var Sprite_ = function() { }
 
-Sprite.prototype.setup = function(sprite,props) {
-    this.sprite = sprite;
+Sprite_.prototype.setup = function(sprite_,props) {
+    this.sprite_ = sprite_;
     this.merge(props);
     this.frame = this.frame || 0;
-    this.w =  SpriteSheet.map[sprite].w;
-    this.h =  SpriteSheet.map[sprite].h;
+    this.w =  SpriteSheet_.map_[sprite_].w;
+    this.h =  SpriteSheet_.map_[sprite_].h;
 }
 
-Sprite.prototype.merge = function(props) {
+Sprite_.prototype.merge = function(props) {
     if(props) {
 	for (var prop in props) {
 	    this[prop] = props[prop];
@@ -365,11 +365,11 @@ Sprite.prototype.merge = function(props) {
     }
 }
 
-Sprite.prototype.draw = function(ctx) {
-    SpriteSheet.draw(ctx,this.sprite,this.x,this.y,this.frame);
+Sprite_.prototype.draw_ = function(ctx) {
+    SpriteSheet_.draw_(ctx,this.sprite_,this.x,this.y,this.frame);
 }
 
-Sprite.prototype.hit = function(damage) {
+Sprite_.prototype.hit = function(damage) {
     this.board.remove(this);
 }
 
@@ -476,7 +476,7 @@ Level.prototype.step = function(dt) {
 // bucle Game.loop() va a llamar a step() y a draw(). Pero no hay nada
 // que hacer en draw() para un nivel, ya que los sprites de los
 // enemigos los añade el nivel al tablero de juegos (GameBoard). 
-Level.prototype.draw = function(ctx) { };
+Level.prototype.draw_ = function(ctx) { };
 
 
 
@@ -525,7 +525,7 @@ var TouchControls = function() {
 
 
 
-    this.draw = function(ctx) {
+    this.draw_ = function(ctx) {
 	// Guarda las propiedades del contexto actual para evitar que
 	// los siguientes cambios que se hacen a la opacidad del fondo
 	// y al font dentro de drawSquare() afecten a otras llamadas
@@ -614,7 +614,7 @@ var GamePoints = function() {
 
   var pointsLength = 8;
 
-  this.draw = function(ctx) {
+  this.draw_ = function(ctx) {
     ctx.save();
     ctx.font = "bold 18px arial";
     ctx.fillStyle= "#FFFFFF";
