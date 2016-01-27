@@ -6,13 +6,11 @@ Meteor.methods({
 	// Return the 4 Players names to UI
 	getNames : function (gameId) {
 		var game = findGameByID(gameId) ;
-		console.log("ID gameId   " + gameId)
-		console.log("game list: " + gameList) 
-		console.log("USER ID " + Meteor.userId())
+
 		if (!game){
 			return null ;
 		}
-		console.log("GAME FOUND")
+
 		if (game.turns != 71 ){
 			return null ;
 		}
@@ -193,14 +191,16 @@ Meteor.methods({
 					dP[2] = true  ;
 					break ;
 				case "s" :
-					dP[5] = true ;
+					dP[4] = true ;
 					break ;
 				case "e" :
-					dP[7] = true ;
+					dP[6] = true ;
 					break ;
 				default :
 					 ;
 			}
+		} else {
+			dP = null ;
 		}
 
 		var data = {} ;
@@ -239,12 +239,12 @@ Meteor.methods({
 	this.idGame = idGame ;
 	allNames = [] ;
 	idPlayer = "" ;
-	idTile = -1 ;		// Tile type 0-23
 
 	coords = {
+		idTile = -1 ;   // Tile type 0-23
 		rot0 : [] ,  	// arrays of {
-		rot1 : [] ,	// 		coord [x,y]
-		rot2 : [] ,	// 		dummy positions [ n,  nw,   w,  sw,   s,  se,   e,  ne,   c  ]
+		rot1 : [] ,	// 		cell { x: x , y: y }
+		rot2 : [] ,	// 		dummyPos [ n,  nw,   w,  sw,   s,  se,   e,  ne,   c  ]
 		rot3 : [] ,
 	}
 
@@ -252,15 +252,17 @@ Meteor.methods({
 	backInfo = {
 		x ,		// where the tile is placed on the board
 		y ,
+		rotation ,	// choosen tiles rotation 0-3
 		dummy : [] , 	// [ n,  nw,   w,  sw,   s,  se,   e,  ne,   c  ]
 	 			// de 0 a 9 true y false donde vaya el dummy
-		rotation ,	// choosen tiles rotation 0-3
+		
 	}
 
 	// Checked info for UI
 	updatedInfo = {
 		coord  : []  , 	// removed dummies coords
-		score : [score1, score2, score3, score4] , 	// new scores for the players
+		score : { scores : [score1, score2, score3, score4]  , 	// new scores for the players
+			  dums :   [dums1 , dums2 , dums3 , dums4 ]   }  // how many dummy players have
 	}
 
 	IA info
@@ -269,6 +271,7 @@ Meteor.methods({
 	·tileRot
 	·dummyPos           		if set, null otherwise
 	·coord: [[x, y], ...]  		coords of the removed dummies
-	·score: [score1, score2, score3, score4]	the new players score
+	·score: { scores : [score1, score2, score3, score4]  , 	 // new scores for the players
+		  dums :   [dums1 , dums2 , dums3 , dums4 ]   }  // how many dummy players have
 }
 */
