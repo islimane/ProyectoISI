@@ -38,13 +38,17 @@
           {{#if ImInTheGame}}
            <input type="button" class="exitGame" value="Salir del juego">
           {{else}}
-            <input type="button" class="accessGame" value="Entrar a la sala">
-            <div hidden class="formpass">
-              <form>
-                <input type ="password" name = "password" required>
-                <input type ="submit" class ="creatGame" value = "Confirmar contraseña"/>
-              </form>
-            </div>
+              {{#if playersComplete}}
+                  <p>JUEGO COMPLETO</p>
+              {{else}}
+                  <input type="button" class="accessGame" value="Entrar a la sala">
+                  <div hidden class="formpass">
+                     <form>
+                      <input type ="password" name = "password" required>
+                      <input type ="submit" class ="creatGame" value = "Confirmar contraseña"/>
+                    </form>
+                  </div>
+              {{/if}}
           {{/if}}
         {{/if}}
     </div>
