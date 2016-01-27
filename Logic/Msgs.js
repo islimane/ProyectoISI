@@ -61,44 +61,45 @@ Meteor.methods({
 
 		var player = game.players.currentPlayer ;
 
-		var pos ;
-		for ( var i = 0 ; i < arry.length ; i++){
-			if ( arry[i] == true ){
-				switch(i){
-					case 0 :
-						pos = "n" ;
-						break ;
-					case 1 :
-						pos = "nw" ;
-						break ;
-					case 2 :
-						pos = "w" ;
-						break ;
-					case 3 :
-						pos = "sw" ;
-						break ;
-					case 4 :
-						pos = "s" ;
-						break ;
-					case 5 :
-						pos = "se" ;
-						break ;
-					case 6 :
-						pos = "e" ;
-						break ;
-					case 7 :
-						pos = "ne" ;
-						break ;
-					case 8 :
-						pos = "c" ;
-						break ;
-					default :
-						pos = null ;
+		var pos  = null ;
+		if ( arry) {
+			for ( var i = 0 ; i < arry.length ; i++){
+				if ( arry[i] == true ){
+					switch(i){
+						case 0 :
+							pos = "n" ;
+							break ;
+						case 1 :
+							pos = "nw" ;
+							break ;
+						case 2 :
+							pos = "w" ;
+							break ;
+						case 3 :
+							pos = "sw" ;
+							break ;
+						case 4 :
+							pos = "s" ;
+							break ;
+						case 5 :
+							pos = "se" ;
+							break ;
+						case 6 :
+							pos = "e" ;
+							break ;
+						case 7 :
+							pos = "ne" ;
+							break ;
+						case 8 :
+							pos = "c" ;
+							break ;
+						default :
+							pos = null ;
+					}
+				break ;
 				}
-			break ;
 			}
 		}
-
 		var dum = null ;
 		if (pos) {
 			dum = player.getNewDummy() ;
@@ -132,6 +133,20 @@ Meteor.methods({
 		data.scores = game.players.scores() ;
 
 		game.nextTurn() ;
+
+		if ( game.turns == 0 ) {
+			var points = game.board.getFinalCount() ;
+			for (var i = 0 ; i < points.playersPoints.length ; i++) {
+				var player = game.players.getPlayerById(points.playersPoints[0]) ;
+				if (!player) {
+					throw new Error("No player for given id") ;
+					return null ;
+				}
+				player.incScoreBy(points.playersPoints[1]) ;
+			}
+			data.scores = game.players.scores() ;
+		}
+
 		return data ;
 	},
 
@@ -196,6 +211,20 @@ Meteor.methods({
 		data.scores = game.players.scores() ;
 
 		game.nextTurn() ;
+
+		if ( game.turns == 0 ) {
+			var points = game.board.getFinalCount() ;
+			for (var i = 0 ; i < points.playersPoints.length ; i++) {
+				var player = game.players.getPlayerById(points.playersPoints[0]) ;
+				if (!player) {
+					throw new Error("No player for given id") ;
+					return null ;
+				}
+				player.incScoreBy(points.playersPoints[1]) ;
+			}
+			data.scores = game.players.scores() ;
+		}
+
 		return data ;
 	}
 });
