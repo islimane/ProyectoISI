@@ -1,5 +1,34 @@
 <template name="resumeGame">
-	<div id ="content">
-		<h2>Página para reanudar el juego!</h2>
-	</div>
+<div id="content">
+	<h1> {{infoGame.nameGame}}</h1>
+	<div class = "players">
+		<p>Numero de jugadores: {{infoGame.numPlayerHuman}}</p>
+		<p> Numero de jugadores automaticos: {{infoGame.numPlayerIA}}</p>
+		
+		<div class="buttons">
+			{{#if imCreator}}
+				{{#if playersComplete}}
+					<input type="button" class="startGame" value="Comenzar juego">
+				{{/if}}
+			{{else}}
+				{{#if imReady}}
+					<input type="button" class="exitGame" value="Salir del juego">
+				{{else}}
+					{{#if imInGame}}
+						<input type="button" class="accessGame" value="Entrar a sala">
+					{{else}}
+						<p>No puedes entrar al juego. No estás en la partida</p>
+					{{/if}}
+				{{/if}}
+			{{/if}}
+		</div>
+
+    	<h2> Jugadores</h2>
+		<ul>
+			{{#each players}}
+        	<li class="player" id ="{{this.id}}">{{this.name}}</li>
+	  		{{/each}}
+		</ul>
+  	</div> 
+</div>
 </template>

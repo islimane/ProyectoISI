@@ -43,8 +43,12 @@ suspendGame = function(game){
     game.creator = currentGame.creator;
     game.numPlayerHuman = currentGame.numPlayerHuman;
     game.numPlayerIA = currentGame.numPlayerIA;
-    game.suspend();
+    game.suspended = true;
     game.players = currentGame.players
+    game.playersReady = [];
+    game.gameStart = false;
+    var player = game.players[0]
+    game.playersReady.push(player)
     SuspendedGames.insert(game);
     Games.remove({_id: game.gameId})
     Router.go("/");

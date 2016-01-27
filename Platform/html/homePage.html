@@ -92,13 +92,13 @@
 	<h5>{{nameGame}}</h5>
 	<p>Creada por: {{createdBy}}</p>
 	<p>{{numberPlayers}} jugadores.</p>
-	{{#if suspended}}
-		{{#if isInGame}}
-			<input type="button" class="resumeGame" value="Reanudar Partida"/>
-		{{/if}}
+	{{#if gameStart}}
+		<input type="button" class="watchGame" value="Ver Partida"/>
 	{{else}}
-		{{#if gameStart}}
-			<input type="button" class="watchGame" value="Ver Partida"/>
+		{{#if suspended}}
+			{{#if isInGame}}
+				<input type="button" class="resumeGame" value="Reanudar Partida"/>
+			{{/if}}
 		{{else}}
 			<input type="button" class="joinGame" value="Visitar Sala"/>
 		{{/if}}

@@ -54,6 +54,7 @@ if(Meteor.isClient){
 			endGame(fakeScores, this._id);
 		},
 		'click .suspendGame': function(){
+			console.log("suspend clicked")
 			var fakeGame = {gameId: this._id}
 			suspendGame(fakeGame)
 		}
