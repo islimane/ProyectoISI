@@ -2,54 +2,54 @@
 
 
 	<div id="content">
-	<h1>Pagina Nombre de usuario {{infoUser.user}}</h1>
-	
-	<div  style="margin-left:25px;"><img src="{{profileimg}}" width="150" height="150"  border="3"></div><br>
-	
-	
+		<h1>Pagina Nombre de usuario {{infoUser.user}}</h1>
 
-	<div class = "statisticsPlayer">
-		<!--AQUI TIENE QUE IR LAS ESTADISTICAS DEL JUGADOR -->
-		<ul>Estadisticas Jugador</ul>
-			<ul><li>Puntuación máxima: {{infoUser.maxScore}}</li></ul>
-			<ul><li>Partidas ganadas: {{infoUser.nWins}}</li></ul>
+		<div  style="margin-left:25px;"><img src="{{profileimg}}" width="150" height="150"  border="3"></div><br>
 
-	</div>
 
-  	{{#if ismypage}}
-		<div class = "changeprofileimg">
-		<form>
-			<p>Imagen de Perfil: <input type="img" placeholder="http://______.jpg">
-			<input type ="submit" class ="userimg" value = "Cambiar"/></p>
-		</form>
-		{{#if showPassword}}
-			Contraseña para la partida del torneo <a href="/comenzarPartida/{{showPassword._id}}">{{showPassword.nameGame}}</a> "{{showPassword.password}}"
 
-		{{/if}}
+		<div class = "statisticsPlayer">
+			<!--AQUI TIENE QUE IR LAS ESTADISTICAS DEL JUGADOR -->
+			<ul>Estadisticas Jugador</ul>
+				<ul><li>Puntuación máxima: {{infoUser.maxScore}}</li></ul>
+				<ul><li>Partidas ganadas: {{infoUser.nWins}}</li></ul>
+
 		</div>
-	{{/if}}	
 
-	<div class = "friends">
-		<!--ENLACE A COMENZAR PARTIDA-->
-		
-		{{#if Notmypage}}
-			{{#if isMyFriend}}
-				<input type="button" class="deleteFriend" value="Eliminar Amigo" id="{{_id}}">
-    		
+			{{#if ismypage}}
+			<div class = "changeprofileimg">
+			<form>
+				<p>Imagen de Perfil: <input type="img" placeholder="http://______.jpg">
+				<input type ="submit" class ="userimg" value = "Cambiar"/></p>
+			</form>
+			{{#if showPassword}}
+				Contraseña para la partida del torneo <a href="/comenzarPartida/{{showPassword._id}}">{{showPassword.nameGame}}</a> "{{showPassword.password}}"
+
+			{{/if}}
+			</div>
+		{{/if}}	
+
+		<div class = "friends">
+			<!--ENLACE A COMENZAR PARTIDA-->
+			
+			{{#if Notmypage}}
+				{{#if isMyFriend}}
+					<input type="button" class="deleteFriend" value="Eliminar Amigo" id="{{_id}}">
+				
+				{{else}}
+					<input type="button" class="addFriend" value="Añadir Amigo" id="{{_id}}">
+				{{/if}}
 			{{else}}
-				<input type="button" class="addFriend" value="Añadir Amigo" id="{{_id}}">
-    		{{/if}}
-		{{else}}
-			<input type="button" class="deleteCount" value="Eliminar Cuenta" id="{{_id}}">
-    	{{/if}}
-    	<h2> LISTA DE AMIGOS </h2>
-		<ul>
-			{{#each myfriends}}
-				<li><a href="/user/{{this.id}}">{{this.name}}</a></li>
-  			{{/each}}
-		</ul>
-	</div> 
-</div>
+				<input type="button" class="deleteCount" value="Eliminar Cuenta" id="{{_id}}">
+			{{/if}}
+			<h2> LISTA DE AMIGOS </h2>
+			<ul>
+				{{#each myfriends}}
+					<li><a href="/user/{{this.id}}">{{this.name}}</a></li>
+					{{/each}}
+			</ul>
+		</div> 
+	</div>
 
 </template>
 
