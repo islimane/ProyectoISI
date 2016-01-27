@@ -5,12 +5,13 @@ Meteor.methods({
          * It returns an array explaining the error or empty if everything is OK
          */
 
-         console.log("game has been started");
+        console.log("game has been started llamamos a LOGICA");
 
-         //game = new Game(players, gameId);
+
+        game = new Game(players, gameId);
          //StarGame(gameId)
          //LLAMAR FUNCION DE UI PARA ARRANCAR CANVAS
-         //storeGame(game);
+         storeGame(game);
          return true
     },
     'resumeGame': function(game){

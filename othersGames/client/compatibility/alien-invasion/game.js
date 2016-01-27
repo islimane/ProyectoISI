@@ -1,4 +1,4 @@
-var sprites = {
+var sprites_ = {
     ship: { sx: 0, sy: 0, w: 37, h: 42, frames: 1 },
     missile: { sx: 0, sy: 30, w: 2, h: 10, frames: 1 },
     enemy_purple: { sx: 37, sy: 0, w: 42, h: 43, frames: 1 },
@@ -14,31 +14,31 @@ var enemies = {
 
     // straight sólo tiene el parámetro E para la velocidad vertical,
     // por lo que se mueve hacia abajo a velocidad constante.
-    straight: { x: 0,   y: -50, sprite: 'enemy_ship', health: 10, 
+    straight: { x: 0,   y: -50, sprite_: 'enemy_ship', health: 10, 
 		E: 100 },
 
 
     //  ltr (left to right) tiene velocidad constante vertical pero
     //  tiene parámetros B y C que le dotan de una velocidad
     //  horizontal sinusoidal suave.
-    ltr:      { x: 0,   y: -100, sprite: 'enemy_purple', health: 10, 
+    ltr:      { x: 0,   y: -100, sprite_: 'enemy_purple', health: 10, 
 		B: 75, C: 1, E: 100, missiles: 2  },
 
 
     // circle tiene velocidad sinusoidal vx e vy, que junto al
     // parámetro H de desplazamiento en el tiempo le dotan de un
     // movimiento circular.
-    circle:   { x: 250,   y: -50, sprite: 'enemy_circle', health: 10, 
+    circle:   { x: 250,   y: -50, sprite_: 'enemy_circle', health: 10, 
 		A: 0,  B: -100, C: 1, E: 20, F: 100, G: 1, H: Math.PI/2 },
 
 
     //  wiggle y step tienen los mismos parámetros pero con diferentes
     //  magnitudes que les hacen serpentear de manera diferente según
     //  van bajando.
-    wiggle:   { x: 100, y: -50, sprite: 'enemy_bee', health: 20, 
+    wiggle:   { x: 100, y: -50, sprite_: 'enemy_bee', health: 20, 
 		B: 50, C: 4, E: 100, firePercentage: 0.001, missiles: 2 },
 
-    step:     { x: 0,   y: -50, sprite: 'enemy_circle', health: 10,
+    step:     { x: 0,   y: -50, sprite_: 'enemy_circle', health: 10,
 		B: 150, C: 1.2, E: 75 }
 
 };
@@ -50,7 +50,7 @@ OBJECT_ENEMY = 4,
 OBJECT_ENEMY_PROJECTILE = 8,
 OBJECT_POWERUP = 16;
 
-var startGame = function() {
+var startGame_ = function() {
     Game_.setBoard(0,new Starfield(20,0.4,100,true));
     Game_.setBoard(1,new Starfield(50,0.6,100));
     Game_.setBoard(2,new Starfield(100,1.0,50));
@@ -157,7 +157,7 @@ var Starfield = function(speed,opacity,numStars,clear) {
 
     // Se llama a este método en cada frame de la animación para dibujar
     // el campo de estrellas en la pantalla
-    this.draw = function(ctx) {
+    this.draw_ = function(ctx) {
 	var intOffset = Math.floor(offset);
 	var remaining = stars.height - intOffset;
 
@@ -227,7 +227,7 @@ var PlayerShip = function() {
 
 
 // Heredamos del prototipo new Sprite()
-PlayerShip.prototype = new Sprite();
+PlayerShip.prototype = new Sprite_();
 PlayerShip.prototype.type = OBJECT_PLAYER;
 
 
@@ -249,7 +249,7 @@ var PlayerMissile = function(x,y) {
     this.y = y - this.h; 
 };
 
-PlayerMissile.prototype = new Sprite();
+PlayerMissile.prototype = new Sprite_();
 PlayerMissile.prototype.type = OBJECT_PLAYER_PROJECTILE;
 
 PlayerMissile.prototype.step = function(dt)  {
@@ -292,7 +292,7 @@ var Enemy = function(blueprint,override) {
     // Se llama a setup para que se añadan como propiedades el sprite
     // y los atributos definidos en el parámetro blueprint, pudiendo
     // estas modificar los definidos en baseParameters
-    this.setup(blueprint.sprite,blueprint);
+    this.setup(blueprint.sprite_,blueprint);
 
     // Se copian los atributos definidos en el parámetro override,
     // pudiendo modificar los definidos en baseParameters y en
@@ -300,7 +300,7 @@ var Enemy = function(blueprint,override) {
     this.merge(override);
 };
 
-Enemy.prototype = new Sprite();
+Enemy.prototype = new Sprite_();
 Enemy.prototype.type = OBJECT_ENEMY;
 
 // Inicializa los parámetros de las ecuacione de velocidad, y t, que
@@ -382,7 +382,7 @@ var EnemyMissile = function(x,y) {
     this.y = y;
 };
 
-EnemyMissile.prototype = new Sprite();
+EnemyMissile.prototype = new Sprite_();
 EnemyMissile.prototype.type = OBJECT_ENEMY_PROJECTILE;
 
 EnemyMissile.prototype.step = function(dt)  {
@@ -407,7 +407,7 @@ var Explosion = function(centerX,centerY) {
     this.subFrame = 0;
 };
 
-Explosion.prototype = new Sprite();
+Explosion.prototype = new Sprite_();
 
 Explosion.prototype.step = function(dt) {
     this.frame = Math.floor(this.subFrame++ / 2);

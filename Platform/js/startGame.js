@@ -90,7 +90,7 @@
 					for(i = 0; i < players.length;i++){
 						if (players[i].id == Meteor.userId()){
 							Router.go("/partida/" + Games.findOne({_id:gameId})._id);
-							Meteor.call("startGame", players, gameId, function(err){
+							/*Meteor.call("startGame", players, gameId, function(err){
 				    			if(!err){
 				    				Games.update({_id: gameId}, {$set: {gameStart: true}});
 				    				if (players.length > 1){
@@ -99,7 +99,7 @@
 				    			}else{
 				    				console.log("ERROR: " + err);
 				    			}
-				    		});
+				    		});*/
 
 						}
 					}
@@ -134,7 +134,7 @@
 					var players = Games.findOne({_id:gameId}).players
 					for(i = 0; i < players.length;i++){
 						if (players[i].id == Meteor.userId()){
-							Meteor.call("startGame", players, gameId, function(err){
+							/* Meteor.call("startGame", players, gameId, function(err){
 				    			if(!err){
 				    				Games.update({_id: gameId}, {$set: {gameStart: true}});
 				    				if (players.length > 1){
@@ -143,7 +143,7 @@
 				    			}else{
 				    				console.log("ERROR: " + err);
 				    			}
-				    		});
+				    		});*/
 							Router.go("/partida/" + Games.findOne({_id:gameId})._id);
 						}
 					}

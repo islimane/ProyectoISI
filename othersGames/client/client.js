@@ -16,7 +16,7 @@ Template.othersGames.onRendered(function () {
     $('#container').hide();
     //inicializa alien y fruit
     $(function() {
-        Game_.initialize("game_",sprites,startGame);  //alien
+        Game_.initialize("game_",sprites_,startGame_);  //alien
         game.init();  //fruit
     });
    

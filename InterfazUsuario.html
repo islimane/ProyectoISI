@@ -1,0 +1,30 @@
+<template name="game">
+
+	<!--<br><button type= "submit" id="StartGame" >LLAMADA PLATAFORMA</button>-->
+
+	<h1>TURNO DEL JUGADOR -> {{playerTurn}}</h1>
+	{{#each players}}
+		<p>{{name}}    Score: {{score}}  Followers: {{followers}}</p>
+	{{/each}}
+
+
+	{{#if pickTile}}
+		<br><button type= "submit" id="PickTile" >Dame una ficha</button>
+	{{/if}}
+
+	{{#if rotateTile}}
+		<br><button type= "submit" id="RotateTile" > Rotar ficha </button>
+		<button type= "submit" id="Ok" >Colocar ficha</button>
+	{{/if}}
+
+	{{#if existFollowers}}
+		<br><button type= "submit" id="Terminar" >Terminar Turno</button>
+	{{/if}}
+
+	<div id='container'>
+   			<canvas id="game" width="825" height="375"></canvas>
+   	</div>
+
+
+
+</template>

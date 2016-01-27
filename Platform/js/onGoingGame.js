@@ -1,4 +1,13 @@
 if(Meteor.isClient){
+	Template.onGoingGame.onRendered(function(){
+		$(function(){
+			var path = Iron.Location.get().path
+			var id = path.split("/partida/")[1]
+			console.log("LLAMAMOS A IU CON ESTE ID " + id)
+			StartGameIU(id)
+		})
+	})
+
 	Template.onGoingGame.events({
 		'click .endGame':function(){
 			// Se hace asi hasta que logica nos pase el id correcto
