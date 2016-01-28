@@ -4,6 +4,8 @@ n = 0.75;
 boxSize = 100*n;
 //contiene todos los posibles objetos a dibujar
 boards = [];
+//array de dummys posibles para la posicion elegida
+var arrayDummys;
 
 
 //funcion para la traduccion de coordenadas que pasa lógica(fila,columna)
@@ -35,7 +37,6 @@ SpriteSheet = new function() {
     this.image = new Image();
     this.image.onload = callback;
     this.image.src = '/images/sprite.png';
-    console.log("ruta imagen" + this.image.src)
   };
   this.draw = function(ctx,sprite,x,y,w,h,typeObject,rot) {
     var s = this.map[sprite];
@@ -46,7 +47,7 @@ SpriteSheet = new function() {
     }else{
 
       ctx.save();
-      var rots = { 0: 0, 1: 270, 2:180, 3: 90};
+      var rots = { 0: 0, 1: 90, 2:180, 3: 270};
       var dx;
       var dy;
 
@@ -56,12 +57,12 @@ SpriteSheet = new function() {
       }else{
 
         if(rot == 1){
-          ctx.translate(x,y+boxSize);
+            ctx.translate(x+boxSize,y);
         }else if (rot == 2){
           ctx.translate(x+boxSize,y+boxSize);
 
         }else{
-          ctx.translate(x+boxSize,y);
+          ctx.translate(x,y+boxSize);
         }
         var grade = Math.PI*rots[rot]/180;
         ctx.rotate(grade);
@@ -76,6 +77,7 @@ SpriteSheet = new function() {
 };
 //----------------------------------------------------------------------------------
 Game = new function() {
+
   this.initialize = function(canvasElementId,sprite_data,callback,argForCallback,argForCallack2) {
 
     this.canvas = document.getElementById(canvasElementId);
@@ -101,18 +103,24 @@ Game = new function() {
       if(KEY_CODES[event.keyCode]) {
         if(Session.get("fixedToken")){
 
-          if( boards[2].pos[KEY_CODES[event.keyCode]-1] === true){
-            //console.log("cambiar en el array");
-            var text = "Posición válida para el dummy.";
-            Game.setBoard(3,new Message(text,70,20,550,50,200,50));
-            boards[2].setDummy(KEY_CODES[event.keyCode]-1);
-          }else if(boards[3] === undefined){
-            //console.log("creo mensaje");
+          if(arrayDummys[KEY_CODES[event.keyCode]-1] === true){ //numero de dummy esta en el array que pasa logica
+
+            var currentMinCoor = {x: Game.minCoor[0], y: Game.minCoor[1]};
+            var posLastTile = boards[1].num_token()-1;//posicion ultima ficha fijada (ficha)
+
+            if(boards[1].tokens[posLastTile].typeObject === "fixedTile"){
+              FixedTokens.setToken(new Dummy("player1",[currentMinCoor.x,currentMinCoor.y],boards[1].tokens[posLastTile].dx,boards[1].tokens[posLastTile].dy,boards[1].tokens[posLastTile].logicCoord));
+              posLastTile = boards[1].num_token()-1;//posicion ultima ficha fijada (dummy)
+              boards[1].tokens[posLastTile].setDummy(KEY_CODES[event.keyCode]-1);
+            }
+
+          }else{
+            console.log("creo mensaje");
             var text = "Posición no válida para el dummy: "+KEY_CODES[event.keyCode]+",probar otra.";
-            Game.setBoard(3,new Message(text,70,20,650,50,100,50));
+            Game.setBoard(2,new Message(text,70,20,650,50,100,50));
           }
 
-          if(KEY_CODES[event.keyCode] === 'intro' && boards[3].typeObject === 'message'){
+          if(KEY_CODES[event.keyCode] === 'intro' && boards[2].typeObject === 'message'){
             console.log("quito el mensaje");
             boards.pop();
           }
@@ -258,10 +266,11 @@ CurrentToken = function (x,y,sprite){
       var currentMinCoor = {x: Game.minCoor[0], y: Game.minCoor[1]};
 
       FixedTokens.setToken(new Token(coord.x,coord.y,posRot,boards[3].sprite,[x,y],[currentMinCoor.x,currentMinCoor.y]));
-      boards.pop();//elimino la que se mueve porque ya no tiene que pintarse
-      Game.setBoard(3,new Dummy("player1"));//creo el dummy
-      boards[3].addInfo();//meto la informacion del array
-      boards.splice(2,1);//elimino las posibles posiciones
+      boards.pop();//Elimino la que se mueve porque ya no tiene que pintarse
+      //copio el array de dummys
+      arrayDummys = posDummyForRotation();
+
+      boards.pop();//elimino las posibles posiciones
       Session.set('fixedToken',true);
       Session.set('showFollowers',true);
 
@@ -345,7 +354,7 @@ PossiblePositions = function(minCoor,sprite){
 //----------------------------------------------------------------------------------------------------
 
 function posDummyForRotation(){ //funcion que devuelve el array de dummies para la posicion seleccionada
-  
+
   for(var i =0; i<=3 ;i++){
     if(boards[2].rotations[i].length > 0){//compruebo si hay posicion para la rotacion
       for(var j=0; j<boards[2].rotations[i].length ;j++){
@@ -359,25 +368,72 @@ function posDummyForRotation(){ //funcion que devuelve el array de dummies para 
   }
 };
 
-Dummy = function(sprite){
+Dummy = function(sprite,minCoor,x,y,logCoor){
   this.sprite = sprite;
-  this.pos;
-  this.pos2 = [false,false,false,false,false,false,false,false,false];
+  this.pos = [false,false,false,false,false,false,false,false,false];
+  this.dx = x;
+  this.dy = y;
+  this.minCoord = minCoor;
+  this.typeObject = "dummy";
+  this.logicCoord = logCoor;
 
-  this.addInfo = function(){
+  /*this.addInfo = function(){
     this.pos = posDummyForRotation();
-  };
+  };*/
 
   this.setDummy = function(pos){
+
     for(var i=0;i<=8;i++){
       if(i === pos){
-        this.pos2[i] = true;
+        this.pos[i] = true;
+        var positionDummy =  i;
+      }else{
+         this.pos[i] = false;
       }
+    }
+
+    switch(positionDummy){
+
+      case 0:
+        this.dx = this.dx+(boxSize/3);
+        break;
+      case 1:
+        this.dx = this.dx;
+        break;
+      case 2:
+        this.dy = this.dy+(boxSize/3);
+        break;
+      case 3:
+        this.dy = this.dy+(boxSize/3*2);
+        break;
+      case 4:
+        this.dx = this.dx+(boxSize/3);
+        this.dy = this.dy+(boxSize/3*2);
+        break;
+      case 5:
+        this.dx = this.dx+(boxSize/3*2);
+        this.dy = this.dy+(boxSize/3*2);
+        break;
+      case 6:
+        this.dx = this.dx+(boxSize/3*2);
+        this.dy = this.dy+(boxSize/3);
+        break;
+      case 7:
+        this.dx = this.dx+(boxSize/3*2);
+        break;
+      case 8:
+        this.dx = this.dx+(boxSize/3*2);
+        this.dy = this.dy+(boxSize/3*2);
+        break;
     }
   };
 
   this.draw = function(ctx){
-      //terminar
+    if( (this.logicCoord[0] >= Game.minCoor[0] && this.logicCoord[0] <= Game.maxCoor[0]) && (this.logicCoord[1] >= Game.minCoor[1] && this.logicCoord[1] <= Game.maxCoor[1]) ){
+      var x = this.minCoord[0]-Game.minCoor[0];
+      var y = this.minCoord[1]-Game.minCoor[1];
+      SpriteSheet.draw(ctx,this.sprite,this.dx+(x*boxSize),this.dy+(y*boxSize),boxSize/3,boxSize/3,this.typeObject);
+    }
   };
 };
 

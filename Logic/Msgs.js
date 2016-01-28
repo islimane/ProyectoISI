@@ -21,6 +21,7 @@ Meteor.methods({
 
 	// Returns the current tile's id and the arry of the 4 rotations coords
 	getCoords : function(gameId){
+		console.log("GAME ID EN COORDS " + gameId)
 		var game = findGameByID(gameId);
 		if (!game){
 			return null ;
@@ -255,7 +256,7 @@ Meteor.methods({
 		rotation ,	// choosen tiles rotation 0-3
 		dummy : [] , 	// [ n,  nw,   w,  sw,   s,  se,   e,  ne,   c  ]
 	 			// de 0 a 9 true y false donde vaya el dummy
-		
+
 	}
 
 	// Checked info for UI

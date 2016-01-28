@@ -3,7 +3,7 @@ if(Meteor.isClient){
 		$(function(){
 			var path = Iron.Location.get().path
 			var id = path.split("/partida/")[1]
-			console.log("LLAMAMOS A IU CON ESTE ID " + id)
+			console.log(Meteor.userId() + " LLAMAMOS A IU CON ESTE ID " + id)
 			StartGameIU(id)
 		})
 	})
@@ -20,18 +20,15 @@ if(Meteor.isClient){
 				var id_tournament = game.id_tournament
 				var Tournament = Tournaments.findOne({_id:id_tournament})
 				if(Tournament.idGames.length == 5 ){
-					console.log("ya ha terminado algun jugador")
 					var idFinalGame = Tournament.idGames[4]
-					console.log("ID FAINAL " + idFinalGame)
 					var players = Games.findOne({_id:idFinalGame}).players_tournament
-					console.log("players" + players)
     				var data = {
 						id:id_Ganador,
 						name : Meteor.users.findOne({_id:id_Ganador}).profile.user
 					}
 					players.push(data)
 					Games.update({_id:idFinalGame},{$set:{players_tournament:players}})
-				}else{	
+				}else{
 
 					console.log("primer  jugador en acabar")
 					var players = []

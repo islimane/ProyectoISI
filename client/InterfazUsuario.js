@@ -4,6 +4,8 @@ var gameID;  //Identificador de partida necesaria para la parte lógica del jueg
 posRot = 0;
 var tileID;
 var rotInfo;
+var currentPlayer = 0;
+var n = 100;
 var Players = new Array();
 	//Sesiones para botones
 	Session.setDefault('showRotateTile', false);
@@ -14,12 +16,9 @@ var Players = new Array();
 	//Sesiones estado del turno
 	Session.setDefault('pickTileOK', false);
 	Session.setDefault('fixedToken', false);
-	//Session.setDefault('currentPlayer', 0);
-	Session.setDefault('isMyTurn', false);
 	Session.setDefault('playersUpdate', undefined);
 	Session.setDefault('counter', 0);
-	Session.setDefault('counter2', 0);
-	Session.setDefault('setTile', 0);
+
 
 	var createPlayers = function(players){
 		var auxPlayer = players;
@@ -32,12 +31,9 @@ var Players = new Array();
 							     score: 0,
 							     followers: 7,
 							     turn: false};
-			//console.log("Creo el jugador -> [" + iterator + "] " + Players[iterator].turn);
 		};
 		Players[0].turn = true;
-		Session.setDefault('currentPlayer', 0);
-		//console.log("jugador -> [" + 1 + "] " + Players[1].turn);
-	//	Session.set('playersUpdate', PlayerList.Player);
+		//currentPlayer = 0;
 	}
 
 	var updateScores = function(scores){
@@ -58,57 +54,24 @@ var Players = new Array();
 		Session.set('playersUpdate', Players);
 	}
 
-	var checkTurn = function(){
-			//if(Players[Session.get('currentPlayer')].id == Meteor.userId()){
-			if(Players[Session.get('currentPlayer')].id == 100){
-				Session.set('isMyTurn', true);
-			//	alert("es mi turno");
-			}else{
-				Session.set('isMyTurn', false);
-			//	alert("NO es mi turno");
-			}
-	}
-
 	var changeTurn = function(){
-		// aumentar el turno del jugador
-		var playerTurn = Session.get('currentPlayer');
-		Players[Session.get('currentPlayer')].turn = false;
-		playerTurn += 1;
-		if(playerTurn > 3){
-			playerTurn = 0;
+		currentPlayer +=1;
+		n +=100;
+		if(currentPlayer > 3){
+			currentPlayer = 0;
 		}
-		Session.set('currentPlayer', playerTurn);
-		Players[Session.get('currentPlayer')].turn = true;
+		if(n > 400){
+			n = 100;
+		}
 	}
 
-	var acts = null;
-	Tracker.autorun(function(){
-		acts = PlayerMoves.find();
-		acts.forEach(function(acts){
-			if(acts.move == "Ha terminado el turno"){
-				//console.log("ha terminado el turno")
-				changeTurn();
-				//console.log("turno cambiado")
-				checkTurn();
-				if(Session.get('isMyTurn')){
-					console.log("es mi turno ********************************")
-					StartTurn();
-				}
-			/*}else if(acts.move == "Ha sacado ficha"){
-				console.log("EL jugador ha sacado ficha")
-				Game.setBoard(3, new CurrentToken(0,0,tileID));*/
-			}
-		});
-	});
 
 	Tracker.autorun(function(){
 		if(Session.get('counter') == 2){
 			initGame(tileID, rotInfo);
-			$('button#StartGame').hide();
 			Session.set('playersUpdate', Players);
 			Session.set('showPlayers', true);
-			checkTurn();
-			if(Session.get('isMyTurn')){
+			if(Players[currentPlayer].id == n){
 				Session.set('showRotateTile', true);
 			}
 			var m = "Ha sacado ficha";
@@ -121,13 +84,31 @@ var Players = new Array();
 		}
 	});
 
+	Tracker.autorun(function(){
+		var acts = PlayerMoves.find({}, {fields: {'move': 1}});
+		acts.forEach(function(it){
+			console.log("CAMBIO");
+			if(it.move === "Ha terminado el turno"){
+				//console.log("ha terminado el turno")
+				changeTurn();
+				//console.log("turno cambiado")
+				//checkTurn();
+					//console.log("es mi turno")
+				if(Players[currentPlayer].id == n){
+					StartTurn();
+				}
+			}else if(it.move === "Ha sacado ficha"){
+				console.log("EL jugador ha sacado ficha")
+				Game.setBoard(3, new CurrentToken(0,0,tileID));
+			}
+		});
+
+	});
 	//Funcion a la que llama Plataforma para comenzar una partida
 	//Realiza las llamadas a lógica para coger la información de la partida
 	StartGameIU = function(g_id){
-		console.log("StartGame IU")
 		gameID = g_id;
 		Meteor.call('getCoords',gameID, function(err, tileInfo){
-			//console.log("IU-> START GAME METEOR CALL")
 			tileID = tileInfo.tileId;
 			rotInfo = tileInfo.coords;
 			var counter = Session.get('counter');
@@ -135,80 +116,68 @@ var Players = new Array();
 			Session.set('counter', counter);
 		});
 		Meteor.call('getNames', gameID, function(err, players){
-			createPlayers(players); 
+			createPlayers(players);
+			console.log("IU-> START GAME METEOR CALL" + gameID + " "+ Players[currentPlayer].name)
 			var counter = Session.get('counter');
 			counter++;
 			Session.set('counter', counter);
-			//console.log(Session.get('counter'));
 		});
-		console.log("finaliza  StartGame")
 	}
 
 	//Nuevo turno
 	var StartTurn= function(){
-		// aqui falta el jugador IA
-		console.log("###### start turn #########")
-		if(Players[Session.get('currentPlayer')].name == "IA"){
+
+		if(Players[currentPlayer].name == "IA"){
 			Meteor.call('getIA',gameID, function(err, info){
 				var infoIA = new Object();
-				infoIA.tileID = 16;
+				infoIA.tileId = 16;
 				infoIA.x = (1-1)*boxSize;
 				infoIA.y = (2-1)*boxSize;
 				infoIA.tileRot = 2;
-				infoIA.followerPos = null;
-				var scores = [100, 16, 22, 88];
+				infoIA.remDums = null;
+				infoIA.scores = [100, 16, 22, 88];
 				var currentMinCoorIA = {x: Game.minCoor[0], y: Game.minCoor[1]};
 				boards[1].setToken(new Token(infoIA.x, infoIA.y, infoIA.tileRot, infoIA.tileID,[47,47],[currentMinCoorIA.x,currentMinCoorIA.y]));
 				//posRot = infoIA.tileRot;
-				updateScores(scores);
+				updateScores(infoIA.scores);
 				EndOfTurn();
-				StartTurn();
 			});
 		}else{
-
-			var x = Session.get('setTile');
-			alert("ya se cambio settile " + x)
-			if(x != 0){
-				Meteor.call('getCoords',gameID, function(err, tileInfo){
-					  alert("tile Info " + tileInfo)
-						//console.log("IU-> METEOR CALL: getCoords")
-						tileID = tileInfo.tileId;
-						rotInfo = tileInfo.coords;
-						//console.log("IU-> Nos llega TileID: " + tileID + " RotInfo: " + rotInfo)
-						Session.set('counter2', 1);
-				});
-			}
-			//Session.set('settile', 0);
-
-			//$('button#StartGame').hide();
-			//console.log(Session.get('counter2'));
-			if(Session.get('counter2') != 0){
-				Session.set('showPickTile', true);
-			}
-
-
+			Meteor.call('getCoords',gameID, function(err, tileInfo){
+				//	console.log("IU-> METEOR CALL: getCoords")
+					tileID = tileInfo.tileId;
+					rotInfo = tileInfo.coords;
+					Session.set('showPickTile', true);
+			});
 		}
 	}
 
 	//Fin de turno
 	var EndOfTurn = function(){
-		if(Players[Session.get('currentPlayer')].name != "IA"){
+		if(Players[currentPlayer].name != "IA"){
 			var pos = (boards[1].num_token())-1;
-			//alert("IU-> METEORCALL End of turn ENviamos\n")
-			console.log(gameID + " " + boards[1].tokens[pos].logicCoord[0]+ " " + boards[1].tokens[pos].logicCoord[1]+ " " + posRot + " " +	boards[2].pos)
 			Meteor.call('setTile',
 						gameID,
 						boards[1].tokens[pos].logicCoord[0],
 						boards[1].tokens[pos].logicCoord[1],
 						posRot,
-						boards[2].pos2,
-						function(err, updateInfo){ //recibir array followers eliminados
-				updateScores(updateInfo.score);
-				updateFollowers(updateInfo.dums);
-				Session.set('setTile', 1);
+						boards[1].tokens[pos].pos,
+						function(err, updateInfo){
+				//console.log("********SET TILE ACABADO************")
+				updateScores(updateInfo.scores.scores);
+				updateFollowers(updateInfo.scores.dums);
+				PlayerMoves.remove(Session.get('movesP'));
+				PlayerMoves.insert({
+					move: "Ha terminado el turno"
+				});
+				var id = PlayerMoves.find().fetch();
+				Session.set('movesP', id[0]._id);
 			});
 		}
 		//Reiniciamos Sesiones
+		Session.set('pickTileOK', false);
+		Session.set('showFollowers', false);
+		Session.set('fixedToken', false);
 		posRot = 0;
 
 	}
@@ -216,7 +185,7 @@ var Players = new Array();
 	Template.game.helpers({
 		playerTurn: function () {
 			if(Session.get('showPlayers')){
-				return Players[Session.get('currentPlayer')].name;
+				return Players[currentPlayer].name;
 			}
 		},
 		players: function(){
@@ -239,18 +208,12 @@ var Players = new Array();
 
 		//Boton que simula la llamda a StartTurn que hara la Plataforma
 		'click button#StartGame': function () {
-			console.log ("evento llamada Plataforma")
-
-
-			// metodo de prueba
-
-
-			StartGameIU(1);
+			StartGame(1);
 		},
 
 		//DAME FICHA
 		'click button#PickTile': function () {
-
+			//console.log("IU-> PickTile-> ID: " + tileID)
 			var currentMinCoor = {x: Game.minCoor[0], y: Game.minCoor[1]};
 			Game.setBoard(2,new PossiblePositions([currentMinCoor.x,currentMinCoor.y],"valid"));//creo objeto rotaciones
 			boards[2].addInfo(rotInfo);
@@ -275,8 +238,8 @@ var Players = new Array();
 		//ROTACION ELEGIDA
 		'click button#Ok': function () {
 			if (rotInfo[posRot].length > 0){
+				console.log("COLOCO FICHA")
 				Session.set('pickTileOK', true);
-				//Session.set('showFollowers', true);//CAMBIARRRRR
 				Session.set('showRotateTile', false);
 			}else{
 				alert("Confirmar una rotacion con posible colocacion");
@@ -285,10 +248,8 @@ var Players = new Array();
 
 		//TERMINAR TURNO
 		'click button#Terminar': function () {
-
+			$('button#Terminar').hide();
 			EndOfTurn();
-			var idMove = Session.get('movesP');
-			PlayerMoves.update(idMove, {$set:{move:"Ha terminado el turno"}});
 		},
 
   });

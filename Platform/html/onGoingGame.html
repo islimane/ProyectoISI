@@ -1,9 +1,7 @@
 <template name="onGoingGame">
 	<div id= "content">
 		<h2>Partida En Marcha!</h2>
-		<div class="gameCanvas">
-			{{>game}}
-		</div>
+
 
 		<div class="debugButtons">
 			<h4>Botones para pruebas de terminar e interrumpir partida</h4>
@@ -11,6 +9,9 @@
 			<input type="button" class="endGame" value="Terminar Partida">
 			<input type="button" class="suspendGame" value="Interrumpir Partida">
 			</p>
+		</div>
+		<div class="gameCanvas">
+				{{>game}}
 		</div>
 	</div>
 </template>

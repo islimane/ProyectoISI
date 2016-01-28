@@ -22,13 +22,13 @@
 			}else{
 				return false
 			}
-				
+
 		},
 		'playersComplete':function(){
 			return (Games.findOne({_id:this._id}).players.length == Games.findOne({_id:this._id}).numPlayerHuman)
 		},
 		'GameTournamentComplete':function(){
-			if ((Games.findOne({_id:this._id}).gameTournament == true) && (Games.findOne({_id:this._id}).players.length == 4)){	
+			if ((Games.findOne({_id:this._id}).gameTournament == true) && (Games.findOne({_id:this._id}).players.length == 4)){
 				return true
 			}
 		},
@@ -80,8 +80,8 @@
     		}
 
 		 	Tracker.autorun(function(){
-			// colección auxiliar donde meta el id y que ha empezado la partida 
-			// haria el if sobre esa colección 
+			// colección auxiliar donde meta el id y que ha empezado la partida
+			// haria el if sobre esa colección
 			// habria que llevarlo a la funcion donde entras en la sala
 				var game = Gamesaux.findOne({gameid:gameId},{fields:{gameStart:1}})
 				if(game.gameStart){
@@ -107,7 +107,7 @@
 				}
 			})
 
-					
+
     	},
     	'submit form' : function(event){
 			event.preventDefault();
@@ -228,14 +228,14 @@
 					$('#IAPlayer').attr('max',val);
 					$('#IAPlayer').attr('min',val);
 				}else{
-					
+
 					var val = ($('#players').val() - $('#humanPlayer').val())
 					$('[name="IAPlayer"]').val(0);
 					$('#IAPlayer').attr('max',val);
 					$('#IAPlayer').attr('min',val);
 					$('#IA').hide();
 				}
-			}		
+			}
 		},
 		'change #humanPlayer' :function(){
 			if(($('#players').val()) > $('#humanPlayer').val()){
@@ -245,7 +245,7 @@
 				$('#IAPlayer').attr('max',val);
 				$('#IAPlayer').attr('min',val);
 			}else{
-				
+
 				var val = ($('#players').val() - $('#humanPlayer').val())
 				$('[name="IAPlayer"]').val(0);
 				$('#IAPlayer').attr('max',val);
@@ -253,7 +253,7 @@
 				$('#IA').hide();
 			}
 		},
-		
+
 		'click .player': function(event){
 			event.preventDefault();
         	var id = event.target.id;
@@ -277,7 +277,7 @@
 				}
 			}
 			Games.update({_id:this._id},{$set:{players:newArr}})
-      		
+
     	},
     	'click .leaveGame' : function(event){
     		var players = Games.findOne({_id:this._id}).players;
@@ -295,7 +295,7 @@
 					newArr.push(data)
 				}
 			}
-    		
+
 			Games.update({_id:this._id},{$set:{players:newArr, creator : creator}})
     	},
     	'click .starGame': function(){
