@@ -50,26 +50,34 @@ Template.choose_game.events = {
 }
 
 
-/*Template.best_players.helpers({
+Template.best_players.helpers({
     'none' : function (){
     return Session.get("current_game") == "none";
     },
     'gameName' :  function (){
     var game_id = Session.get("current_game");
     if (game_id)
-        var game_name = Others_Games.findOne({_id: game_id}).name;
+        var game_name = Others_Games.findOne({_id: game_id});
+        if (game_name != undefined)
+            game_name = game_name.name;
     return game_name;
     },
     'best_players' : function (){
-    var matches =  Matches.find({}, {limit:5, sort: {points:-1}});
 
+    var gameid = Session.get("current_game");
+    if (gameid != "none"){
+        var matches =  Matches.find({game_id: gameid}, {limit:5, sort: {points:-1}});
+    }else{
+        var matches =  Matches.find({}, {limit:5, sort: {points:-1}});
+    }
     var users_data = [];
 
     matches.forEach (function (m) {
-        var user = Meteor.users.findOne({_id: m.user_id});
+        var user = Meteor.users.findOne({_id: m.user_id}).profile.user;
         if (user){
+
             var game = Others_Games.findOne({_id: m.game_id});
-            users_data.push({name: user.username, game: game.name, points: m.points});
+            users_data.push({name: user, game: game.name, points: m.points});
         }
     });
 
@@ -77,7 +85,7 @@ Template.choose_game.events = {
     }
 
 
-})*/
+})
 
 
 

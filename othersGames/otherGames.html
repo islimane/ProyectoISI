@@ -17,9 +17,9 @@
 	{{> froot_wars}}      
       </div>
     </div>
-    <!--<div class="span2">
+    <div class="span2">
       {{> best_players }}
-    </div>-->
+    </div>
   </div >
 
 </template>
@@ -39,25 +39,25 @@
 </template>
 
 
-<!--<template name="best_players">
+<template name="best_players">
   {{#if none }}
-  <h3> Best players overall </h3>
+  <h3> Mejores jugadores todos juegos </h3>
   {{else}}
-  <h3> Best players {{gameName}} </h3>
+  <h3> Mejores jugadores {{gameName}} </h3>
   {{/if}}
   
   <table id="rooms" class="table table-striped">  
     <tbody>
       {{#each best_players}}
       <tr>
-	<td><strong>{{name}}</strong> ({{game}}): </td>
-	<td>{{points}}</td>
+	       <td><strong>{{name}}</strong> ({{game}}): </td>
+	       <td>{{points}}</td>
       </tr>
       {{/each}}
     </tbody>
   </table>
   
-</template>-->
+</template>
 
 
 <template name="froot_wars">
