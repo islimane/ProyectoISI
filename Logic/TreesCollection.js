@@ -53,10 +53,10 @@ TreesCollection.prototype.insertTile = function(tile, coor, dummy){
         if(dummies.length>0){
             data.playersPoints = playersPoints;
             data.dummies = dummies;
-            console.log("Data:");
-            printPlayersPoints(data.playersPoints);
-            printDummies(data.dummies);
-            console.log("****************************");
+            // console.log("Data:");
+            // printPlayersPoints(data.playersPoints);
+            // printDummies(data.dummies);
+            // console.log("****************************");
             return data;
         }else{
             return null;
@@ -96,8 +96,10 @@ TreesCollection.prototype.getFinalCount = function(){
     // fields
     var fieldTrees = getFieldTrees(this);
 
-    for(var i=0; i<fieldTrees.length; i++){
-        fieldTrees[i].printTree();
+    if(debug){
+        for(var i=0; i<fieldTrees.length; i++){
+            fieldTrees[i].printTree();
+        }
     }
 
     var compCityTrees = getCompletedCities(this.trees.cityTrees);
@@ -219,8 +221,8 @@ var getIncompCityT = function(coll){
     for(var i=0; i<cityTrees.length; i++){
         if(cityTrees[i].getLeftChildren()>0 && cityTrees[i].dummies.length>0){
             incompCityT.push(cityTrees[i]);
-            cityTrees[i].printTree();
-            console.log("############################################");
+            // cityTrees[i].printTree();
+            // console.log("############################################");
         }
     }
 
@@ -233,8 +235,8 @@ var getIncompRoadT = function(coll){
     for(var i=0; i<roadTrees.length; i++){
         if(roadTrees[i].getLeftChildren()>0 && roadTrees[i].dummies.length>0){
             incompRoadT.push(roadTrees[i]);
-            roadTrees[i].printTree();
-            console.log("############################################");
+            // roadTrees[i].printTree();
+            // console.log("############################################");
         }
     }
 
@@ -247,7 +249,7 @@ var getIncompCloistT = function(coll){
     for(var i=0; i<cloisterTrees.length; i++){
         if(cloisterTrees[i].getLeftChildren()>0 && cloisterTrees[i].dummies.length>0){
             incompCloisT.push(cloisterTrees[i]);
-            console.log("############################################");
+            // console.log("############################################");
         }
     }
 
@@ -628,7 +630,7 @@ saveTileOfSpecialType = function(treesOfType, coord, type){
     for(var i=0; i<treesOfType.length; i++){
         treesOfType[i].placeClTile(coord);
         if(treesOfType[i].getLeftChildren()==0){
-            treesOfType[i].printTree();
+            // treesOfType[i].printTree();
             completedTrees.push(treesOfType[i]);
         }
     }
@@ -719,7 +721,7 @@ saveTileOfNormalType = function(areas, treesOfType, coord, type, tile, dummy){
         if(trees[0]!=undefined && trees[0].getLeftChildren()==0){
             if(type!=='f'){
                 completedTrees.push(trees[0]);
-                trees[0].printTree();
+                if(debug) trees[0].printTree();
             }
         }
     });
