@@ -76,7 +76,6 @@ if (Meteor.isClient) {
 					img = img.profile.profileimg;
 				}
 			}
-			console.log(img)
 			return img
 
 		}
@@ -97,8 +96,10 @@ if (Meteor.isClient) {
     		Router.go("/");
     	},
     	'submit form' : function(event){
-    		//event.preventDefault();
-    		var img = $('[name=img]').val();
+    		event.preventDefault();
+				var img = event.target.imagen.value;
+				$('[name="imagen"]').val("");
+				console.log("valor de la imagen " + img)
     		Meteor.call('changeprofileimg', img);
 
     	}

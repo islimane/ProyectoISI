@@ -19,7 +19,7 @@
 			{{#if ismypage}}
 			<div class = "changeprofileimg">
 			<form>
-				<p>Imagen de Perfil: <input type="img" placeholder="http://______.jpg">
+				<p>Imagen de Perfil: <input name="imagen" type="img" placeholder="http://______.jpg">
 				<input type ="submit" class ="userimg" value = "Cambiar"/></p>
 			</form>
 			{{#if showPassword}}
@@ -27,15 +27,15 @@
 
 			{{/if}}
 			</div>
-		{{/if}}	
+		{{/if}}
 
 		<div class = "friends">
 			<!--ENLACE A COMENZAR PARTIDA-->
-			
+
 			{{#if Notmypage}}
 				{{#if isMyFriend}}
 					<input type="button" class="deleteFriend" value="Eliminar Amigo" id="{{_id}}">
-				
+
 				{{else}}
 					<input type="button" class="addFriend" value="Añadir Amigo" id="{{_id}}">
 				{{/if}}
@@ -48,14 +48,7 @@
 					<li><a href="/user/{{this.id}}">{{this.name}}</a></li>
 					{{/each}}
 			</ul>
-		</div> 
+		</div>
 	</div>
 
 </template>
-
-
-
-
-
-
-
