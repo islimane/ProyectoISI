@@ -1,6 +1,6 @@
 if (Meteor.isClient) {
 
-	/* se pone "if (this._id == undefined) return null;" porque 
+	/* se pone "if (this._id == undefined) return null;" porque
 	aveces se carga dos veces la pagina y una de la sveces no hay id*/
 
 	Template.UserPage.helpers({
@@ -34,18 +34,18 @@ if (Meteor.isClient) {
 			if (this._id == undefined) return null;////
 			var idfriends = Meteor.users.findOne({_id:this._id});
 			if (idfriends == undefined || idfriends.profile == null){
-        
+
                 return arrfriends;
             }
             idfriends = idfriends.profile.friends;
-			
+
 			for(i = 0; i < idfriends.length;i++){
 				var data = {
 					id:idfriends[i],
 					name : Meteor.users.findOne({_id:idfriends[i]}).profile.user
 				}
 				arrfriends.push(data)
-			} 
+			}
 			return arrfriends;
 		},
 		'Notmypage':function(){
@@ -76,11 +76,12 @@ if (Meteor.isClient) {
 					img = img.profile.profileimg;
 				}
 			}
+			console.log(img)
 			return img
 
 		}
 	})
-	
+
 	Template.UserPage.events({
     	'click .addFriend':function(event){
     		event.preventDefault();

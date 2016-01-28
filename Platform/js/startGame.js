@@ -65,6 +65,11 @@
     	},
     	'click .accessGame':function(){
     		var gameId = this._id
+        if(Meteor.userId() == undefined){
+          alert("Debes registrarte")
+          Router.go("/register")
+          return
+        }
     		if(Games.findOne({_id:this._id}).password == ""){
     			var players = Games.findOne({_id:this._id}).players
     			var data = {

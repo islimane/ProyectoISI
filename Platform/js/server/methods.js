@@ -27,8 +27,9 @@ Meteor.methods({
             email: user.email,
             profileimg: user.img,
             createdAt: user.createdAt,
-            maxscore: user.maxscore,
-            friends: friends
+            maxScore: user.maxScore,
+            nWins: user.nWins,
+            friends: friends,
         }
         Meteor.users.update({_id:Meteor.userId()},{$set:{profile:data}});
     },
@@ -46,13 +47,13 @@ Meteor.methods({
                 newArr.push(friends[i]);
             }
         }
-
         var data = {
             user: user.user,
             email: user.email,
             profileimg: user.img,
             createdAt: user.createdAt,
-            maxscore: user.maxscore,
+            maxScore: user.maxScore,
+            nWins: user.nWins,
             friends: newArr
         }
         Meteor.users.update({_id:Meteor.userId()},{$set:{profile:data}});
@@ -68,7 +69,8 @@ Meteor.methods({
             email: user.email,
             profileimg: img,
             createdAt: user.createdAt,
-            maxscore: user.maxscore,
+            maxScore: user.maxScore,
+            nWins: user.nWins,
             friends: user.friends
         }
         Meteor.users.update({_id:Meteor.userId()},{$set:{profile:data}});
